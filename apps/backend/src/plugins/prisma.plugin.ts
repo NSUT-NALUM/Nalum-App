@@ -9,7 +9,10 @@
 import fastifyPrisma from "@zrosenbauer/fastify-prisma";
 import type { FastifyPluginAsync } from "fastify";
 import fp from "fastify-plugin";
-import { createPrismaClient, type PrismaClient } from "../../../../packages/database/src/client";
+import {
+	createPrismaClient,
+	type PrismaClient,
+} from "@nalum/database/client";
 import { env } from "../config/env.config";
 
 // Module augmentation to strictly type the prisma decorator on the Fastify instance

@@ -35,6 +35,7 @@ export const buildApp = async (options: FastifyServerOptions = {}) => {
 	await app.register(helmet);
 	await app.register(cors, {
 		credentials: true,
+		methods: ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
 		origin: true,
 	});
 	await app.register(cookie, {

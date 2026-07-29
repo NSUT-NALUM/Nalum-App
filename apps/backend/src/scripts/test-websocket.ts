@@ -1,4 +1,4 @@
-import { createPrismaClient } from "../../../../packages/database/src/client";
+import { createPrismaClient } from "@nalum/database/client";
 import jwt from "jsonwebtoken";
 
 const JWT_SECRET = "UrXSliKhJXkJGVNQXdnn77iiLnrq5Ic006hduf4rOeO";

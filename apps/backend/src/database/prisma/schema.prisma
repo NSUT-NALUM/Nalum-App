@@ -47,6 +47,22 @@ enum AlumniVerificationStatus {
   REJECTED
 }
 
+enum AlumniVerificationEventType {
+  SUBMITTED
+  APPROVED
+  REJECTED
+  REOPENED
+  AUTO_RESUBMITTED
+}
+
+enum VerificationNotificationState {
+  NOT_REQUIRED
+  PENDING
+  QUEUED
+  SENT
+  FAILED
+}
+
 enum ConversationType {
   DIRECT
   GROUP
@@ -59,87 +75,93 @@ enum ConversationParticipantRole {
 }
 
 model User {
-  id                String    @id @default(uuid(7)) @db.Uuid
-  firstName         String
-  lastName          String
-  email             String    @unique @db.Citext
-  passwordHash      String?
-  googleId          String?   @unique
-  role              UserRole
-  emailVerified     Boolean   @default(false)
-  emailVerifiedAt   DateTime?
-  verificationStatus AlumniVerificationStatus?
-  profileCompleted  Boolean   @default(false)
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
-  lastSeenAt        DateTime?
+  id                       String                    @id @default(uuid(7)) @db.Uuid
+  firstName                String
+  lastName                 String
+  email                    String                    @unique @db.Citext
+  passwordHash             String?
+  googleId                 String?                   @unique
+  role                     UserRole
+  emailVerified            Boolean                   @default(false)
+  emailVerifiedAt          DateTime?
+  verificationStatus       AlumniVerificationStatus?
+  verificationSubmittedAt  DateTime?
+  profileCompleted         Boolean                   @default(false)
+  createdAt                DateTime                  @default(now())
+  updatedAt                DateTime                  @updatedAt
+  lastSeenAt               DateTime?
   // Relations
-  profile           Profile?
-  socialMedia       SocialMedia?
-  experiences       Experience[]
-  bans              UserBan[] @relation("UserBans")
-  bansIssued        UserBan[] @relation("BansIssuedByAdmin")
-  refreshTokens     RefreshToken[]
-  emailOtps         EmailOtp[]
+  profile                  Profile?
+  socialMedia              SocialMedia?
+  experiences              Experience[]
+  bans                     UserBan[]                 @relation("UserBans")
+  bansIssued               UserBan[]                 @relation("BansIssuedByAdmin")
+  bansRevoked              UserBan[]                 @relation("BansRevokedByAdmin")
+  verificationEvents       AlumniVerificationEvent[] @relation("VerificationSubject")
+  verificationActions      AlumniVerificationEvent[] @relation("VerificationActor")
+  refreshTokens            RefreshToken[]
+  emailOtps                EmailOtp[]
   conversationParticipants ConversationParticipant[]
-  sentMessages      Message[] @relation("MessageSender")
+  sentMessages             Message[]                 @relation("MessageSender")
+
   @@index([firstName])
   @@index([lastName])
+  @@index([role, verificationStatus, verificationSubmittedAt])
 }
 
 model Conversation {
-  id              String                    @id @default(uuid(7)) @db.Uuid
-  type            ConversationType
-  name            String?
-  directPairKey   String?                   @unique
-  lastMessageAt   DateTime                  @default(now())
-  createdAt       DateTime                  @default(now())
-  updatedAt       DateTime                  @updatedAt
-  participants    ConversationParticipant[]
-  messages        Message[]
+  id            String                    @id @default(uuid(7)) @db.Uuid
+  type          ConversationType
+  name          String?
+  directPairKey String?                   @unique
+  lastMessageAt DateTime                  @default(now())
+  createdAt     DateTime                  @default(now())
+  updatedAt     DateTime                  @updatedAt
+  participants  ConversationParticipant[]
+  messages      Message[]
 
   @@index([lastMessageAt, id])
 }
 
 model ConversationParticipant {
-  conversationId  String                    @db.Uuid
-  userId          String                    @db.Uuid
-  role            ConversationParticipantRole @default(MEMBER)
-  joinedAt        DateTime                  @default(now())
-  leftAt          DateTime?
-  conversation    Conversation              @relation(fields: [conversationId], references: [id], onDelete: Cascade)
-  user            User                      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  conversationId String                      @db.Uuid
+  userId         String                      @db.Uuid
+  role           ConversationParticipantRole @default(MEMBER)
+  joinedAt       DateTime                    @default(now())
+  leftAt         DateTime?
+  conversation   Conversation                @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  user           User                        @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([conversationId, userId])
   @@index([userId, leftAt, joinedAt])
 }
 
 model Message {
-  id              String                    @id @default(uuid(7)) @db.Uuid
-  conversationId  String                    @db.Uuid
-  senderId        String                    @db.Uuid
+  id              String       @id @default(uuid(7)) @db.Uuid
+  conversationId  String       @db.Uuid
+  senderId        String       @db.Uuid
   clientMessageId String
   text            String
-  createdAt       DateTime                  @default(now())
-  conversation    Conversation              @relation(fields: [conversationId], references: [id], onDelete: Cascade)
-  sender          User                      @relation("MessageSender", fields: [senderId], references: [id], onDelete: Restrict)
+  createdAt       DateTime     @default(now())
+  conversation    Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  sender          User         @relation("MessageSender", fields: [senderId], references: [id], onDelete: Restrict)
 
   @@unique([conversationId, senderId, clientMessageId])
   @@index([conversationId, createdAt, id])
 }
 
 model RefreshToken {
-  id          String    @id @default(uuid(7)) @db.Uuid
-  userId      String    @db.Uuid
-  tokenHash   String    @unique
-  deviceId    String    @default("legacy")
-  deviceName  String?
-  lastUsedAt  DateTime  @default(now())
-  expiresAt   DateTime
-  revokedAt   DateTime?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id         String    @id @default(uuid(7)) @db.Uuid
+  userId     String    @db.Uuid
+  tokenHash  String    @unique
+  deviceId   String    @default("legacy")
+  deviceName String?
+  lastUsedAt DateTime  @default(now())
+  expiresAt  DateTime
+  revokedAt  DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([userId, deviceId])
@@ -147,71 +169,100 @@ model RefreshToken {
 }
 
 model EmailOtp {
-  id          String    @id @default(uuid(7)) @db.Uuid
-  userId      String    @db.Uuid
-  otpHash     String
-  expiresAt   DateTime
-  consumedAt  DateTime?
-  createdAt   DateTime  @default(now())
-  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id         String    @id @default(uuid(7)) @db.Uuid
+  userId     String    @db.Uuid
+  otpHash    String
+  expiresAt  DateTime
+  consumedAt DateTime?
+  createdAt  DateTime  @default(now())
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, consumedAt, expiresAt])
 }
 
 model Profile {
-  userId            String    @id @db.Uuid
-  batch             Int
-  branch            Branch
-  campus            Campus
-  city              String?
-  country           String?
-  latitude          Float?
-  longitude         Float?
-  location          Unsupported("geography(Point, 4326)")?
-  currentCompany    String?
-  currentRole       String?
-  profilePicture    String?
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
-  user              User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String                                 @id @db.Uuid
+  rollNumber     String?
+  batch          Int
+  branch         Branch
+  campus         Campus
+  phoneNumber    String?
+  alternateEmail String?                                @db.Citext
+  city           String?
+  country        String?
+  latitude       Float?
+  longitude      Float?
+  location       Unsupported("geography(Point, 4326)")?
+  currentCompany String?
+  currentRole    String?
+  profilePicture String?
+  createdAt      DateTime                               @default(now())
+  updatedAt      DateTime                               @updatedAt
+  user           User                                   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([campus, batch])
+  @@index([rollNumber])
   @@index([currentCompany])
 }
 
+model AlumniVerificationEvent {
+  id                   String                        @id @default(uuid(7)) @db.Uuid
+  userId               String                        @db.Uuid
+  actorId              String?                       @db.Uuid
+  type                 AlumniVerificationEventType
+  previousStatus       AlumniVerificationStatus?
+  newStatus            AlumniVerificationStatus
+  reason               String?
+  notificationState    VerificationNotificationState @default(NOT_REQUIRED)
+  notificationError    String?
+  notificationQueuedAt DateTime?
+  notificationSentAt   DateTime?
+  createdAt            DateTime                      @default(now())
+  user                 User                          @relation("VerificationSubject", fields: [userId], references: [id], onDelete: Cascade)
+  actor                User?                         @relation("VerificationActor", fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([userId, createdAt])
+  @@index([notificationState, type, createdAt])
+  @@index([actorId])
+}
+
 model SocialMedia {
-  userId            String @id @db.Uuid
-  linkedin          String?
-  github            String?
-  twitter           String?
-  website           String?
-  user              User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   String  @id @db.Uuid
+  linkedin String?
+  github   String?
+  twitter  String?
+  website  String?
+  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Experience {
-  id                String    @id @default(uuid(7)) @db.Uuid
-  userId            String    @db.Uuid
-  company           String
-  role              String
-  startDate         DateTime?
-  endDate           DateTime?
-  isCurrent         Boolean   @default(false)
-  createdAt         DateTime  @default(now())
-  user              User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id        String    @id @default(uuid(7)) @db.Uuid
+  userId    String    @db.Uuid
+  company   String
+  role      String
+  startDate DateTime?
+  endDate   DateTime?
+  isCurrent Boolean   @default(false)
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
 }
 
 model UserBan {
-  id                String    @id @default(uuid(7)) @db.Uuid
-  userId            String    @db.Uuid
-  reason            String?
-  startsAt          DateTime  @default(now())
-  expiresAt         DateTime?
-  revokedAt         DateTime?
-  bannedById        String?   @db.Uuid
-  user              User @relation("UserBans", fields: [userId], references: [id], onDelete: Cascade)
-  bannedBy          User? @relation("BansIssuedByAdmin", fields: [bannedById], references: [id], onDelete: SetNull)
+  id          String    @id @default(uuid(7)) @db.Uuid
+  userId      String    @db.Uuid
+  reason      String
+  startsAt    DateTime  @default(now())
+  expiresAt   DateTime?
+  revokedAt   DateTime?
+  revokedById String?   @db.Uuid
+  bannedById  String?   @db.Uuid
+  user        User      @relation("UserBans", fields: [userId], references: [id], onDelete: Cascade)
+  bannedBy    User?     @relation("BansIssuedByAdmin", fields: [bannedById], references: [id], onDelete: SetNull)
+  revokedBy   User?     @relation("BansRevokedByAdmin", fields: [revokedById], references: [id], onDelete: SetNull)
+
   @@index([userId, expiresAt, revokedAt])
   @@index([bannedById])
+  @@index([revokedById])
 }

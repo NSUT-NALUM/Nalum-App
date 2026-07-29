@@ -64,6 +64,15 @@ export const userDetailsSchema = z.object({
 	emailVerified: z.boolean(),
 	emailVerifiedAt: z.date().nullable(),
 	verificationStatus: z.enum(["PENDING", "VERIFIED", "REJECTED"]).nullable(),
+	verificationSubmittedAt: z.date().nullable(),
+	latestReviewReason: z.string().nullable(),
+	activeBan: z
+		.object({
+			reason: z.string(),
+			expiresAt: z.date().nullable(),
+			startsAt: z.date(),
+		})
+		.nullable(),
 	profileCompleted: z.boolean(),
 	createdAt: z.date(),
 	updatedAt: z.date(),

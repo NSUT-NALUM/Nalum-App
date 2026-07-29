@@ -13,6 +13,7 @@
  */
 import type { FastifyReply, FastifyRequest } from "fastify";
 import { env } from "../../config/env.config";
+import { getCurrentUser } from "../../middlewares/auth.middleware";
 import {
 	ACCESS_TOKEN_EXPIRY,
 	DEVICE_ID_COOKIE_NAME,
@@ -61,7 +62,12 @@ export class AuthController {
 			request.body,
 			this.getDevice(request),
 		);
-		return this.sendAuthSession(request, reply, session, "Logged in successfully");
+		return this.sendAuthSession(
+			request,
+			reply,
+			session,
+			"Logged in successfully",
+		);
 	};
 
 	refresh = async (request: FastifyRequest, reply: FastifyReply) => {
@@ -80,17 +86,13 @@ export class AuthController {
 	};
 
 	listSessions = async (request: FastifyRequest, reply: FastifyReply) =>
-		reply.success(await this.authService.listSessions(request.currentUser!.id));
-
-	revokeSession = async (
-		request: FastifyRequest,
-		reply: FastifyReply,
-	) => {
-		const { sessionId } = request.params as SessionParams;
-		await this.authService.revokeSession(
-			request.currentUser!.id,
-			sessionId,
+		reply.success(
+			await this.authService.listSessions(getCurrentUser(request).id),
 		);
+
+	revokeSession = async (request: FastifyRequest, reply: FastifyReply) => {
+		const { sessionId } = request.params as SessionParams;
+		await this.authService.revokeSession(getCurrentUser(request).id, sessionId);
 		return reply.success(null, "Session revoked");
 	};
 
@@ -98,13 +100,13 @@ export class AuthController {
 		request: FastifyRequest,
 		reply: FastifyReply,
 	) => {
-		await this.authService.sendEmailVerificationOtp(request.currentUser!);
+		await this.authService.sendEmailVerificationOtp(getCurrentUser(request));
 		return reply.success(null, "Email verification OTP sent");
 	};
 
 	verifyEmailOtp = async (request: FastifyRequest, reply: FastifyReply) => {
 		const body = request.body as VerifyEmailOtpBody;
-		await this.authService.verifyEmailOtp(request.currentUser!, body.otp);
+		await this.authService.verifyEmailOtp(getCurrentUser(request), body.otp);
 		return reply.success(null, "Email verified successfully");
 	};
 
@@ -130,12 +132,13 @@ export class AuthController {
 
 		const profile = (await response.json()) as GoogleUserInfo;
 		const device = this.getDevice(request);
-		const session = await this.authService.loginWithGoogle(
-			profile,
-			device,
-		);
+		const session = await this.authService.loginWithGoogle(profile, device);
 		this.setDeviceCookie(reply, device.id);
-		this.setRefreshCookie(reply, session.refreshToken, session.refreshTokenExpiresAt);
+		this.setRefreshCookie(
+			reply,
+			session.refreshToken,
+			session.refreshTokenExpiresAt,
+		);
 		return reply.redirect(
 			new URL("/auth/callback", env.WEB_APP_URL).toString(),
 			302,

@@ -5,6 +5,7 @@ import type {
 	PrismaClient,
 	Profile,
 	SocialMedia,
+	UserRole,
 } from "../../database/prisma/generated/client";
 
 type ProfileUpdateData = Partial<
@@ -24,22 +25,45 @@ export class ProfileRepository {
 
 	async createProfile(
 		userId: string,
-		data: { batch: number; branch: Branch; campus: Campus },
+		data: {
+			batch: number;
+			branch: Branch;
+			campus: Campus;
+			rollNumber: string | null;
+		},
+		role: UserRole,
 	): Promise<Profile> {
 		return this.prisma.$transaction(async (tx) => {
+			const submittedAt = new Date();
 			const profile = await tx.profile.create({
 				data: {
 					userId,
 					batch: data.batch,
 					branch: data.branch,
 					campus: data.campus,
+					rollNumber: data.rollNumber,
 				},
 			});
 
 			await tx.user.update({
 				where: { id: userId },
-				data: { profileCompleted: true },
+				data: {
+					profileCompleted: true,
+					verificationStatus: role === "ALUMNI" ? "PENDING" : null,
+					verificationSubmittedAt: role === "ALUMNI" ? submittedAt : null,
+				},
 			});
+			if (role === "ALUMNI") {
+				await tx.alumniVerificationEvent.create({
+					data: {
+						userId,
+						type: "SUBMITTED",
+						newStatus: "PENDING",
+						notificationState: "NOT_REQUIRED",
+						createdAt: submittedAt,
+					},
+				});
+			}
 
 			return profile;
 		});
@@ -52,6 +76,7 @@ export class ProfileRepository {
 			socialMedia?: SocialMediaUpdateData;
 			experiences?: ExperienceUpdateData[];
 		},
+		hasSensitiveChange = false,
 	): Promise<Profile> {
 		return this.prisma.$transaction(async (tx) => {
 			const profile = await tx.profile.update({
@@ -83,6 +108,32 @@ export class ProfileRepository {
 						})),
 					});
 				}
+			}
+
+			if (hasSensitiveChange) {
+				const changedAt = new Date();
+				const user = await tx.user.findUniqueOrThrow({
+					where: { id: userId },
+					select: { verificationStatus: true },
+				});
+				await tx.user.update({
+					where: { id: userId },
+					data: {
+						verificationStatus: "PENDING",
+						verificationSubmittedAt: changedAt,
+					},
+				});
+				await tx.alumniVerificationEvent.create({
+					data: {
+						userId,
+						type: "AUTO_RESUBMITTED",
+						previousStatus: user.verificationStatus,
+						newStatus: "PENDING",
+						reason: "Verification details were changed by the applicant",
+						notificationState: "NOT_REQUIRED",
+						createdAt: changedAt,
+					},
+				});
 			}
 
 			return profile;

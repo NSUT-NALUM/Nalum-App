@@ -1,8 +1,15 @@
+import { createPrismaClient } from "@nalum/database/client";
 import type { Job } from "bullmq";
 import nodemailer from "nodemailer";
 import { env } from "../config/env.config";
 import type { EmailJobPayload } from "../queues/email.queue";
+import {
+	renderAlumniApprovedEmail,
+	renderAlumniRejectedEmail,
+} from "../templates/alumni-review.template";
 import { renderOtpEmail } from "../templates/otp.template";
+
+const prisma = createPrismaClient(env.DATABASE_URL);
 
 export class MailSender {
 	private _transporter: nodemailer.Transporter | null = null;
@@ -83,18 +90,71 @@ export const mailSender = new MailSender();
 export async function emailProcessor(
 	job: Job<EmailJobPayload["payload"], void, string>,
 ) {
-	const { to, firstName, otp } = job.data;
-
-	if (job.name !== "email-verification-otp") {
-		throw new Error(`Unsupported email template: ${job.name}`);
+	if (job.name === "email-verification-otp") {
+		const { to, firstName, otp } = job.data as Extract<
+			EmailJobPayload,
+			{ template: "email-verification-otp" }
+		>["payload"];
+		const rendered = renderOtpEmail({ firstName, otp });
+		await mailSender.sendMail({
+			to,
+			subject: rendered.subject,
+			text: rendered.text,
+			html: rendered.html,
+		});
+		return;
 	}
 
-	const rendered = renderOtpEmail({ firstName, otp });
+	if (job.name === "alumni-approved" || job.name === "alumni-rejected") {
+		const payload = job.data as Extract<
+			EmailJobPayload,
+			{ template: "alumni-approved" | "alumni-rejected" }
+		>["payload"];
+		const rendered =
+			job.name === "alumni-approved"
+				? renderAlumniApprovedEmail(
+						payload as Extract<
+							EmailJobPayload,
+							{ template: "alumni-approved" }
+						>["payload"],
+					)
+				: renderAlumniRejectedEmail(
+						payload as Extract<
+							EmailJobPayload,
+							{ template: "alumni-rejected" }
+						>["payload"],
+					);
 
-	await mailSender.sendMail({
-		to,
-		subject: rendered.subject,
-		text: rendered.text,
-		html: rendered.html,
-	});
+		try {
+			await mailSender.sendMail({
+				to: payload.to,
+				subject: rendered.subject,
+				text: rendered.text,
+				html: rendered.html,
+			});
+			await prisma.alumniVerificationEvent.update({
+				where: { id: payload.eventId },
+				data: {
+					notificationState: "SENT",
+					notificationSentAt: new Date(),
+					notificationError: null,
+				},
+			});
+		} catch (error) {
+			await prisma.alumniVerificationEvent.update({
+				where: { id: payload.eventId },
+				data: {
+					notificationState: "FAILED",
+					notificationError:
+						error instanceof Error
+							? error.message.slice(0, 1000)
+							: "Unknown error",
+				},
+			});
+			throw error;
+		}
+		return;
+	}
+
+	throw new Error(`Unsupported email template: ${job.name}`);
 }

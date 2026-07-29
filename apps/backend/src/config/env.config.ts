@@ -5,7 +5,6 @@
 
 import dotenv from "dotenv";
 import z from "zod/v4";
-import { EMAIL_QUEUE_NAME } from "../queues/email.queue";
 
 dotenv.config();
 
@@ -28,11 +27,11 @@ const envSchema = z.object({
 	BREVO_SMTP_HOST: z.string().optional(),
 	BREVO_SMTP_PORT: z.coerce.number().optional(),
 	BREVO_SMTP_USER: z.string().optional(),
-  BREVO_SMTP_PASS: z.string().optional(),
+	BREVO_SMTP_PASS: z.string().optional(),
 	BREVO_FROM_EMAIL: z.email().optional(),
-  BREVO_FROM_NAME: z.string().default("NSUT ALUMNI ASSOCIATION"),
-  EMAIL_QUEUE_NAME: z.string(),
-  S3_ENDPOINT: z.url().default("http://localhost:9000"),
+	BREVO_FROM_NAME: z.string().default("NSUT ALUMNI ASSOCIATION"),
+	EMAIL_QUEUE_NAME: z.string(),
+	S3_ENDPOINT: z.url().default("http://localhost:9000"),
 	S3_REGION: z.string().default("us-east-1"),
 	S3_ACCESS_KEY_ID: z.string().optional(),
 	S3_SECRET_ACCESS_KEY: z.string().optional(),

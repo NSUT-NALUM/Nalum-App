@@ -13,14 +13,35 @@ export function getRedisConnection(): IORedis {
 	return redisConnection;
 }
 
-export type EmailJobPayload = {
-	template: "email-verification-otp";
-	payload: {
-		to: string;
-		firstName: string;
-		otp: string;
-	};
-};
+export type EmailJobPayload =
+	| {
+			template: "email-verification-otp";
+			payload: {
+				to: string;
+				firstName: string;
+				otp: string;
+			};
+	  }
+	| {
+			template: "alumni-approved";
+			payload: {
+				eventId: string;
+				to: string;
+				firstName: string;
+				note: string | null;
+				signInUrl: string;
+			};
+	  }
+	| {
+			template: "alumni-rejected";
+			payload: {
+				eventId: string;
+				to: string;
+				firstName: string;
+				reason: string;
+				signInUrl: string;
+			};
+	  };
 
 export const EMAIL_QUEUE_NAME = env.EMAIL_QUEUE_NAME;
 
@@ -45,9 +66,19 @@ export function getEmailQueue(): Queue {
 export async function enqueueEmail<T extends EmailJobPayload["template"]>(
 	template: T,
 	payload: Extract<EmailJobPayload, { template: T }>["payload"],
+	jobId?: string,
 ): Promise<void> {
 	const queue = getEmailQueue();
-	await queue.add(template, payload);
+	if (jobId) {
+		const existingJob = await queue.getJob(jobId);
+		if (existingJob) {
+			if ((await existingJob.getState()) === "failed") {
+				await existingJob.retry();
+			}
+			return;
+		}
+	}
+	await queue.add(template, payload, jobId ? { jobId } : undefined);
 }
 
 export async function closeEmailQueue(): Promise<void> {

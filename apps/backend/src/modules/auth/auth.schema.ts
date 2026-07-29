@@ -9,7 +9,7 @@ import { z } from "zod/v4";
 const registerSchemaRequest = z
 	.object({
 		role: z
-			.enum(["STUDENT", "ALUMNI", "ADMIN", "PROFESSOR"])
+			.enum(["STUDENT", "ALUMNI"])
 			.describe("Account role to create.")
 			.meta({ examples: ["STUDENT"] }),
 		firstName: z
@@ -64,6 +64,14 @@ const userResponseSchema = z
 			.enum(["STUDENT", "ALUMNI", "ADMIN", "PROFESSOR"])
 			.describe("User role."),
 		emailVerified: z.boolean().describe("Whether the email has been verified."),
+		verificationStatus: z
+			.enum(["PENDING", "VERIFIED", "REJECTED"])
+			.nullable()
+			.describe("Alumni application status."),
+		verificationSubmittedAt: z
+			.date()
+			.nullable()
+			.describe("Most recent alumni application submission time."),
 		profileCompleted: z.boolean().describe("Whether the profile is complete."),
 		createdAt: z.date().describe("Account creation time."),
 		updatedAt: z.date().describe("Last update time."),

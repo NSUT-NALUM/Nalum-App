@@ -1,7 +1,8 @@
 import Redis from "ioredis";
-import { ConnectionRegistry } from "./connection.registry";
+import type { ConnectionRegistry } from "./connection.registry";
 
 const CHANNEL = "chat:fanout";
+const ACCESS_REVOCATION_CHANNEL = "nalum:access-revoked";
 
 type FanoutEvent = {
 	userId: string;
@@ -16,8 +17,13 @@ export class RedisFanout {
 		this.publisher = new Redis(redisUrl, { lazyConnect: true });
 		this.subscriber = new Redis(redisUrl, { lazyConnect: true });
 		this.subscriber.on("message", (channel, rawEvent) => {
-			if (channel !== CHANNEL) return;
 			try {
+				if (channel === ACCESS_REVOCATION_CHANNEL) {
+					const event = JSON.parse(rawEvent) as { userId?: string };
+					if (event.userId) registry.disconnect(event.userId);
+					return;
+				}
+				if (channel !== CHANNEL) return;
 				const event = JSON.parse(rawEvent) as FanoutEvent;
 				registry.deliver(event.userId, event.message);
 			} catch {
@@ -28,7 +34,7 @@ export class RedisFanout {
 
 	async connect() {
 		await Promise.all([this.publisher.connect(), this.subscriber.connect()]);
-		await this.subscriber.subscribe(CHANNEL);
+		await this.subscriber.subscribe(CHANNEL, ACCESS_REVOCATION_CHANNEL);
 	}
 
 	publish(event: FanoutEvent) {

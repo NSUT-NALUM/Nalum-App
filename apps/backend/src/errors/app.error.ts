@@ -7,6 +7,7 @@ export interface AppErrorDetails {
 	code: string;
 	message: string;
 	statusCode: number;
+	details?: unknown;
 }
 
 /**

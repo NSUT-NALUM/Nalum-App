@@ -1,4 +1,5 @@
 import type {
+	AlumniVerificationEventType,
 	Prisma,
 	PrismaClient,
 } from "../../database/prisma/generated/client";
@@ -12,7 +13,24 @@ const userDetailsInclude = {
 			startDate: "desc",
 		},
 	},
-} as const;
+	verificationEvents: {
+		where: {
+			type: {
+				in: ["REJECTED", "REOPENED"] as AlumniVerificationEventType[],
+			},
+		},
+		orderBy: { createdAt: "desc" },
+		take: 1,
+	},
+	bans: {
+		where: {
+			revokedAt: null,
+			OR: [{ expiresAt: null }, { expiresAt: { gt: new Date() } }],
+		},
+		orderBy: { startsAt: "desc" },
+		take: 1,
+	},
+} satisfies Prisma.UserInclude;
 
 export class UserRepository {
 	constructor(private readonly prisma: PrismaClient) {}
@@ -42,7 +60,23 @@ export class UserRepository {
 	}
 
 	private buildSearchWhere(filters: SearchUsersFilters): Prisma.UserWhereInput {
-		const and: Prisma.UserWhereInput[] = [];
+		const now = new Date();
+		const and: Prisma.UserWhereInput[] = [
+			{
+				OR: [
+					{ role: { not: "ALUMNI" } },
+					{ role: "ALUMNI", verificationStatus: "VERIFIED" },
+				],
+			},
+			{
+				bans: {
+					none: {
+						revokedAt: null,
+						OR: [{ expiresAt: null }, { expiresAt: { gt: now } }],
+					},
+				},
+			},
+		];
 
 		if (filters.q) {
 			and.push({
@@ -91,6 +125,6 @@ export class UserRepository {
 			});
 		}
 
-		return and.length ? { AND: and } : {};
+		return { AND: and };
 	}
 }

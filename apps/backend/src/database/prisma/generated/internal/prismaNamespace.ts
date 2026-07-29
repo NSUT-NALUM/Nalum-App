@@ -391,6 +391,7 @@ export const ModelName = {
   RefreshToken: 'RefreshToken',
   EmailOtp: 'EmailOtp',
   Profile: 'Profile',
+  AlumniVerificationEvent: 'AlumniVerificationEvent',
   SocialMedia: 'SocialMedia',
   Experience: 'Experience',
   UserBan: 'UserBan'
@@ -409,7 +410,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "conversation" | "conversationParticipant" | "message" | "refreshToken" | "emailOtp" | "profile" | "socialMedia" | "experience" | "userBan"
+    modelProps: "user" | "conversation" | "conversationParticipant" | "message" | "refreshToken" | "emailOtp" | "profile" | "alumniVerificationEvent" | "socialMedia" | "experience" | "userBan"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -931,6 +932,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    AlumniVerificationEvent: {
+      payload: Prisma.$AlumniVerificationEventPayload<ExtArgs>
+      fields: Prisma.AlumniVerificationEventFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AlumniVerificationEventFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AlumniVerificationEventPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AlumniVerificationEventFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AlumniVerificationEventPayload>
+        }
+        findFirst: {
+          args: Prisma.AlumniVerificationEventFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AlumniVerificationEventPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AlumniVerificationEventFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AlumniVerificationEventPayload>
+        }
+        findMany: {
+          args: Prisma.AlumniVerificationEventFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AlumniVerificationEventPayload>[]
+        }
+        create: {
+          args: Prisma.AlumniVerificationEventCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AlumniVerificationEventPayload>
+        }
+        createMany: {
+          args: Prisma.AlumniVerificationEventCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AlumniVerificationEventCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AlumniVerificationEventPayload>[]
+        }
+        delete: {
+          args: Prisma.AlumniVerificationEventDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AlumniVerificationEventPayload>
+        }
+        update: {
+          args: Prisma.AlumniVerificationEventUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AlumniVerificationEventPayload>
+        }
+        deleteMany: {
+          args: Prisma.AlumniVerificationEventDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AlumniVerificationEventUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AlumniVerificationEventUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AlumniVerificationEventPayload>[]
+        }
+        upsert: {
+          args: Prisma.AlumniVerificationEventUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AlumniVerificationEventPayload>
+        }
+        aggregate: {
+          args: Prisma.AlumniVerificationEventAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAlumniVerificationEvent>
+        }
+        groupBy: {
+          args: Prisma.AlumniVerificationEventGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AlumniVerificationEventGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AlumniVerificationEventCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AlumniVerificationEventCountAggregateOutputType> | number
+        }
+      }
+    }
     SocialMedia: {
       payload: Prisma.$SocialMediaPayload<ExtArgs>
       fields: Prisma.SocialMediaFieldRefs
@@ -1203,6 +1278,7 @@ export const UserScalarFieldEnum = {
   emailVerified: 'emailVerified',
   emailVerifiedAt: 'emailVerifiedAt',
   verificationStatus: 'verificationStatus',
+  verificationSubmittedAt: 'verificationSubmittedAt',
   profileCompleted: 'profileCompleted',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
@@ -1278,9 +1354,12 @@ export type EmailOtpScalarFieldEnum = (typeof EmailOtpScalarFieldEnum)[keyof typ
 
 export const ProfileScalarFieldEnum = {
   userId: 'userId',
+  rollNumber: 'rollNumber',
   batch: 'batch',
   branch: 'branch',
   campus: 'campus',
+  phoneNumber: 'phoneNumber',
+  alternateEmail: 'alternateEmail',
   city: 'city',
   country: 'country',
   latitude: 'latitude',
@@ -1293,6 +1372,24 @@ export const ProfileScalarFieldEnum = {
 } as const
 
 export type ProfileScalarFieldEnum = (typeof ProfileScalarFieldEnum)[keyof typeof ProfileScalarFieldEnum]
+
+
+export const AlumniVerificationEventScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  actorId: 'actorId',
+  type: 'type',
+  previousStatus: 'previousStatus',
+  newStatus: 'newStatus',
+  reason: 'reason',
+  notificationState: 'notificationState',
+  notificationError: 'notificationError',
+  notificationQueuedAt: 'notificationQueuedAt',
+  notificationSentAt: 'notificationSentAt',
+  createdAt: 'createdAt'
+} as const
+
+export type AlumniVerificationEventScalarFieldEnum = (typeof AlumniVerificationEventScalarFieldEnum)[keyof typeof AlumniVerificationEventScalarFieldEnum]
 
 
 export const SocialMediaScalarFieldEnum = {
@@ -1327,6 +1424,7 @@ export const UserBanScalarFieldEnum = {
   startsAt: 'startsAt',
   expiresAt: 'expiresAt',
   revokedAt: 'revokedAt',
+  revokedById: 'revokedById',
   bannedById: 'bannedById'
 } as const
 
@@ -1509,6 +1607,34 @@ export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, '
 export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
 
+
+/**
+ * Reference to a field of type 'AlumniVerificationEventType'
+ */
+export type EnumAlumniVerificationEventTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AlumniVerificationEventType'>
+    
+
+
+/**
+ * Reference to a field of type 'AlumniVerificationEventType[]'
+ */
+export type ListEnumAlumniVerificationEventTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AlumniVerificationEventType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'VerificationNotificationState'
+ */
+export type EnumVerificationNotificationStateFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VerificationNotificationState'>
+    
+
+
+/**
+ * Reference to a field of type 'VerificationNotificationState[]'
+ */
+export type ListEnumVerificationNotificationStateFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VerificationNotificationState[]'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -1626,6 +1752,7 @@ export type GlobalOmitConfig = {
   refreshToken?: Prisma.RefreshTokenOmit
   emailOtp?: Prisma.EmailOtpOmit
   profile?: Prisma.ProfileOmit
+  alumniVerificationEvent?: Prisma.AlumniVerificationEventOmit
   socialMedia?: Prisma.SocialMediaOmit
   experience?: Prisma.ExperienceOmit
   userBan?: Prisma.UserBanOmit

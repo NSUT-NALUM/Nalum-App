@@ -35,10 +35,20 @@ export class UserService {
 		const {
 			passwordHash: _passwordHash,
 			googleId: _googleId,
+			verificationEvents,
+			bans,
 			...publicUser
 		} = user;
 		return {
 			...publicUser,
+			latestReviewReason: verificationEvents[0]?.reason ?? null,
+			activeBan: bans[0]
+				? {
+						reason: bans[0].reason,
+						expiresAt: bans[0].expiresAt,
+						startsAt: bans[0].startsAt,
+					}
+				: null,
 			profile: publicUser.profile
 				? {
 						...publicUser.profile,

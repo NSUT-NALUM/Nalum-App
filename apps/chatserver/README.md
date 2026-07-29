@@ -25,7 +25,10 @@ const socket = new WebSocket(WS_URL, ["nalum.chat.v1", accessToken]);
 ```
 
 The service only accepts JWTs whose `tokenType` is `access`. It rejects expired
-tokens, refresh tokens, banned users, and deleted users.
+tokens, refresh tokens, banned users, deleted users, and alumni who are not
+verified. The same database-backed check runs again for every WebSocket event.
+Ban and alumni-access changes are also published through Redis so existing
+connections close immediately.
 
 ## Data shapes
 
@@ -315,6 +318,7 @@ Important error codes include:
 - `CHAT_NOT_PARTICIPANT`, `CHAT_RECIPIENT_NOT_FOUND`, `CHAT_MEMBER_NOT_FOUND`
 - `CHAT_MEMBER_NOT_ACTIVE`, `CHAT_GROUP_FORBIDDEN`, `CHAT_NOT_GROUP`
 - `CHAT_SELF_DIRECT`, `CHAT_OWNER_REMOVAL`, `CHAT_OWNER_ROLE`
+- `ALUMNI_VERIFICATION_PENDING`, `ALUMNI_VERIFICATION_REJECTED`, `USER_BANNED`
 
 ## Current feature boundary
 

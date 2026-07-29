@@ -18,6 +18,7 @@ export const BranchEnum = z.enum([
 ]);
 
 export const createProfileSchemaRequest = z.object({
+	rollNumber: z.string().trim().min(1).max(50).optional(),
 	batch: z
 		.number()
 		.int()
@@ -30,6 +31,7 @@ export const createProfileSchemaRequest = z.object({
 
 // Since PUT uses multipart form data, coerce batch to number
 export const editProfileSchemaRequest = z.object({
+	rollNumber: z.string().trim().min(1).max(50).optional(),
 	batch: z
 		.preprocess(
 			(val) => (typeof val === "string" ? parseInt(val, 10) : val),
@@ -39,6 +41,15 @@ export const editProfileSchemaRequest = z.object({
 		.describe("Updated batch year."),
 	branch: BranchEnum.optional().describe("Updated academic branch."),
 	campus: CampusEnum.optional().describe("Updated campus location."),
+	phoneNumber: z
+		.string()
+		.trim()
+		.regex(
+			/^\+[1-9]\d{6,14}$/,
+			"Use an international number such as +919876543210",
+		)
+		.optional(),
+	alternateEmail: z.email().optional(),
 	city: z.string().optional().describe("Current city."),
 	country: z.string().optional().describe("Current country."),
 	currentCompany: z.string().optional().describe("Current company name."),
@@ -62,9 +73,12 @@ export const experienceInputSchema = z.object({
 
 export const profileDataSchema = z.object({
 	userId: z.uuid().describe("Unique user ID."),
+	rollNumber: z.string().nullable().describe("Normalized alumni roll number."),
 	batch: z.number().int().describe("Batch year."),
 	branch: BranchEnum.describe("Branch name."),
 	campus: CampusEnum.describe("Campus location."),
+	phoneNumber: z.string().nullable(),
+	alternateEmail: z.email().nullable(),
 	city: z.string().nullable().describe("Current city."),
 	country: z.string().nullable().describe("Current country."),
 	currentCompany: z.string().nullable().describe("Current company name."),
@@ -91,8 +105,14 @@ export const editProfileMultipartSchemaRequest = z.object({
 		.optional()
 		.describe("Profile picture file to upload (JPEG/PNG/WebP/GIF)."),
 	batch: z.string().optional().describe("Batch year."),
+	rollNumber: z.string().optional().describe("Alumni roll number."),
 	branch: BranchEnum.optional().describe("Branch name."),
 	campus: CampusEnum.optional().describe("Campus location."),
+	phoneNumber: z
+		.string()
+		.optional()
+		.describe("International phone or WhatsApp number."),
+	alternateEmail: z.string().optional().describe("Alternate contact email."),
 	city: z.string().optional().describe("Current city."),
 	country: z.string().optional().describe("Current country."),
 	currentCompany: z.string().optional().describe("Current company name."),

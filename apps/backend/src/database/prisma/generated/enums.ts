@@ -55,6 +55,28 @@ export const AlumniVerificationStatus = {
 export type AlumniVerificationStatus = (typeof AlumniVerificationStatus)[keyof typeof AlumniVerificationStatus]
 
 
+export const AlumniVerificationEventType = {
+  SUBMITTED: 'SUBMITTED',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  REOPENED: 'REOPENED',
+  AUTO_RESUBMITTED: 'AUTO_RESUBMITTED'
+} as const
+
+export type AlumniVerificationEventType = (typeof AlumniVerificationEventType)[keyof typeof AlumniVerificationEventType]
+
+
+export const VerificationNotificationState = {
+  NOT_REQUIRED: 'NOT_REQUIRED',
+  PENDING: 'PENDING',
+  QUEUED: 'QUEUED',
+  SENT: 'SENT',
+  FAILED: 'FAILED'
+} as const
+
+export type VerificationNotificationState = (typeof VerificationNotificationState)[keyof typeof VerificationNotificationState]
+
+
 export const ConversationType = {
   DIRECT: 'DIRECT',
   GROUP: 'GROUP'

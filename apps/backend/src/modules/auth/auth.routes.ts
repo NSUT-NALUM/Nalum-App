@@ -10,7 +10,7 @@
 import type { FastifyPluginAsync } from "fastify";
 import type { ZodTypeProvider } from "fastify-type-provider-zod";
 import { z } from "zod/v4";
-import { protect } from "../../middlewares/auth.middleware";
+import { authenticateUser } from "../../middlewares/auth.middleware";
 import oauthPlugin from "../../plugins/oauth.plugin";
 import { EmailService } from "../email";
 import { AuthController } from "./auth.controller";
@@ -96,7 +96,7 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
 	app.get(
 		"/sessions",
 		{
-			preHandler: protect,
+			preHandler: authenticateUser,
 			schema: { tags: ["Auth"], security: [{ bearerAuth: [] }] },
 		},
 		controller.listSessions,
@@ -105,7 +105,7 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
 	app.delete(
 		"/sessions/:sessionId",
 		{
-			preHandler: protect,
+			preHandler: authenticateUser,
 			schema: {
 				tags: ["Auth"],
 				security: [{ bearerAuth: [] }],
@@ -118,7 +118,7 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
 	app.post(
 		"/email-verification/send",
 		{
-			preHandler: protect,
+			preHandler: authenticateUser,
 			schema: {
 				summary: "Send email verification OTP",
 				description:
@@ -136,7 +136,7 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
 	app.post(
 		"/email-verification/verify",
 		{
-			preHandler: protect,
+			preHandler: authenticateUser,
 			schema: {
 				summary: "Verify email OTP",
 				description:

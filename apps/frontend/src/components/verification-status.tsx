@@ -1,0 +1,128 @@
+import { router, useFocusEffect } from "expo-router";
+import { useCallback, useEffect, useState } from "react";
+import { AppState, ScrollView, Text, View } from "react-native";
+import { Button, Card, Screen } from "@/components/ui/nalum";
+import { authApi } from "@/lib/api";
+import { getAuthRoute } from "@/lib/auth-navigation";
+import { useAuthStore } from "@/stores/auth-store";
+
+export function VerificationStatus({ rejected }: { rejected: boolean }) {
+	const user = useAuthStore((state) => state.user);
+	const [refreshing, setRefreshing] = useState(false);
+
+	const refresh = useCallback(async () => {
+		setRefreshing(true);
+		try {
+			const nextUser = await authApi.refreshUser();
+			useAuthStore.getState().setUser(nextUser);
+			const nextRoute = getAuthRoute(nextUser);
+			if (
+				nextRoute !== "/verification-pending" &&
+				nextRoute !== "/verification-rejected"
+			) {
+				router.replace(nextRoute);
+			}
+		} catch {
+			// Keep the last known application state during transient network errors.
+		} finally {
+			setRefreshing(false);
+		}
+	}, []);
+
+	useFocusEffect(
+		useCallback(() => {
+			void refresh();
+			const interval = setInterval(() => void refresh(), 30_000);
+			return () => clearInterval(interval);
+		}, [refresh]),
+	);
+
+	useEffect(() => {
+		const subscription = AppState.addEventListener("change", (state) => {
+			if (state === "active") void refresh();
+		});
+		return () => subscription.remove();
+	}, [refresh]);
+
+	if (!user) return null;
+	const profile = user.profile;
+
+	const logout = async () => {
+		try {
+			await authApi.logout();
+		} finally {
+			useAuthStore.getState().setUser(null);
+			router.replace("/sign-in");
+		}
+	};
+
+	return (
+		<Screen>
+			<ScrollView
+				contentContainerStyle={{ paddingBottom: 40 }}
+				showsVerticalScrollIndicator={false}
+			>
+				<Text className="mb-2 text-3xl font-bold text-foreground">
+					{rejected ? "Application needs an update" : "Verification in review"}
+				</Text>
+				<Text className="mb-6 text-muted">
+					{rejected
+						? "Your alumni access is paused. Correct your academic details to submit a new review."
+						: "Nalum reviews alumni applications manually. You can safely return later; this page refreshes automatically."}
+				</Text>
+
+				{rejected ? (
+					<Card>
+						<Text className="mb-2 font-semibold text-foreground">
+							Reviewer reason
+						</Text>
+						<Text className="text-muted">
+							{user.latestReviewReason ?? "No reason was supplied."}
+						</Text>
+						<Text className="mt-3 text-sm text-muted">
+							If you believe this decision is a mistake, contact the Nalum
+							support team with your account email and roll number.
+						</Text>
+					</Card>
+				) : null}
+
+				<View className="mt-4">
+					<Card>
+						<Text className="mb-3 text-lg font-semibold text-foreground">
+							Submitted details
+						</Text>
+						<Text className="mb-1 text-muted">
+							Name: {user.firstName} {user.lastName}
+						</Text>
+						<Text className="mb-1 text-muted">Email: {user.email}</Text>
+						<Text className="mb-1 text-muted">
+							Roll number: {profile?.rollNumber ?? "—"}
+						</Text>
+						<Text className="mb-1 text-muted">
+							Academic: {profile?.branch ?? "—"} · {profile?.batch ?? "—"} ·{" "}
+							{profile?.campus ?? "—"}
+						</Text>
+						<Text className="text-muted">
+							Submitted:{" "}
+							{user.verificationSubmittedAt
+								? new Date(user.verificationSubmittedAt).toLocaleString()
+								: "—"}
+						</Text>
+					</Card>
+				</View>
+
+				<View className="mt-5 gap-3">
+					<Button onPress={() => router.push("/profile/edit")}>
+						Edit or correct application
+					</Button>
+					<Button variant="secondary" disabled={refreshing} onPress={refresh}>
+						{refreshing ? "Refreshing…" : "Refresh status"}
+					</Button>
+					<Button variant="ghost" onPress={logout}>
+						Log out
+					</Button>
+				</View>
+			</ScrollView>
+		</Screen>
+	);
+}

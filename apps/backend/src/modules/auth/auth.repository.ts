@@ -40,6 +40,17 @@ export default class AuthRepository {
 		});
 	}
 
+	findActiveBan(userId: string) {
+		return this.prisma.userBan.findFirst({
+			where: {
+				userId,
+				revokedAt: null,
+				OR: [{ expiresAt: null }, { expiresAt: { gt: new Date() } }],
+			},
+			orderBy: { startsAt: "desc" },
+		});
+	}
+
 	createUser(input: CreateUserInput) {
 		return this.prisma.user.create({
 			data: input,

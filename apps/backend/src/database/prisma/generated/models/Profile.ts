@@ -40,9 +40,12 @@ export type ProfileSumAggregateOutputType = {
 
 export type ProfileMinAggregateOutputType = {
   userId: string | null
+  rollNumber: string | null
   batch: number | null
   branch: $Enums.Branch | null
   campus: $Enums.Campus | null
+  phoneNumber: string | null
+  alternateEmail: string | null
   city: string | null
   country: string | null
   latitude: number | null
@@ -56,9 +59,12 @@ export type ProfileMinAggregateOutputType = {
 
 export type ProfileMaxAggregateOutputType = {
   userId: string | null
+  rollNumber: string | null
   batch: number | null
   branch: $Enums.Branch | null
   campus: $Enums.Campus | null
+  phoneNumber: string | null
+  alternateEmail: string | null
   city: string | null
   country: string | null
   latitude: number | null
@@ -72,9 +78,12 @@ export type ProfileMaxAggregateOutputType = {
 
 export type ProfileCountAggregateOutputType = {
   userId: number
+  rollNumber: number
   batch: number
   branch: number
   campus: number
+  phoneNumber: number
+  alternateEmail: number
   city: number
   country: number
   latitude: number
@@ -102,9 +111,12 @@ export type ProfileSumAggregateInputType = {
 
 export type ProfileMinAggregateInputType = {
   userId?: true
+  rollNumber?: true
   batch?: true
   branch?: true
   campus?: true
+  phoneNumber?: true
+  alternateEmail?: true
   city?: true
   country?: true
   latitude?: true
@@ -118,9 +130,12 @@ export type ProfileMinAggregateInputType = {
 
 export type ProfileMaxAggregateInputType = {
   userId?: true
+  rollNumber?: true
   batch?: true
   branch?: true
   campus?: true
+  phoneNumber?: true
+  alternateEmail?: true
   city?: true
   country?: true
   latitude?: true
@@ -134,9 +149,12 @@ export type ProfileMaxAggregateInputType = {
 
 export type ProfileCountAggregateInputType = {
   userId?: true
+  rollNumber?: true
   batch?: true
   branch?: true
   campus?: true
+  phoneNumber?: true
+  alternateEmail?: true
   city?: true
   country?: true
   latitude?: true
@@ -237,9 +255,12 @@ export type ProfileGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
 
 export type ProfileGroupByOutputType = {
   userId: string
+  rollNumber: string | null
   batch: number
   branch: $Enums.Branch
   campus: $Enums.Campus
+  phoneNumber: string | null
+  alternateEmail: string | null
   city: string | null
   country: string | null
   latitude: number | null
@@ -276,9 +297,12 @@ export type ProfileWhereInput = {
   OR?: Prisma.ProfileWhereInput[]
   NOT?: Prisma.ProfileWhereInput | Prisma.ProfileWhereInput[]
   userId?: Prisma.UuidFilter<"Profile"> | string
+  rollNumber?: Prisma.StringNullableFilter<"Profile"> | string | null
   batch?: Prisma.IntFilter<"Profile"> | number
   branch?: Prisma.EnumBranchFilter<"Profile"> | $Enums.Branch
   campus?: Prisma.EnumCampusFilter<"Profile"> | $Enums.Campus
+  phoneNumber?: Prisma.StringNullableFilter<"Profile"> | string | null
+  alternateEmail?: Prisma.StringNullableFilter<"Profile"> | string | null
   city?: Prisma.StringNullableFilter<"Profile"> | string | null
   country?: Prisma.StringNullableFilter<"Profile"> | string | null
   latitude?: Prisma.FloatNullableFilter<"Profile"> | number | null
@@ -293,9 +317,12 @@ export type ProfileWhereInput = {
 
 export type ProfileOrderByWithRelationInput = {
   userId?: Prisma.SortOrder
+  rollNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   batch?: Prisma.SortOrder
   branch?: Prisma.SortOrder
   campus?: Prisma.SortOrder
+  phoneNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  alternateEmail?: Prisma.SortOrderInput | Prisma.SortOrder
   city?: Prisma.SortOrderInput | Prisma.SortOrder
   country?: Prisma.SortOrderInput | Prisma.SortOrder
   latitude?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -313,9 +340,12 @@ export type ProfileWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.ProfileWhereInput | Prisma.ProfileWhereInput[]
   OR?: Prisma.ProfileWhereInput[]
   NOT?: Prisma.ProfileWhereInput | Prisma.ProfileWhereInput[]
+  rollNumber?: Prisma.StringNullableFilter<"Profile"> | string | null
   batch?: Prisma.IntFilter<"Profile"> | number
   branch?: Prisma.EnumBranchFilter<"Profile"> | $Enums.Branch
   campus?: Prisma.EnumCampusFilter<"Profile"> | $Enums.Campus
+  phoneNumber?: Prisma.StringNullableFilter<"Profile"> | string | null
+  alternateEmail?: Prisma.StringNullableFilter<"Profile"> | string | null
   city?: Prisma.StringNullableFilter<"Profile"> | string | null
   country?: Prisma.StringNullableFilter<"Profile"> | string | null
   latitude?: Prisma.FloatNullableFilter<"Profile"> | number | null
@@ -330,9 +360,12 @@ export type ProfileWhereUniqueInput = Prisma.AtLeast<{
 
 export type ProfileOrderByWithAggregationInput = {
   userId?: Prisma.SortOrder
+  rollNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   batch?: Prisma.SortOrder
   branch?: Prisma.SortOrder
   campus?: Prisma.SortOrder
+  phoneNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  alternateEmail?: Prisma.SortOrderInput | Prisma.SortOrder
   city?: Prisma.SortOrderInput | Prisma.SortOrder
   country?: Prisma.SortOrderInput | Prisma.SortOrder
   latitude?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -354,9 +387,12 @@ export type ProfileScalarWhereWithAggregatesInput = {
   OR?: Prisma.ProfileScalarWhereWithAggregatesInput[]
   NOT?: Prisma.ProfileScalarWhereWithAggregatesInput | Prisma.ProfileScalarWhereWithAggregatesInput[]
   userId?: Prisma.UuidWithAggregatesFilter<"Profile"> | string
+  rollNumber?: Prisma.StringNullableWithAggregatesFilter<"Profile"> | string | null
   batch?: Prisma.IntWithAggregatesFilter<"Profile"> | number
   branch?: Prisma.EnumBranchWithAggregatesFilter<"Profile"> | $Enums.Branch
   campus?: Prisma.EnumCampusWithAggregatesFilter<"Profile"> | $Enums.Campus
+  phoneNumber?: Prisma.StringNullableWithAggregatesFilter<"Profile"> | string | null
+  alternateEmail?: Prisma.StringNullableWithAggregatesFilter<"Profile"> | string | null
   city?: Prisma.StringNullableWithAggregatesFilter<"Profile"> | string | null
   country?: Prisma.StringNullableWithAggregatesFilter<"Profile"> | string | null
   latitude?: Prisma.FloatNullableWithAggregatesFilter<"Profile"> | number | null
@@ -369,9 +405,12 @@ export type ProfileScalarWhereWithAggregatesInput = {
 }
 
 export type ProfileCreateInput = {
+  rollNumber?: string | null
   batch: number
   branch: $Enums.Branch
   campus: $Enums.Campus
+  phoneNumber?: string | null
+  alternateEmail?: string | null
   city?: string | null
   country?: string | null
   latitude?: number | null
@@ -386,9 +425,12 @@ export type ProfileCreateInput = {
 
 export type ProfileUncheckedCreateInput = {
   userId: string
+  rollNumber?: string | null
   batch: number
   branch: $Enums.Branch
   campus: $Enums.Campus
+  phoneNumber?: string | null
+  alternateEmail?: string | null
   city?: string | null
   country?: string | null
   latitude?: number | null
@@ -401,9 +443,12 @@ export type ProfileUncheckedCreateInput = {
 }
 
 export type ProfileUpdateInput = {
+  rollNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   batch?: Prisma.IntFieldUpdateOperationsInput | number
   branch?: Prisma.EnumBranchFieldUpdateOperationsInput | $Enums.Branch
   campus?: Prisma.EnumCampusFieldUpdateOperationsInput | $Enums.Campus
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  alternateEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -418,9 +463,12 @@ export type ProfileUpdateInput = {
 
 export type ProfileUncheckedUpdateInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  rollNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   batch?: Prisma.IntFieldUpdateOperationsInput | number
   branch?: Prisma.EnumBranchFieldUpdateOperationsInput | $Enums.Branch
   campus?: Prisma.EnumCampusFieldUpdateOperationsInput | $Enums.Campus
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  alternateEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -434,9 +482,12 @@ export type ProfileUncheckedUpdateInput = {
 
 export type ProfileCreateManyInput = {
   userId: string
+  rollNumber?: string | null
   batch: number
   branch: $Enums.Branch
   campus: $Enums.Campus
+  phoneNumber?: string | null
+  alternateEmail?: string | null
   city?: string | null
   country?: string | null
   latitude?: number | null
@@ -449,9 +500,12 @@ export type ProfileCreateManyInput = {
 }
 
 export type ProfileUpdateManyMutationInput = {
+  rollNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   batch?: Prisma.IntFieldUpdateOperationsInput | number
   branch?: Prisma.EnumBranchFieldUpdateOperationsInput | $Enums.Branch
   campus?: Prisma.EnumCampusFieldUpdateOperationsInput | $Enums.Campus
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  alternateEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -465,9 +519,12 @@ export type ProfileUpdateManyMutationInput = {
 
 export type ProfileUncheckedUpdateManyInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  rollNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   batch?: Prisma.IntFieldUpdateOperationsInput | number
   branch?: Prisma.EnumBranchFieldUpdateOperationsInput | $Enums.Branch
   campus?: Prisma.EnumCampusFieldUpdateOperationsInput | $Enums.Campus
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  alternateEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -486,9 +543,12 @@ export type ProfileNullableScalarRelationFilter = {
 
 export type ProfileCountOrderByAggregateInput = {
   userId?: Prisma.SortOrder
+  rollNumber?: Prisma.SortOrder
   batch?: Prisma.SortOrder
   branch?: Prisma.SortOrder
   campus?: Prisma.SortOrder
+  phoneNumber?: Prisma.SortOrder
+  alternateEmail?: Prisma.SortOrder
   city?: Prisma.SortOrder
   country?: Prisma.SortOrder
   latitude?: Prisma.SortOrder
@@ -508,9 +568,12 @@ export type ProfileAvgOrderByAggregateInput = {
 
 export type ProfileMaxOrderByAggregateInput = {
   userId?: Prisma.SortOrder
+  rollNumber?: Prisma.SortOrder
   batch?: Prisma.SortOrder
   branch?: Prisma.SortOrder
   campus?: Prisma.SortOrder
+  phoneNumber?: Prisma.SortOrder
+  alternateEmail?: Prisma.SortOrder
   city?: Prisma.SortOrder
   country?: Prisma.SortOrder
   latitude?: Prisma.SortOrder
@@ -524,9 +587,12 @@ export type ProfileMaxOrderByAggregateInput = {
 
 export type ProfileMinOrderByAggregateInput = {
   userId?: Prisma.SortOrder
+  rollNumber?: Prisma.SortOrder
   batch?: Prisma.SortOrder
   branch?: Prisma.SortOrder
   campus?: Prisma.SortOrder
+  phoneNumber?: Prisma.SortOrder
+  alternateEmail?: Prisma.SortOrder
   city?: Prisma.SortOrder
   country?: Prisma.SortOrder
   latitude?: Prisma.SortOrder
@@ -601,9 +667,12 @@ export type NullableFloatFieldUpdateOperationsInput = {
 }
 
 export type ProfileCreateWithoutUserInput = {
+  rollNumber?: string | null
   batch: number
   branch: $Enums.Branch
   campus: $Enums.Campus
+  phoneNumber?: string | null
+  alternateEmail?: string | null
   city?: string | null
   country?: string | null
   latitude?: number | null
@@ -616,9 +685,12 @@ export type ProfileCreateWithoutUserInput = {
 }
 
 export type ProfileUncheckedCreateWithoutUserInput = {
+  rollNumber?: string | null
   batch: number
   branch: $Enums.Branch
   campus: $Enums.Campus
+  phoneNumber?: string | null
+  alternateEmail?: string | null
   city?: string | null
   country?: string | null
   latitude?: number | null
@@ -647,9 +719,12 @@ export type ProfileUpdateToOneWithWhereWithoutUserInput = {
 }
 
 export type ProfileUpdateWithoutUserInput = {
+  rollNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   batch?: Prisma.IntFieldUpdateOperationsInput | number
   branch?: Prisma.EnumBranchFieldUpdateOperationsInput | $Enums.Branch
   campus?: Prisma.EnumCampusFieldUpdateOperationsInput | $Enums.Campus
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  alternateEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -662,9 +737,12 @@ export type ProfileUpdateWithoutUserInput = {
 }
 
 export type ProfileUncheckedUpdateWithoutUserInput = {
+  rollNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   batch?: Prisma.IntFieldUpdateOperationsInput | number
   branch?: Prisma.EnumBranchFieldUpdateOperationsInput | $Enums.Branch
   campus?: Prisma.EnumCampusFieldUpdateOperationsInput | $Enums.Campus
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  alternateEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -680,9 +758,12 @@ export type ProfileUncheckedUpdateWithoutUserInput = {
 
 export type ProfileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   userId?: boolean
+  rollNumber?: boolean
   batch?: boolean
   branch?: boolean
   campus?: boolean
+  phoneNumber?: boolean
+  alternateEmail?: boolean
   city?: boolean
   country?: boolean
   latitude?: boolean
@@ -697,9 +778,12 @@ export type ProfileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
 
 export type ProfileSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   userId?: boolean
+  rollNumber?: boolean
   batch?: boolean
   branch?: boolean
   campus?: boolean
+  phoneNumber?: boolean
+  alternateEmail?: boolean
   city?: boolean
   country?: boolean
   latitude?: boolean
@@ -714,9 +798,12 @@ export type ProfileSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
 
 export type ProfileSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   userId?: boolean
+  rollNumber?: boolean
   batch?: boolean
   branch?: boolean
   campus?: boolean
+  phoneNumber?: boolean
+  alternateEmail?: boolean
   city?: boolean
   country?: boolean
   latitude?: boolean
@@ -731,9 +818,12 @@ export type ProfileSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
 
 export type ProfileSelectScalar = {
   userId?: boolean
+  rollNumber?: boolean
   batch?: boolean
   branch?: boolean
   campus?: boolean
+  phoneNumber?: boolean
+  alternateEmail?: boolean
   city?: boolean
   country?: boolean
   latitude?: boolean
@@ -745,7 +835,7 @@ export type ProfileSelectScalar = {
   updatedAt?: boolean
 }
 
-export type ProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"userId" | "batch" | "branch" | "campus" | "city" | "country" | "latitude" | "longitude" | "currentCompany" | "currentRole" | "profilePicture" | "createdAt" | "updatedAt", ExtArgs["result"]["profile"]>
+export type ProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"userId" | "rollNumber" | "batch" | "branch" | "campus" | "phoneNumber" | "alternateEmail" | "city" | "country" | "latitude" | "longitude" | "currentCompany" | "currentRole" | "profilePicture" | "createdAt" | "updatedAt", ExtArgs["result"]["profile"]>
 export type ProfileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -763,9 +853,12 @@ export type $ProfilePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     userId: string
+    rollNumber: string | null
     batch: number
     branch: $Enums.Branch
     campus: $Enums.Campus
+    phoneNumber: string | null
+    alternateEmail: string | null
     city: string | null
     country: string | null
     latitude: number | null
@@ -1200,9 +1293,12 @@ export interface Prisma__ProfileClient<T, Null = never, ExtArgs extends runtime.
  */
 export interface ProfileFieldRefs {
   readonly userId: Prisma.FieldRef<"Profile", 'String'>
+  readonly rollNumber: Prisma.FieldRef<"Profile", 'String'>
   readonly batch: Prisma.FieldRef<"Profile", 'Int'>
   readonly branch: Prisma.FieldRef<"Profile", 'Branch'>
   readonly campus: Prisma.FieldRef<"Profile", 'Campus'>
+  readonly phoneNumber: Prisma.FieldRef<"Profile", 'String'>
+  readonly alternateEmail: Prisma.FieldRef<"Profile", 'String'>
   readonly city: Prisma.FieldRef<"Profile", 'String'>
   readonly country: Prisma.FieldRef<"Profile", 'String'>
   readonly latitude: Prisma.FieldRef<"Profile", 'Float'>

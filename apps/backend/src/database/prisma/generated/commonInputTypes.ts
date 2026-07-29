@@ -343,6 +343,27 @@ export type UuidNullableFilter<$PrismaModel = never> = {
   not?: Prisma.NestedUuidNullableFilter<$PrismaModel> | string | null
 }
 
+export type EnumAlumniVerificationEventTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.AlumniVerificationEventType | Prisma.EnumAlumniVerificationEventTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.AlumniVerificationEventType[] | Prisma.ListEnumAlumniVerificationEventTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AlumniVerificationEventType[] | Prisma.ListEnumAlumniVerificationEventTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAlumniVerificationEventTypeFilter<$PrismaModel> | $Enums.AlumniVerificationEventType
+}
+
+export type EnumAlumniVerificationStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.AlumniVerificationStatus | Prisma.EnumAlumniVerificationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.AlumniVerificationStatus[] | Prisma.ListEnumAlumniVerificationStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AlumniVerificationStatus[] | Prisma.ListEnumAlumniVerificationStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAlumniVerificationStatusFilter<$PrismaModel> | $Enums.AlumniVerificationStatus
+}
+
+export type EnumVerificationNotificationStateFilter<$PrismaModel = never> = {
+  equals?: $Enums.VerificationNotificationState | Prisma.EnumVerificationNotificationStateFieldRefInput<$PrismaModel>
+  in?: $Enums.VerificationNotificationState[] | Prisma.ListEnumVerificationNotificationStateFieldRefInput<$PrismaModel>
+  notIn?: $Enums.VerificationNotificationState[] | Prisma.ListEnumVerificationNotificationStateFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumVerificationNotificationStateFilter<$PrismaModel> | $Enums.VerificationNotificationState
+}
+
 export type UuidNullableWithAggregatesFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel> | null
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel> | null
@@ -356,6 +377,36 @@ export type UuidNullableWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
   _min?: Prisma.NestedStringNullableFilter<$PrismaModel>
   _max?: Prisma.NestedStringNullableFilter<$PrismaModel>
+}
+
+export type EnumAlumniVerificationEventTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.AlumniVerificationEventType | Prisma.EnumAlumniVerificationEventTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.AlumniVerificationEventType[] | Prisma.ListEnumAlumniVerificationEventTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AlumniVerificationEventType[] | Prisma.ListEnumAlumniVerificationEventTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAlumniVerificationEventTypeWithAggregatesFilter<$PrismaModel> | $Enums.AlumniVerificationEventType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumAlumniVerificationEventTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumAlumniVerificationEventTypeFilter<$PrismaModel>
+}
+
+export type EnumAlumniVerificationStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.AlumniVerificationStatus | Prisma.EnumAlumniVerificationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.AlumniVerificationStatus[] | Prisma.ListEnumAlumniVerificationStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AlumniVerificationStatus[] | Prisma.ListEnumAlumniVerificationStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAlumniVerificationStatusWithAggregatesFilter<$PrismaModel> | $Enums.AlumniVerificationStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumAlumniVerificationStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumAlumniVerificationStatusFilter<$PrismaModel>
+}
+
+export type EnumVerificationNotificationStateWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.VerificationNotificationState | Prisma.EnumVerificationNotificationStateFieldRefInput<$PrismaModel>
+  in?: $Enums.VerificationNotificationState[] | Prisma.ListEnumVerificationNotificationStateFieldRefInput<$PrismaModel>
+  notIn?: $Enums.VerificationNotificationState[] | Prisma.ListEnumVerificationNotificationStateFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumVerificationNotificationStateWithAggregatesFilter<$PrismaModel> | $Enums.VerificationNotificationState
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumVerificationNotificationStateFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumVerificationNotificationStateFilter<$PrismaModel>
 }
 
 export type NestedUuidFilter<$PrismaModel = never> = {
@@ -697,6 +748,27 @@ export type NestedUuidNullableFilter<$PrismaModel = never> = {
   not?: Prisma.NestedUuidNullableFilter<$PrismaModel> | string | null
 }
 
+export type NestedEnumAlumniVerificationEventTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.AlumniVerificationEventType | Prisma.EnumAlumniVerificationEventTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.AlumniVerificationEventType[] | Prisma.ListEnumAlumniVerificationEventTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AlumniVerificationEventType[] | Prisma.ListEnumAlumniVerificationEventTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAlumniVerificationEventTypeFilter<$PrismaModel> | $Enums.AlumniVerificationEventType
+}
+
+export type NestedEnumAlumniVerificationStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.AlumniVerificationStatus | Prisma.EnumAlumniVerificationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.AlumniVerificationStatus[] | Prisma.ListEnumAlumniVerificationStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AlumniVerificationStatus[] | Prisma.ListEnumAlumniVerificationStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAlumniVerificationStatusFilter<$PrismaModel> | $Enums.AlumniVerificationStatus
+}
+
+export type NestedEnumVerificationNotificationStateFilter<$PrismaModel = never> = {
+  equals?: $Enums.VerificationNotificationState | Prisma.EnumVerificationNotificationStateFieldRefInput<$PrismaModel>
+  in?: $Enums.VerificationNotificationState[] | Prisma.ListEnumVerificationNotificationStateFieldRefInput<$PrismaModel>
+  notIn?: $Enums.VerificationNotificationState[] | Prisma.ListEnumVerificationNotificationStateFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumVerificationNotificationStateFilter<$PrismaModel> | $Enums.VerificationNotificationState
+}
+
 export type NestedUuidNullableWithAggregatesFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel> | null
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel> | null
@@ -709,6 +781,36 @@ export type NestedUuidNullableWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
   _min?: Prisma.NestedStringNullableFilter<$PrismaModel>
   _max?: Prisma.NestedStringNullableFilter<$PrismaModel>
+}
+
+export type NestedEnumAlumniVerificationEventTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.AlumniVerificationEventType | Prisma.EnumAlumniVerificationEventTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.AlumniVerificationEventType[] | Prisma.ListEnumAlumniVerificationEventTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AlumniVerificationEventType[] | Prisma.ListEnumAlumniVerificationEventTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAlumniVerificationEventTypeWithAggregatesFilter<$PrismaModel> | $Enums.AlumniVerificationEventType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumAlumniVerificationEventTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumAlumniVerificationEventTypeFilter<$PrismaModel>
+}
+
+export type NestedEnumAlumniVerificationStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.AlumniVerificationStatus | Prisma.EnumAlumniVerificationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.AlumniVerificationStatus[] | Prisma.ListEnumAlumniVerificationStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AlumniVerificationStatus[] | Prisma.ListEnumAlumniVerificationStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAlumniVerificationStatusWithAggregatesFilter<$PrismaModel> | $Enums.AlumniVerificationStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumAlumniVerificationStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumAlumniVerificationStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumVerificationNotificationStateWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.VerificationNotificationState | Prisma.EnumVerificationNotificationStateFieldRefInput<$PrismaModel>
+  in?: $Enums.VerificationNotificationState[] | Prisma.ListEnumVerificationNotificationStateFieldRefInput<$PrismaModel>
+  notIn?: $Enums.VerificationNotificationState[] | Prisma.ListEnumVerificationNotificationStateFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumVerificationNotificationStateWithAggregatesFilter<$PrismaModel> | $Enums.VerificationNotificationState
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumVerificationNotificationStateFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumVerificationNotificationStateFilter<$PrismaModel>
 }
 
 

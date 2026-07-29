@@ -35,6 +35,7 @@ export type UserMinAggregateOutputType = {
   emailVerified: boolean | null
   emailVerifiedAt: Date | null
   verificationStatus: $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt: Date | null
   profileCompleted: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -52,6 +53,7 @@ export type UserMaxAggregateOutputType = {
   emailVerified: boolean | null
   emailVerifiedAt: Date | null
   verificationStatus: $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt: Date | null
   profileCompleted: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -69,6 +71,7 @@ export type UserCountAggregateOutputType = {
   emailVerified: number
   emailVerifiedAt: number
   verificationStatus: number
+  verificationSubmittedAt: number
   profileCompleted: number
   createdAt: number
   updatedAt: number
@@ -88,6 +91,7 @@ export type UserMinAggregateInputType = {
   emailVerified?: true
   emailVerifiedAt?: true
   verificationStatus?: true
+  verificationSubmittedAt?: true
   profileCompleted?: true
   createdAt?: true
   updatedAt?: true
@@ -105,6 +109,7 @@ export type UserMaxAggregateInputType = {
   emailVerified?: true
   emailVerifiedAt?: true
   verificationStatus?: true
+  verificationSubmittedAt?: true
   profileCompleted?: true
   createdAt?: true
   updatedAt?: true
@@ -122,6 +127,7 @@ export type UserCountAggregateInputType = {
   emailVerified?: true
   emailVerifiedAt?: true
   verificationStatus?: true
+  verificationSubmittedAt?: true
   profileCompleted?: true
   createdAt?: true
   updatedAt?: true
@@ -212,6 +218,7 @@ export type UserGroupByOutputType = {
   emailVerified: boolean
   emailVerifiedAt: Date | null
   verificationStatus: $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt: Date | null
   profileCompleted: boolean
   createdAt: Date
   updatedAt: Date
@@ -250,6 +257,7 @@ export type UserWhereInput = {
   emailVerified?: Prisma.BoolFilter<"User"> | boolean
   emailVerifiedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   verificationStatus?: Prisma.EnumAlumniVerificationStatusNullableFilter<"User"> | $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   profileCompleted?: Prisma.BoolFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
@@ -259,6 +267,9 @@ export type UserWhereInput = {
   experiences?: Prisma.ExperienceListRelationFilter
   bans?: Prisma.UserBanListRelationFilter
   bansIssued?: Prisma.UserBanListRelationFilter
+  bansRevoked?: Prisma.UserBanListRelationFilter
+  verificationEvents?: Prisma.AlumniVerificationEventListRelationFilter
+  verificationActions?: Prisma.AlumniVerificationEventListRelationFilter
   refreshTokens?: Prisma.RefreshTokenListRelationFilter
   emailOtps?: Prisma.EmailOtpListRelationFilter
   conversationParticipants?: Prisma.ConversationParticipantListRelationFilter
@@ -276,6 +287,7 @@ export type UserOrderByWithRelationInput = {
   emailVerified?: Prisma.SortOrder
   emailVerifiedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   verificationStatus?: Prisma.SortOrderInput | Prisma.SortOrder
+  verificationSubmittedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   profileCompleted?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -285,6 +297,9 @@ export type UserOrderByWithRelationInput = {
   experiences?: Prisma.ExperienceOrderByRelationAggregateInput
   bans?: Prisma.UserBanOrderByRelationAggregateInput
   bansIssued?: Prisma.UserBanOrderByRelationAggregateInput
+  bansRevoked?: Prisma.UserBanOrderByRelationAggregateInput
+  verificationEvents?: Prisma.AlumniVerificationEventOrderByRelationAggregateInput
+  verificationActions?: Prisma.AlumniVerificationEventOrderByRelationAggregateInput
   refreshTokens?: Prisma.RefreshTokenOrderByRelationAggregateInput
   emailOtps?: Prisma.EmailOtpOrderByRelationAggregateInput
   conversationParticipants?: Prisma.ConversationParticipantOrderByRelationAggregateInput
@@ -305,6 +320,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   emailVerified?: Prisma.BoolFilter<"User"> | boolean
   emailVerifiedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   verificationStatus?: Prisma.EnumAlumniVerificationStatusNullableFilter<"User"> | $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   profileCompleted?: Prisma.BoolFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
@@ -314,6 +330,9 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   experiences?: Prisma.ExperienceListRelationFilter
   bans?: Prisma.UserBanListRelationFilter
   bansIssued?: Prisma.UserBanListRelationFilter
+  bansRevoked?: Prisma.UserBanListRelationFilter
+  verificationEvents?: Prisma.AlumniVerificationEventListRelationFilter
+  verificationActions?: Prisma.AlumniVerificationEventListRelationFilter
   refreshTokens?: Prisma.RefreshTokenListRelationFilter
   emailOtps?: Prisma.EmailOtpListRelationFilter
   conversationParticipants?: Prisma.ConversationParticipantListRelationFilter
@@ -331,6 +350,7 @@ export type UserOrderByWithAggregationInput = {
   emailVerified?: Prisma.SortOrder
   emailVerifiedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   verificationStatus?: Prisma.SortOrderInput | Prisma.SortOrder
+  verificationSubmittedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   profileCompleted?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -354,6 +374,7 @@ export type UserScalarWhereWithAggregatesInput = {
   emailVerified?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   emailVerifiedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   verificationStatus?: Prisma.EnumAlumniVerificationStatusNullableWithAggregatesFilter<"User"> | $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   profileCompleted?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
@@ -371,6 +392,7 @@ export type UserCreateInput = {
   emailVerified?: boolean
   emailVerifiedAt?: Date | string | null
   verificationStatus?: $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Date | string | null
   profileCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -380,6 +402,9 @@ export type UserCreateInput = {
   experiences?: Prisma.ExperienceCreateNestedManyWithoutUserInput
   bans?: Prisma.UserBanCreateNestedManyWithoutUserInput
   bansIssued?: Prisma.UserBanCreateNestedManyWithoutBannedByInput
+  bansRevoked?: Prisma.UserBanCreateNestedManyWithoutRevokedByInput
+  verificationEvents?: Prisma.AlumniVerificationEventCreateNestedManyWithoutUserInput
+  verificationActions?: Prisma.AlumniVerificationEventCreateNestedManyWithoutActorInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   emailOtps?: Prisma.EmailOtpCreateNestedManyWithoutUserInput
   conversationParticipants?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
@@ -397,6 +422,7 @@ export type UserUncheckedCreateInput = {
   emailVerified?: boolean
   emailVerifiedAt?: Date | string | null
   verificationStatus?: $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Date | string | null
   profileCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -406,6 +432,9 @@ export type UserUncheckedCreateInput = {
   experiences?: Prisma.ExperienceUncheckedCreateNestedManyWithoutUserInput
   bans?: Prisma.UserBanUncheckedCreateNestedManyWithoutUserInput
   bansIssued?: Prisma.UserBanUncheckedCreateNestedManyWithoutBannedByInput
+  bansRevoked?: Prisma.UserBanUncheckedCreateNestedManyWithoutRevokedByInput
+  verificationEvents?: Prisma.AlumniVerificationEventUncheckedCreateNestedManyWithoutUserInput
+  verificationActions?: Prisma.AlumniVerificationEventUncheckedCreateNestedManyWithoutActorInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   emailOtps?: Prisma.EmailOtpUncheckedCreateNestedManyWithoutUserInput
   conversationParticipants?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
@@ -423,6 +452,7 @@ export type UserUpdateInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   verificationStatus?: Prisma.NullableEnumAlumniVerificationStatusFieldUpdateOperationsInput | $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -432,6 +462,9 @@ export type UserUpdateInput = {
   experiences?: Prisma.ExperienceUpdateManyWithoutUserNestedInput
   bans?: Prisma.UserBanUpdateManyWithoutUserNestedInput
   bansIssued?: Prisma.UserBanUpdateManyWithoutBannedByNestedInput
+  bansRevoked?: Prisma.UserBanUpdateManyWithoutRevokedByNestedInput
+  verificationEvents?: Prisma.AlumniVerificationEventUpdateManyWithoutUserNestedInput
+  verificationActions?: Prisma.AlumniVerificationEventUpdateManyWithoutActorNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   emailOtps?: Prisma.EmailOtpUpdateManyWithoutUserNestedInput
   conversationParticipants?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
@@ -449,6 +482,7 @@ export type UserUncheckedUpdateInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   verificationStatus?: Prisma.NullableEnumAlumniVerificationStatusFieldUpdateOperationsInput | $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -458,6 +492,9 @@ export type UserUncheckedUpdateInput = {
   experiences?: Prisma.ExperienceUncheckedUpdateManyWithoutUserNestedInput
   bans?: Prisma.UserBanUncheckedUpdateManyWithoutUserNestedInput
   bansIssued?: Prisma.UserBanUncheckedUpdateManyWithoutBannedByNestedInput
+  bansRevoked?: Prisma.UserBanUncheckedUpdateManyWithoutRevokedByNestedInput
+  verificationEvents?: Prisma.AlumniVerificationEventUncheckedUpdateManyWithoutUserNestedInput
+  verificationActions?: Prisma.AlumniVerificationEventUncheckedUpdateManyWithoutActorNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   emailOtps?: Prisma.EmailOtpUncheckedUpdateManyWithoutUserNestedInput
   conversationParticipants?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
@@ -475,6 +512,7 @@ export type UserCreateManyInput = {
   emailVerified?: boolean
   emailVerifiedAt?: Date | string | null
   verificationStatus?: $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Date | string | null
   profileCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -492,6 +530,7 @@ export type UserUpdateManyMutationInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   verificationStatus?: Prisma.NullableEnumAlumniVerificationStatusFieldUpdateOperationsInput | $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -509,6 +548,7 @@ export type UserUncheckedUpdateManyInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   verificationStatus?: Prisma.NullableEnumAlumniVerificationStatusFieldUpdateOperationsInput | $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -526,6 +566,7 @@ export type UserCountOrderByAggregateInput = {
   emailVerified?: Prisma.SortOrder
   emailVerifiedAt?: Prisma.SortOrder
   verificationStatus?: Prisma.SortOrder
+  verificationSubmittedAt?: Prisma.SortOrder
   profileCompleted?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -543,6 +584,7 @@ export type UserMaxOrderByAggregateInput = {
   emailVerified?: Prisma.SortOrder
   emailVerifiedAt?: Prisma.SortOrder
   verificationStatus?: Prisma.SortOrder
+  verificationSubmittedAt?: Prisma.SortOrder
   profileCompleted?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -560,6 +602,7 @@ export type UserMinOrderByAggregateInput = {
   emailVerified?: Prisma.SortOrder
   emailVerifiedAt?: Prisma.SortOrder
   verificationStatus?: Prisma.SortOrder
+  verificationSubmittedAt?: Prisma.SortOrder
   profileCompleted?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -674,6 +717,36 @@ export type UserUpdateOneRequiredWithoutProfileNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutProfileInput, Prisma.UserUpdateWithoutProfileInput>, Prisma.UserUncheckedUpdateWithoutProfileInput>
 }
 
+export type UserCreateNestedOneWithoutVerificationEventsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutVerificationEventsInput, Prisma.UserUncheckedCreateWithoutVerificationEventsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutVerificationEventsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutVerificationActionsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutVerificationActionsInput, Prisma.UserUncheckedCreateWithoutVerificationActionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutVerificationActionsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutVerificationEventsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutVerificationEventsInput, Prisma.UserUncheckedCreateWithoutVerificationEventsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutVerificationEventsInput
+  upsert?: Prisma.UserUpsertWithoutVerificationEventsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutVerificationEventsInput, Prisma.UserUpdateWithoutVerificationEventsInput>, Prisma.UserUncheckedUpdateWithoutVerificationEventsInput>
+}
+
+export type UserUpdateOneWithoutVerificationActionsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutVerificationActionsInput, Prisma.UserUncheckedCreateWithoutVerificationActionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutVerificationActionsInput
+  upsert?: Prisma.UserUpsertWithoutVerificationActionsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutVerificationActionsInput, Prisma.UserUpdateWithoutVerificationActionsInput>, Prisma.UserUncheckedUpdateWithoutVerificationActionsInput>
+}
+
 export type UserCreateNestedOneWithoutSocialMediaInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutSocialMediaInput, Prisma.UserUncheckedCreateWithoutSocialMediaInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutSocialMediaInput
@@ -714,6 +787,12 @@ export type UserCreateNestedOneWithoutBansIssuedInput = {
   connect?: Prisma.UserWhereUniqueInput
 }
 
+export type UserCreateNestedOneWithoutBansRevokedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBansRevokedInput, Prisma.UserUncheckedCreateWithoutBansRevokedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBansRevokedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
 export type UserUpdateOneRequiredWithoutBansNestedInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutBansInput, Prisma.UserUncheckedCreateWithoutBansInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutBansInput
@@ -732,6 +811,16 @@ export type UserUpdateOneWithoutBansIssuedNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutBansIssuedInput, Prisma.UserUpdateWithoutBansIssuedInput>, Prisma.UserUncheckedUpdateWithoutBansIssuedInput>
 }
 
+export type UserUpdateOneWithoutBansRevokedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBansRevokedInput, Prisma.UserUncheckedCreateWithoutBansRevokedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBansRevokedInput
+  upsert?: Prisma.UserUpsertWithoutBansRevokedInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutBansRevokedInput, Prisma.UserUpdateWithoutBansRevokedInput>, Prisma.UserUncheckedUpdateWithoutBansRevokedInput>
+}
+
 export type UserCreateWithoutConversationParticipantsInput = {
   id?: string
   firstName: string
@@ -743,6 +832,7 @@ export type UserCreateWithoutConversationParticipantsInput = {
   emailVerified?: boolean
   emailVerifiedAt?: Date | string | null
   verificationStatus?: $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Date | string | null
   profileCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -752,6 +842,9 @@ export type UserCreateWithoutConversationParticipantsInput = {
   experiences?: Prisma.ExperienceCreateNestedManyWithoutUserInput
   bans?: Prisma.UserBanCreateNestedManyWithoutUserInput
   bansIssued?: Prisma.UserBanCreateNestedManyWithoutBannedByInput
+  bansRevoked?: Prisma.UserBanCreateNestedManyWithoutRevokedByInput
+  verificationEvents?: Prisma.AlumniVerificationEventCreateNestedManyWithoutUserInput
+  verificationActions?: Prisma.AlumniVerificationEventCreateNestedManyWithoutActorInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   emailOtps?: Prisma.EmailOtpCreateNestedManyWithoutUserInput
   sentMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
@@ -768,6 +861,7 @@ export type UserUncheckedCreateWithoutConversationParticipantsInput = {
   emailVerified?: boolean
   emailVerifiedAt?: Date | string | null
   verificationStatus?: $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Date | string | null
   profileCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -777,6 +871,9 @@ export type UserUncheckedCreateWithoutConversationParticipantsInput = {
   experiences?: Prisma.ExperienceUncheckedCreateNestedManyWithoutUserInput
   bans?: Prisma.UserBanUncheckedCreateNestedManyWithoutUserInput
   bansIssued?: Prisma.UserBanUncheckedCreateNestedManyWithoutBannedByInput
+  bansRevoked?: Prisma.UserBanUncheckedCreateNestedManyWithoutRevokedByInput
+  verificationEvents?: Prisma.AlumniVerificationEventUncheckedCreateNestedManyWithoutUserInput
+  verificationActions?: Prisma.AlumniVerificationEventUncheckedCreateNestedManyWithoutActorInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   emailOtps?: Prisma.EmailOtpUncheckedCreateNestedManyWithoutUserInput
   sentMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
@@ -809,6 +906,7 @@ export type UserUpdateWithoutConversationParticipantsInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   verificationStatus?: Prisma.NullableEnumAlumniVerificationStatusFieldUpdateOperationsInput | $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -818,6 +916,9 @@ export type UserUpdateWithoutConversationParticipantsInput = {
   experiences?: Prisma.ExperienceUpdateManyWithoutUserNestedInput
   bans?: Prisma.UserBanUpdateManyWithoutUserNestedInput
   bansIssued?: Prisma.UserBanUpdateManyWithoutBannedByNestedInput
+  bansRevoked?: Prisma.UserBanUpdateManyWithoutRevokedByNestedInput
+  verificationEvents?: Prisma.AlumniVerificationEventUpdateManyWithoutUserNestedInput
+  verificationActions?: Prisma.AlumniVerificationEventUpdateManyWithoutActorNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   emailOtps?: Prisma.EmailOtpUpdateManyWithoutUserNestedInput
   sentMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
@@ -834,6 +935,7 @@ export type UserUncheckedUpdateWithoutConversationParticipantsInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   verificationStatus?: Prisma.NullableEnumAlumniVerificationStatusFieldUpdateOperationsInput | $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -843,6 +945,9 @@ export type UserUncheckedUpdateWithoutConversationParticipantsInput = {
   experiences?: Prisma.ExperienceUncheckedUpdateManyWithoutUserNestedInput
   bans?: Prisma.UserBanUncheckedUpdateManyWithoutUserNestedInput
   bansIssued?: Prisma.UserBanUncheckedUpdateManyWithoutBannedByNestedInput
+  bansRevoked?: Prisma.UserBanUncheckedUpdateManyWithoutRevokedByNestedInput
+  verificationEvents?: Prisma.AlumniVerificationEventUncheckedUpdateManyWithoutUserNestedInput
+  verificationActions?: Prisma.AlumniVerificationEventUncheckedUpdateManyWithoutActorNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   emailOtps?: Prisma.EmailOtpUncheckedUpdateManyWithoutUserNestedInput
   sentMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
@@ -859,6 +964,7 @@ export type UserCreateWithoutSentMessagesInput = {
   emailVerified?: boolean
   emailVerifiedAt?: Date | string | null
   verificationStatus?: $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Date | string | null
   profileCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -868,6 +974,9 @@ export type UserCreateWithoutSentMessagesInput = {
   experiences?: Prisma.ExperienceCreateNestedManyWithoutUserInput
   bans?: Prisma.UserBanCreateNestedManyWithoutUserInput
   bansIssued?: Prisma.UserBanCreateNestedManyWithoutBannedByInput
+  bansRevoked?: Prisma.UserBanCreateNestedManyWithoutRevokedByInput
+  verificationEvents?: Prisma.AlumniVerificationEventCreateNestedManyWithoutUserInput
+  verificationActions?: Prisma.AlumniVerificationEventCreateNestedManyWithoutActorInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   emailOtps?: Prisma.EmailOtpCreateNestedManyWithoutUserInput
   conversationParticipants?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
@@ -884,6 +993,7 @@ export type UserUncheckedCreateWithoutSentMessagesInput = {
   emailVerified?: boolean
   emailVerifiedAt?: Date | string | null
   verificationStatus?: $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Date | string | null
   profileCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -893,6 +1003,9 @@ export type UserUncheckedCreateWithoutSentMessagesInput = {
   experiences?: Prisma.ExperienceUncheckedCreateNestedManyWithoutUserInput
   bans?: Prisma.UserBanUncheckedCreateNestedManyWithoutUserInput
   bansIssued?: Prisma.UserBanUncheckedCreateNestedManyWithoutBannedByInput
+  bansRevoked?: Prisma.UserBanUncheckedCreateNestedManyWithoutRevokedByInput
+  verificationEvents?: Prisma.AlumniVerificationEventUncheckedCreateNestedManyWithoutUserInput
+  verificationActions?: Prisma.AlumniVerificationEventUncheckedCreateNestedManyWithoutActorInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   emailOtps?: Prisma.EmailOtpUncheckedCreateNestedManyWithoutUserInput
   conversationParticipants?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
@@ -925,6 +1038,7 @@ export type UserUpdateWithoutSentMessagesInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   verificationStatus?: Prisma.NullableEnumAlumniVerificationStatusFieldUpdateOperationsInput | $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -934,6 +1048,9 @@ export type UserUpdateWithoutSentMessagesInput = {
   experiences?: Prisma.ExperienceUpdateManyWithoutUserNestedInput
   bans?: Prisma.UserBanUpdateManyWithoutUserNestedInput
   bansIssued?: Prisma.UserBanUpdateManyWithoutBannedByNestedInput
+  bansRevoked?: Prisma.UserBanUpdateManyWithoutRevokedByNestedInput
+  verificationEvents?: Prisma.AlumniVerificationEventUpdateManyWithoutUserNestedInput
+  verificationActions?: Prisma.AlumniVerificationEventUpdateManyWithoutActorNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   emailOtps?: Prisma.EmailOtpUpdateManyWithoutUserNestedInput
   conversationParticipants?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
@@ -950,6 +1067,7 @@ export type UserUncheckedUpdateWithoutSentMessagesInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   verificationStatus?: Prisma.NullableEnumAlumniVerificationStatusFieldUpdateOperationsInput | $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -959,6 +1077,9 @@ export type UserUncheckedUpdateWithoutSentMessagesInput = {
   experiences?: Prisma.ExperienceUncheckedUpdateManyWithoutUserNestedInput
   bans?: Prisma.UserBanUncheckedUpdateManyWithoutUserNestedInput
   bansIssued?: Prisma.UserBanUncheckedUpdateManyWithoutBannedByNestedInput
+  bansRevoked?: Prisma.UserBanUncheckedUpdateManyWithoutRevokedByNestedInput
+  verificationEvents?: Prisma.AlumniVerificationEventUncheckedUpdateManyWithoutUserNestedInput
+  verificationActions?: Prisma.AlumniVerificationEventUncheckedUpdateManyWithoutActorNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   emailOtps?: Prisma.EmailOtpUncheckedUpdateManyWithoutUserNestedInput
   conversationParticipants?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
@@ -975,6 +1096,7 @@ export type UserCreateWithoutRefreshTokensInput = {
   emailVerified?: boolean
   emailVerifiedAt?: Date | string | null
   verificationStatus?: $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Date | string | null
   profileCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -984,6 +1106,9 @@ export type UserCreateWithoutRefreshTokensInput = {
   experiences?: Prisma.ExperienceCreateNestedManyWithoutUserInput
   bans?: Prisma.UserBanCreateNestedManyWithoutUserInput
   bansIssued?: Prisma.UserBanCreateNestedManyWithoutBannedByInput
+  bansRevoked?: Prisma.UserBanCreateNestedManyWithoutRevokedByInput
+  verificationEvents?: Prisma.AlumniVerificationEventCreateNestedManyWithoutUserInput
+  verificationActions?: Prisma.AlumniVerificationEventCreateNestedManyWithoutActorInput
   emailOtps?: Prisma.EmailOtpCreateNestedManyWithoutUserInput
   conversationParticipants?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
   sentMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
@@ -1000,6 +1125,7 @@ export type UserUncheckedCreateWithoutRefreshTokensInput = {
   emailVerified?: boolean
   emailVerifiedAt?: Date | string | null
   verificationStatus?: $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Date | string | null
   profileCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1009,6 +1135,9 @@ export type UserUncheckedCreateWithoutRefreshTokensInput = {
   experiences?: Prisma.ExperienceUncheckedCreateNestedManyWithoutUserInput
   bans?: Prisma.UserBanUncheckedCreateNestedManyWithoutUserInput
   bansIssued?: Prisma.UserBanUncheckedCreateNestedManyWithoutBannedByInput
+  bansRevoked?: Prisma.UserBanUncheckedCreateNestedManyWithoutRevokedByInput
+  verificationEvents?: Prisma.AlumniVerificationEventUncheckedCreateNestedManyWithoutUserInput
+  verificationActions?: Prisma.AlumniVerificationEventUncheckedCreateNestedManyWithoutActorInput
   emailOtps?: Prisma.EmailOtpUncheckedCreateNestedManyWithoutUserInput
   conversationParticipants?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
   sentMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
@@ -1041,6 +1170,7 @@ export type UserUpdateWithoutRefreshTokensInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   verificationStatus?: Prisma.NullableEnumAlumniVerificationStatusFieldUpdateOperationsInput | $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1050,6 +1180,9 @@ export type UserUpdateWithoutRefreshTokensInput = {
   experiences?: Prisma.ExperienceUpdateManyWithoutUserNestedInput
   bans?: Prisma.UserBanUpdateManyWithoutUserNestedInput
   bansIssued?: Prisma.UserBanUpdateManyWithoutBannedByNestedInput
+  bansRevoked?: Prisma.UserBanUpdateManyWithoutRevokedByNestedInput
+  verificationEvents?: Prisma.AlumniVerificationEventUpdateManyWithoutUserNestedInput
+  verificationActions?: Prisma.AlumniVerificationEventUpdateManyWithoutActorNestedInput
   emailOtps?: Prisma.EmailOtpUpdateManyWithoutUserNestedInput
   conversationParticipants?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
   sentMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
@@ -1066,6 +1199,7 @@ export type UserUncheckedUpdateWithoutRefreshTokensInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   verificationStatus?: Prisma.NullableEnumAlumniVerificationStatusFieldUpdateOperationsInput | $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1075,6 +1209,9 @@ export type UserUncheckedUpdateWithoutRefreshTokensInput = {
   experiences?: Prisma.ExperienceUncheckedUpdateManyWithoutUserNestedInput
   bans?: Prisma.UserBanUncheckedUpdateManyWithoutUserNestedInput
   bansIssued?: Prisma.UserBanUncheckedUpdateManyWithoutBannedByNestedInput
+  bansRevoked?: Prisma.UserBanUncheckedUpdateManyWithoutRevokedByNestedInput
+  verificationEvents?: Prisma.AlumniVerificationEventUncheckedUpdateManyWithoutUserNestedInput
+  verificationActions?: Prisma.AlumniVerificationEventUncheckedUpdateManyWithoutActorNestedInput
   emailOtps?: Prisma.EmailOtpUncheckedUpdateManyWithoutUserNestedInput
   conversationParticipants?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
   sentMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
@@ -1091,6 +1228,7 @@ export type UserCreateWithoutEmailOtpsInput = {
   emailVerified?: boolean
   emailVerifiedAt?: Date | string | null
   verificationStatus?: $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Date | string | null
   profileCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1100,6 +1238,9 @@ export type UserCreateWithoutEmailOtpsInput = {
   experiences?: Prisma.ExperienceCreateNestedManyWithoutUserInput
   bans?: Prisma.UserBanCreateNestedManyWithoutUserInput
   bansIssued?: Prisma.UserBanCreateNestedManyWithoutBannedByInput
+  bansRevoked?: Prisma.UserBanCreateNestedManyWithoutRevokedByInput
+  verificationEvents?: Prisma.AlumniVerificationEventCreateNestedManyWithoutUserInput
+  verificationActions?: Prisma.AlumniVerificationEventCreateNestedManyWithoutActorInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   conversationParticipants?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
   sentMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
@@ -1116,6 +1257,7 @@ export type UserUncheckedCreateWithoutEmailOtpsInput = {
   emailVerified?: boolean
   emailVerifiedAt?: Date | string | null
   verificationStatus?: $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Date | string | null
   profileCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1125,6 +1267,9 @@ export type UserUncheckedCreateWithoutEmailOtpsInput = {
   experiences?: Prisma.ExperienceUncheckedCreateNestedManyWithoutUserInput
   bans?: Prisma.UserBanUncheckedCreateNestedManyWithoutUserInput
   bansIssued?: Prisma.UserBanUncheckedCreateNestedManyWithoutBannedByInput
+  bansRevoked?: Prisma.UserBanUncheckedCreateNestedManyWithoutRevokedByInput
+  verificationEvents?: Prisma.AlumniVerificationEventUncheckedCreateNestedManyWithoutUserInput
+  verificationActions?: Prisma.AlumniVerificationEventUncheckedCreateNestedManyWithoutActorInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   conversationParticipants?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
   sentMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
@@ -1157,6 +1302,7 @@ export type UserUpdateWithoutEmailOtpsInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   verificationStatus?: Prisma.NullableEnumAlumniVerificationStatusFieldUpdateOperationsInput | $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1166,6 +1312,9 @@ export type UserUpdateWithoutEmailOtpsInput = {
   experiences?: Prisma.ExperienceUpdateManyWithoutUserNestedInput
   bans?: Prisma.UserBanUpdateManyWithoutUserNestedInput
   bansIssued?: Prisma.UserBanUpdateManyWithoutBannedByNestedInput
+  bansRevoked?: Prisma.UserBanUpdateManyWithoutRevokedByNestedInput
+  verificationEvents?: Prisma.AlumniVerificationEventUpdateManyWithoutUserNestedInput
+  verificationActions?: Prisma.AlumniVerificationEventUpdateManyWithoutActorNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   conversationParticipants?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
   sentMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
@@ -1182,6 +1331,7 @@ export type UserUncheckedUpdateWithoutEmailOtpsInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   verificationStatus?: Prisma.NullableEnumAlumniVerificationStatusFieldUpdateOperationsInput | $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1191,6 +1341,9 @@ export type UserUncheckedUpdateWithoutEmailOtpsInput = {
   experiences?: Prisma.ExperienceUncheckedUpdateManyWithoutUserNestedInput
   bans?: Prisma.UserBanUncheckedUpdateManyWithoutUserNestedInput
   bansIssued?: Prisma.UserBanUncheckedUpdateManyWithoutBannedByNestedInput
+  bansRevoked?: Prisma.UserBanUncheckedUpdateManyWithoutRevokedByNestedInput
+  verificationEvents?: Prisma.AlumniVerificationEventUncheckedUpdateManyWithoutUserNestedInput
+  verificationActions?: Prisma.AlumniVerificationEventUncheckedUpdateManyWithoutActorNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   conversationParticipants?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
   sentMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
@@ -1207,6 +1360,7 @@ export type UserCreateWithoutProfileInput = {
   emailVerified?: boolean
   emailVerifiedAt?: Date | string | null
   verificationStatus?: $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Date | string | null
   profileCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1215,6 +1369,9 @@ export type UserCreateWithoutProfileInput = {
   experiences?: Prisma.ExperienceCreateNestedManyWithoutUserInput
   bans?: Prisma.UserBanCreateNestedManyWithoutUserInput
   bansIssued?: Prisma.UserBanCreateNestedManyWithoutBannedByInput
+  bansRevoked?: Prisma.UserBanCreateNestedManyWithoutRevokedByInput
+  verificationEvents?: Prisma.AlumniVerificationEventCreateNestedManyWithoutUserInput
+  verificationActions?: Prisma.AlumniVerificationEventCreateNestedManyWithoutActorInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   emailOtps?: Prisma.EmailOtpCreateNestedManyWithoutUserInput
   conversationParticipants?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
@@ -1232,6 +1389,7 @@ export type UserUncheckedCreateWithoutProfileInput = {
   emailVerified?: boolean
   emailVerifiedAt?: Date | string | null
   verificationStatus?: $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Date | string | null
   profileCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1240,6 +1398,9 @@ export type UserUncheckedCreateWithoutProfileInput = {
   experiences?: Prisma.ExperienceUncheckedCreateNestedManyWithoutUserInput
   bans?: Prisma.UserBanUncheckedCreateNestedManyWithoutUserInput
   bansIssued?: Prisma.UserBanUncheckedCreateNestedManyWithoutBannedByInput
+  bansRevoked?: Prisma.UserBanUncheckedCreateNestedManyWithoutRevokedByInput
+  verificationEvents?: Prisma.AlumniVerificationEventUncheckedCreateNestedManyWithoutUserInput
+  verificationActions?: Prisma.AlumniVerificationEventUncheckedCreateNestedManyWithoutActorInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   emailOtps?: Prisma.EmailOtpUncheckedCreateNestedManyWithoutUserInput
   conversationParticipants?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
@@ -1273,6 +1434,7 @@ export type UserUpdateWithoutProfileInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   verificationStatus?: Prisma.NullableEnumAlumniVerificationStatusFieldUpdateOperationsInput | $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1281,6 +1443,9 @@ export type UserUpdateWithoutProfileInput = {
   experiences?: Prisma.ExperienceUpdateManyWithoutUserNestedInput
   bans?: Prisma.UserBanUpdateManyWithoutUserNestedInput
   bansIssued?: Prisma.UserBanUpdateManyWithoutBannedByNestedInput
+  bansRevoked?: Prisma.UserBanUpdateManyWithoutRevokedByNestedInput
+  verificationEvents?: Prisma.AlumniVerificationEventUpdateManyWithoutUserNestedInput
+  verificationActions?: Prisma.AlumniVerificationEventUpdateManyWithoutActorNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   emailOtps?: Prisma.EmailOtpUpdateManyWithoutUserNestedInput
   conversationParticipants?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
@@ -1298,6 +1463,7 @@ export type UserUncheckedUpdateWithoutProfileInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   verificationStatus?: Prisma.NullableEnumAlumniVerificationStatusFieldUpdateOperationsInput | $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1306,6 +1472,273 @@ export type UserUncheckedUpdateWithoutProfileInput = {
   experiences?: Prisma.ExperienceUncheckedUpdateManyWithoutUserNestedInput
   bans?: Prisma.UserBanUncheckedUpdateManyWithoutUserNestedInput
   bansIssued?: Prisma.UserBanUncheckedUpdateManyWithoutBannedByNestedInput
+  bansRevoked?: Prisma.UserBanUncheckedUpdateManyWithoutRevokedByNestedInput
+  verificationEvents?: Prisma.AlumniVerificationEventUncheckedUpdateManyWithoutUserNestedInput
+  verificationActions?: Prisma.AlumniVerificationEventUncheckedUpdateManyWithoutActorNestedInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  emailOtps?: Prisma.EmailOtpUncheckedUpdateManyWithoutUserNestedInput
+  conversationParticipants?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
+  sentMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+}
+
+export type UserCreateWithoutVerificationEventsInput = {
+  id?: string
+  firstName: string
+  lastName: string
+  email: string
+  passwordHash?: string | null
+  googleId?: string | null
+  role: $Enums.UserRole
+  emailVerified?: boolean
+  emailVerifiedAt?: Date | string | null
+  verificationStatus?: $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Date | string | null
+  profileCompleted?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lastSeenAt?: Date | string | null
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  socialMedia?: Prisma.SocialMediaCreateNestedOneWithoutUserInput
+  experiences?: Prisma.ExperienceCreateNestedManyWithoutUserInput
+  bans?: Prisma.UserBanCreateNestedManyWithoutUserInput
+  bansIssued?: Prisma.UserBanCreateNestedManyWithoutBannedByInput
+  bansRevoked?: Prisma.UserBanCreateNestedManyWithoutRevokedByInput
+  verificationActions?: Prisma.AlumniVerificationEventCreateNestedManyWithoutActorInput
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  emailOtps?: Prisma.EmailOtpCreateNestedManyWithoutUserInput
+  conversationParticipants?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
+  sentMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+}
+
+export type UserUncheckedCreateWithoutVerificationEventsInput = {
+  id?: string
+  firstName: string
+  lastName: string
+  email: string
+  passwordHash?: string | null
+  googleId?: string | null
+  role: $Enums.UserRole
+  emailVerified?: boolean
+  emailVerifiedAt?: Date | string | null
+  verificationStatus?: $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Date | string | null
+  profileCompleted?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lastSeenAt?: Date | string | null
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  socialMedia?: Prisma.SocialMediaUncheckedCreateNestedOneWithoutUserInput
+  experiences?: Prisma.ExperienceUncheckedCreateNestedManyWithoutUserInput
+  bans?: Prisma.UserBanUncheckedCreateNestedManyWithoutUserInput
+  bansIssued?: Prisma.UserBanUncheckedCreateNestedManyWithoutBannedByInput
+  bansRevoked?: Prisma.UserBanUncheckedCreateNestedManyWithoutRevokedByInput
+  verificationActions?: Prisma.AlumniVerificationEventUncheckedCreateNestedManyWithoutActorInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  emailOtps?: Prisma.EmailOtpUncheckedCreateNestedManyWithoutUserInput
+  conversationParticipants?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
+  sentMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+}
+
+export type UserCreateOrConnectWithoutVerificationEventsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutVerificationEventsInput, Prisma.UserUncheckedCreateWithoutVerificationEventsInput>
+}
+
+export type UserCreateWithoutVerificationActionsInput = {
+  id?: string
+  firstName: string
+  lastName: string
+  email: string
+  passwordHash?: string | null
+  googleId?: string | null
+  role: $Enums.UserRole
+  emailVerified?: boolean
+  emailVerifiedAt?: Date | string | null
+  verificationStatus?: $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Date | string | null
+  profileCompleted?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lastSeenAt?: Date | string | null
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  socialMedia?: Prisma.SocialMediaCreateNestedOneWithoutUserInput
+  experiences?: Prisma.ExperienceCreateNestedManyWithoutUserInput
+  bans?: Prisma.UserBanCreateNestedManyWithoutUserInput
+  bansIssued?: Prisma.UserBanCreateNestedManyWithoutBannedByInput
+  bansRevoked?: Prisma.UserBanCreateNestedManyWithoutRevokedByInput
+  verificationEvents?: Prisma.AlumniVerificationEventCreateNestedManyWithoutUserInput
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  emailOtps?: Prisma.EmailOtpCreateNestedManyWithoutUserInput
+  conversationParticipants?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
+  sentMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+}
+
+export type UserUncheckedCreateWithoutVerificationActionsInput = {
+  id?: string
+  firstName: string
+  lastName: string
+  email: string
+  passwordHash?: string | null
+  googleId?: string | null
+  role: $Enums.UserRole
+  emailVerified?: boolean
+  emailVerifiedAt?: Date | string | null
+  verificationStatus?: $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Date | string | null
+  profileCompleted?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lastSeenAt?: Date | string | null
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  socialMedia?: Prisma.SocialMediaUncheckedCreateNestedOneWithoutUserInput
+  experiences?: Prisma.ExperienceUncheckedCreateNestedManyWithoutUserInput
+  bans?: Prisma.UserBanUncheckedCreateNestedManyWithoutUserInput
+  bansIssued?: Prisma.UserBanUncheckedCreateNestedManyWithoutBannedByInput
+  bansRevoked?: Prisma.UserBanUncheckedCreateNestedManyWithoutRevokedByInput
+  verificationEvents?: Prisma.AlumniVerificationEventUncheckedCreateNestedManyWithoutUserInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  emailOtps?: Prisma.EmailOtpUncheckedCreateNestedManyWithoutUserInput
+  conversationParticipants?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
+  sentMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+}
+
+export type UserCreateOrConnectWithoutVerificationActionsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutVerificationActionsInput, Prisma.UserUncheckedCreateWithoutVerificationActionsInput>
+}
+
+export type UserUpsertWithoutVerificationEventsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutVerificationEventsInput, Prisma.UserUncheckedUpdateWithoutVerificationEventsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutVerificationEventsInput, Prisma.UserUncheckedCreateWithoutVerificationEventsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutVerificationEventsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutVerificationEventsInput, Prisma.UserUncheckedUpdateWithoutVerificationEventsInput>
+}
+
+export type UserUpdateWithoutVerificationEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationStatus?: Prisma.NullableEnumAlumniVerificationStatusFieldUpdateOperationsInput | $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  socialMedia?: Prisma.SocialMediaUpdateOneWithoutUserNestedInput
+  experiences?: Prisma.ExperienceUpdateManyWithoutUserNestedInput
+  bans?: Prisma.UserBanUpdateManyWithoutUserNestedInput
+  bansIssued?: Prisma.UserBanUpdateManyWithoutBannedByNestedInput
+  bansRevoked?: Prisma.UserBanUpdateManyWithoutRevokedByNestedInput
+  verificationActions?: Prisma.AlumniVerificationEventUpdateManyWithoutActorNestedInput
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  emailOtps?: Prisma.EmailOtpUpdateManyWithoutUserNestedInput
+  conversationParticipants?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
+  sentMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+}
+
+export type UserUncheckedUpdateWithoutVerificationEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationStatus?: Prisma.NullableEnumAlumniVerificationStatusFieldUpdateOperationsInput | $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  socialMedia?: Prisma.SocialMediaUncheckedUpdateOneWithoutUserNestedInput
+  experiences?: Prisma.ExperienceUncheckedUpdateManyWithoutUserNestedInput
+  bans?: Prisma.UserBanUncheckedUpdateManyWithoutUserNestedInput
+  bansIssued?: Prisma.UserBanUncheckedUpdateManyWithoutBannedByNestedInput
+  bansRevoked?: Prisma.UserBanUncheckedUpdateManyWithoutRevokedByNestedInput
+  verificationActions?: Prisma.AlumniVerificationEventUncheckedUpdateManyWithoutActorNestedInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  emailOtps?: Prisma.EmailOtpUncheckedUpdateManyWithoutUserNestedInput
+  conversationParticipants?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
+  sentMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+}
+
+export type UserUpsertWithoutVerificationActionsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutVerificationActionsInput, Prisma.UserUncheckedUpdateWithoutVerificationActionsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutVerificationActionsInput, Prisma.UserUncheckedCreateWithoutVerificationActionsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutVerificationActionsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutVerificationActionsInput, Prisma.UserUncheckedUpdateWithoutVerificationActionsInput>
+}
+
+export type UserUpdateWithoutVerificationActionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationStatus?: Prisma.NullableEnumAlumniVerificationStatusFieldUpdateOperationsInput | $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  socialMedia?: Prisma.SocialMediaUpdateOneWithoutUserNestedInput
+  experiences?: Prisma.ExperienceUpdateManyWithoutUserNestedInput
+  bans?: Prisma.UserBanUpdateManyWithoutUserNestedInput
+  bansIssued?: Prisma.UserBanUpdateManyWithoutBannedByNestedInput
+  bansRevoked?: Prisma.UserBanUpdateManyWithoutRevokedByNestedInput
+  verificationEvents?: Prisma.AlumniVerificationEventUpdateManyWithoutUserNestedInput
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  emailOtps?: Prisma.EmailOtpUpdateManyWithoutUserNestedInput
+  conversationParticipants?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
+  sentMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+}
+
+export type UserUncheckedUpdateWithoutVerificationActionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationStatus?: Prisma.NullableEnumAlumniVerificationStatusFieldUpdateOperationsInput | $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  socialMedia?: Prisma.SocialMediaUncheckedUpdateOneWithoutUserNestedInput
+  experiences?: Prisma.ExperienceUncheckedUpdateManyWithoutUserNestedInput
+  bans?: Prisma.UserBanUncheckedUpdateManyWithoutUserNestedInput
+  bansIssued?: Prisma.UserBanUncheckedUpdateManyWithoutBannedByNestedInput
+  bansRevoked?: Prisma.UserBanUncheckedUpdateManyWithoutRevokedByNestedInput
+  verificationEvents?: Prisma.AlumniVerificationEventUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   emailOtps?: Prisma.EmailOtpUncheckedUpdateManyWithoutUserNestedInput
   conversationParticipants?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
@@ -1323,6 +1756,7 @@ export type UserCreateWithoutSocialMediaInput = {
   emailVerified?: boolean
   emailVerifiedAt?: Date | string | null
   verificationStatus?: $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Date | string | null
   profileCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1331,6 +1765,9 @@ export type UserCreateWithoutSocialMediaInput = {
   experiences?: Prisma.ExperienceCreateNestedManyWithoutUserInput
   bans?: Prisma.UserBanCreateNestedManyWithoutUserInput
   bansIssued?: Prisma.UserBanCreateNestedManyWithoutBannedByInput
+  bansRevoked?: Prisma.UserBanCreateNestedManyWithoutRevokedByInput
+  verificationEvents?: Prisma.AlumniVerificationEventCreateNestedManyWithoutUserInput
+  verificationActions?: Prisma.AlumniVerificationEventCreateNestedManyWithoutActorInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   emailOtps?: Prisma.EmailOtpCreateNestedManyWithoutUserInput
   conversationParticipants?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
@@ -1348,6 +1785,7 @@ export type UserUncheckedCreateWithoutSocialMediaInput = {
   emailVerified?: boolean
   emailVerifiedAt?: Date | string | null
   verificationStatus?: $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Date | string | null
   profileCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1356,6 +1794,9 @@ export type UserUncheckedCreateWithoutSocialMediaInput = {
   experiences?: Prisma.ExperienceUncheckedCreateNestedManyWithoutUserInput
   bans?: Prisma.UserBanUncheckedCreateNestedManyWithoutUserInput
   bansIssued?: Prisma.UserBanUncheckedCreateNestedManyWithoutBannedByInput
+  bansRevoked?: Prisma.UserBanUncheckedCreateNestedManyWithoutRevokedByInput
+  verificationEvents?: Prisma.AlumniVerificationEventUncheckedCreateNestedManyWithoutUserInput
+  verificationActions?: Prisma.AlumniVerificationEventUncheckedCreateNestedManyWithoutActorInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   emailOtps?: Prisma.EmailOtpUncheckedCreateNestedManyWithoutUserInput
   conversationParticipants?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
@@ -1389,6 +1830,7 @@ export type UserUpdateWithoutSocialMediaInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   verificationStatus?: Prisma.NullableEnumAlumniVerificationStatusFieldUpdateOperationsInput | $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1397,6 +1839,9 @@ export type UserUpdateWithoutSocialMediaInput = {
   experiences?: Prisma.ExperienceUpdateManyWithoutUserNestedInput
   bans?: Prisma.UserBanUpdateManyWithoutUserNestedInput
   bansIssued?: Prisma.UserBanUpdateManyWithoutBannedByNestedInput
+  bansRevoked?: Prisma.UserBanUpdateManyWithoutRevokedByNestedInput
+  verificationEvents?: Prisma.AlumniVerificationEventUpdateManyWithoutUserNestedInput
+  verificationActions?: Prisma.AlumniVerificationEventUpdateManyWithoutActorNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   emailOtps?: Prisma.EmailOtpUpdateManyWithoutUserNestedInput
   conversationParticipants?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
@@ -1414,6 +1859,7 @@ export type UserUncheckedUpdateWithoutSocialMediaInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   verificationStatus?: Prisma.NullableEnumAlumniVerificationStatusFieldUpdateOperationsInput | $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1422,6 +1868,9 @@ export type UserUncheckedUpdateWithoutSocialMediaInput = {
   experiences?: Prisma.ExperienceUncheckedUpdateManyWithoutUserNestedInput
   bans?: Prisma.UserBanUncheckedUpdateManyWithoutUserNestedInput
   bansIssued?: Prisma.UserBanUncheckedUpdateManyWithoutBannedByNestedInput
+  bansRevoked?: Prisma.UserBanUncheckedUpdateManyWithoutRevokedByNestedInput
+  verificationEvents?: Prisma.AlumniVerificationEventUncheckedUpdateManyWithoutUserNestedInput
+  verificationActions?: Prisma.AlumniVerificationEventUncheckedUpdateManyWithoutActorNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   emailOtps?: Prisma.EmailOtpUncheckedUpdateManyWithoutUserNestedInput
   conversationParticipants?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
@@ -1439,6 +1888,7 @@ export type UserCreateWithoutExperiencesInput = {
   emailVerified?: boolean
   emailVerifiedAt?: Date | string | null
   verificationStatus?: $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Date | string | null
   profileCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1447,6 +1897,9 @@ export type UserCreateWithoutExperiencesInput = {
   socialMedia?: Prisma.SocialMediaCreateNestedOneWithoutUserInput
   bans?: Prisma.UserBanCreateNestedManyWithoutUserInput
   bansIssued?: Prisma.UserBanCreateNestedManyWithoutBannedByInput
+  bansRevoked?: Prisma.UserBanCreateNestedManyWithoutRevokedByInput
+  verificationEvents?: Prisma.AlumniVerificationEventCreateNestedManyWithoutUserInput
+  verificationActions?: Prisma.AlumniVerificationEventCreateNestedManyWithoutActorInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   emailOtps?: Prisma.EmailOtpCreateNestedManyWithoutUserInput
   conversationParticipants?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
@@ -1464,6 +1917,7 @@ export type UserUncheckedCreateWithoutExperiencesInput = {
   emailVerified?: boolean
   emailVerifiedAt?: Date | string | null
   verificationStatus?: $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Date | string | null
   profileCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1472,6 +1926,9 @@ export type UserUncheckedCreateWithoutExperiencesInput = {
   socialMedia?: Prisma.SocialMediaUncheckedCreateNestedOneWithoutUserInput
   bans?: Prisma.UserBanUncheckedCreateNestedManyWithoutUserInput
   bansIssued?: Prisma.UserBanUncheckedCreateNestedManyWithoutBannedByInput
+  bansRevoked?: Prisma.UserBanUncheckedCreateNestedManyWithoutRevokedByInput
+  verificationEvents?: Prisma.AlumniVerificationEventUncheckedCreateNestedManyWithoutUserInput
+  verificationActions?: Prisma.AlumniVerificationEventUncheckedCreateNestedManyWithoutActorInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   emailOtps?: Prisma.EmailOtpUncheckedCreateNestedManyWithoutUserInput
   conversationParticipants?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
@@ -1505,6 +1962,7 @@ export type UserUpdateWithoutExperiencesInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   verificationStatus?: Prisma.NullableEnumAlumniVerificationStatusFieldUpdateOperationsInput | $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1513,6 +1971,9 @@ export type UserUpdateWithoutExperiencesInput = {
   socialMedia?: Prisma.SocialMediaUpdateOneWithoutUserNestedInput
   bans?: Prisma.UserBanUpdateManyWithoutUserNestedInput
   bansIssued?: Prisma.UserBanUpdateManyWithoutBannedByNestedInput
+  bansRevoked?: Prisma.UserBanUpdateManyWithoutRevokedByNestedInput
+  verificationEvents?: Prisma.AlumniVerificationEventUpdateManyWithoutUserNestedInput
+  verificationActions?: Prisma.AlumniVerificationEventUpdateManyWithoutActorNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   emailOtps?: Prisma.EmailOtpUpdateManyWithoutUserNestedInput
   conversationParticipants?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
@@ -1530,6 +1991,7 @@ export type UserUncheckedUpdateWithoutExperiencesInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   verificationStatus?: Prisma.NullableEnumAlumniVerificationStatusFieldUpdateOperationsInput | $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1538,6 +2000,9 @@ export type UserUncheckedUpdateWithoutExperiencesInput = {
   socialMedia?: Prisma.SocialMediaUncheckedUpdateOneWithoutUserNestedInput
   bans?: Prisma.UserBanUncheckedUpdateManyWithoutUserNestedInput
   bansIssued?: Prisma.UserBanUncheckedUpdateManyWithoutBannedByNestedInput
+  bansRevoked?: Prisma.UserBanUncheckedUpdateManyWithoutRevokedByNestedInput
+  verificationEvents?: Prisma.AlumniVerificationEventUncheckedUpdateManyWithoutUserNestedInput
+  verificationActions?: Prisma.AlumniVerificationEventUncheckedUpdateManyWithoutActorNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   emailOtps?: Prisma.EmailOtpUncheckedUpdateManyWithoutUserNestedInput
   conversationParticipants?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
@@ -1555,6 +2020,7 @@ export type UserCreateWithoutBansInput = {
   emailVerified?: boolean
   emailVerifiedAt?: Date | string | null
   verificationStatus?: $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Date | string | null
   profileCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1563,6 +2029,9 @@ export type UserCreateWithoutBansInput = {
   socialMedia?: Prisma.SocialMediaCreateNestedOneWithoutUserInput
   experiences?: Prisma.ExperienceCreateNestedManyWithoutUserInput
   bansIssued?: Prisma.UserBanCreateNestedManyWithoutBannedByInput
+  bansRevoked?: Prisma.UserBanCreateNestedManyWithoutRevokedByInput
+  verificationEvents?: Prisma.AlumniVerificationEventCreateNestedManyWithoutUserInput
+  verificationActions?: Prisma.AlumniVerificationEventCreateNestedManyWithoutActorInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   emailOtps?: Prisma.EmailOtpCreateNestedManyWithoutUserInput
   conversationParticipants?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
@@ -1580,6 +2049,7 @@ export type UserUncheckedCreateWithoutBansInput = {
   emailVerified?: boolean
   emailVerifiedAt?: Date | string | null
   verificationStatus?: $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Date | string | null
   profileCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1588,6 +2058,9 @@ export type UserUncheckedCreateWithoutBansInput = {
   socialMedia?: Prisma.SocialMediaUncheckedCreateNestedOneWithoutUserInput
   experiences?: Prisma.ExperienceUncheckedCreateNestedManyWithoutUserInput
   bansIssued?: Prisma.UserBanUncheckedCreateNestedManyWithoutBannedByInput
+  bansRevoked?: Prisma.UserBanUncheckedCreateNestedManyWithoutRevokedByInput
+  verificationEvents?: Prisma.AlumniVerificationEventUncheckedCreateNestedManyWithoutUserInput
+  verificationActions?: Prisma.AlumniVerificationEventUncheckedCreateNestedManyWithoutActorInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   emailOtps?: Prisma.EmailOtpUncheckedCreateNestedManyWithoutUserInput
   conversationParticipants?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
@@ -1610,6 +2083,7 @@ export type UserCreateWithoutBansIssuedInput = {
   emailVerified?: boolean
   emailVerifiedAt?: Date | string | null
   verificationStatus?: $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Date | string | null
   profileCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1618,6 +2092,9 @@ export type UserCreateWithoutBansIssuedInput = {
   socialMedia?: Prisma.SocialMediaCreateNestedOneWithoutUserInput
   experiences?: Prisma.ExperienceCreateNestedManyWithoutUserInput
   bans?: Prisma.UserBanCreateNestedManyWithoutUserInput
+  bansRevoked?: Prisma.UserBanCreateNestedManyWithoutRevokedByInput
+  verificationEvents?: Prisma.AlumniVerificationEventCreateNestedManyWithoutUserInput
+  verificationActions?: Prisma.AlumniVerificationEventCreateNestedManyWithoutActorInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   emailOtps?: Prisma.EmailOtpCreateNestedManyWithoutUserInput
   conversationParticipants?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
@@ -1635,6 +2112,7 @@ export type UserUncheckedCreateWithoutBansIssuedInput = {
   emailVerified?: boolean
   emailVerifiedAt?: Date | string | null
   verificationStatus?: $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Date | string | null
   profileCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1643,6 +2121,9 @@ export type UserUncheckedCreateWithoutBansIssuedInput = {
   socialMedia?: Prisma.SocialMediaUncheckedCreateNestedOneWithoutUserInput
   experiences?: Prisma.ExperienceUncheckedCreateNestedManyWithoutUserInput
   bans?: Prisma.UserBanUncheckedCreateNestedManyWithoutUserInput
+  bansRevoked?: Prisma.UserBanUncheckedCreateNestedManyWithoutRevokedByInput
+  verificationEvents?: Prisma.AlumniVerificationEventUncheckedCreateNestedManyWithoutUserInput
+  verificationActions?: Prisma.AlumniVerificationEventUncheckedCreateNestedManyWithoutActorInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   emailOtps?: Prisma.EmailOtpUncheckedCreateNestedManyWithoutUserInput
   conversationParticipants?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
@@ -1652,6 +2133,69 @@ export type UserUncheckedCreateWithoutBansIssuedInput = {
 export type UserCreateOrConnectWithoutBansIssuedInput = {
   where: Prisma.UserWhereUniqueInput
   create: Prisma.XOR<Prisma.UserCreateWithoutBansIssuedInput, Prisma.UserUncheckedCreateWithoutBansIssuedInput>
+}
+
+export type UserCreateWithoutBansRevokedInput = {
+  id?: string
+  firstName: string
+  lastName: string
+  email: string
+  passwordHash?: string | null
+  googleId?: string | null
+  role: $Enums.UserRole
+  emailVerified?: boolean
+  emailVerifiedAt?: Date | string | null
+  verificationStatus?: $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Date | string | null
+  profileCompleted?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lastSeenAt?: Date | string | null
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  socialMedia?: Prisma.SocialMediaCreateNestedOneWithoutUserInput
+  experiences?: Prisma.ExperienceCreateNestedManyWithoutUserInput
+  bans?: Prisma.UserBanCreateNestedManyWithoutUserInput
+  bansIssued?: Prisma.UserBanCreateNestedManyWithoutBannedByInput
+  verificationEvents?: Prisma.AlumniVerificationEventCreateNestedManyWithoutUserInput
+  verificationActions?: Prisma.AlumniVerificationEventCreateNestedManyWithoutActorInput
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  emailOtps?: Prisma.EmailOtpCreateNestedManyWithoutUserInput
+  conversationParticipants?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
+  sentMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+}
+
+export type UserUncheckedCreateWithoutBansRevokedInput = {
+  id?: string
+  firstName: string
+  lastName: string
+  email: string
+  passwordHash?: string | null
+  googleId?: string | null
+  role: $Enums.UserRole
+  emailVerified?: boolean
+  emailVerifiedAt?: Date | string | null
+  verificationStatus?: $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Date | string | null
+  profileCompleted?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lastSeenAt?: Date | string | null
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  socialMedia?: Prisma.SocialMediaUncheckedCreateNestedOneWithoutUserInput
+  experiences?: Prisma.ExperienceUncheckedCreateNestedManyWithoutUserInput
+  bans?: Prisma.UserBanUncheckedCreateNestedManyWithoutUserInput
+  bansIssued?: Prisma.UserBanUncheckedCreateNestedManyWithoutBannedByInput
+  verificationEvents?: Prisma.AlumniVerificationEventUncheckedCreateNestedManyWithoutUserInput
+  verificationActions?: Prisma.AlumniVerificationEventUncheckedCreateNestedManyWithoutActorInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  emailOtps?: Prisma.EmailOtpUncheckedCreateNestedManyWithoutUserInput
+  conversationParticipants?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
+  sentMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+}
+
+export type UserCreateOrConnectWithoutBansRevokedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutBansRevokedInput, Prisma.UserUncheckedCreateWithoutBansRevokedInput>
 }
 
 export type UserUpsertWithoutBansInput = {
@@ -1676,6 +2220,7 @@ export type UserUpdateWithoutBansInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   verificationStatus?: Prisma.NullableEnumAlumniVerificationStatusFieldUpdateOperationsInput | $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1684,6 +2229,9 @@ export type UserUpdateWithoutBansInput = {
   socialMedia?: Prisma.SocialMediaUpdateOneWithoutUserNestedInput
   experiences?: Prisma.ExperienceUpdateManyWithoutUserNestedInput
   bansIssued?: Prisma.UserBanUpdateManyWithoutBannedByNestedInput
+  bansRevoked?: Prisma.UserBanUpdateManyWithoutRevokedByNestedInput
+  verificationEvents?: Prisma.AlumniVerificationEventUpdateManyWithoutUserNestedInput
+  verificationActions?: Prisma.AlumniVerificationEventUpdateManyWithoutActorNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   emailOtps?: Prisma.EmailOtpUpdateManyWithoutUserNestedInput
   conversationParticipants?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
@@ -1701,6 +2249,7 @@ export type UserUncheckedUpdateWithoutBansInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   verificationStatus?: Prisma.NullableEnumAlumniVerificationStatusFieldUpdateOperationsInput | $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1709,6 +2258,9 @@ export type UserUncheckedUpdateWithoutBansInput = {
   socialMedia?: Prisma.SocialMediaUncheckedUpdateOneWithoutUserNestedInput
   experiences?: Prisma.ExperienceUncheckedUpdateManyWithoutUserNestedInput
   bansIssued?: Prisma.UserBanUncheckedUpdateManyWithoutBannedByNestedInput
+  bansRevoked?: Prisma.UserBanUncheckedUpdateManyWithoutRevokedByNestedInput
+  verificationEvents?: Prisma.AlumniVerificationEventUncheckedUpdateManyWithoutUserNestedInput
+  verificationActions?: Prisma.AlumniVerificationEventUncheckedUpdateManyWithoutActorNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   emailOtps?: Prisma.EmailOtpUncheckedUpdateManyWithoutUserNestedInput
   conversationParticipants?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
@@ -1737,6 +2289,7 @@ export type UserUpdateWithoutBansIssuedInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   verificationStatus?: Prisma.NullableEnumAlumniVerificationStatusFieldUpdateOperationsInput | $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1745,6 +2298,9 @@ export type UserUpdateWithoutBansIssuedInput = {
   socialMedia?: Prisma.SocialMediaUpdateOneWithoutUserNestedInput
   experiences?: Prisma.ExperienceUpdateManyWithoutUserNestedInput
   bans?: Prisma.UserBanUpdateManyWithoutUserNestedInput
+  bansRevoked?: Prisma.UserBanUpdateManyWithoutRevokedByNestedInput
+  verificationEvents?: Prisma.AlumniVerificationEventUpdateManyWithoutUserNestedInput
+  verificationActions?: Prisma.AlumniVerificationEventUpdateManyWithoutActorNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   emailOtps?: Prisma.EmailOtpUpdateManyWithoutUserNestedInput
   conversationParticipants?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
@@ -1762,6 +2318,7 @@ export type UserUncheckedUpdateWithoutBansIssuedInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   verificationStatus?: Prisma.NullableEnumAlumniVerificationStatusFieldUpdateOperationsInput | $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1770,6 +2327,78 @@ export type UserUncheckedUpdateWithoutBansIssuedInput = {
   socialMedia?: Prisma.SocialMediaUncheckedUpdateOneWithoutUserNestedInput
   experiences?: Prisma.ExperienceUncheckedUpdateManyWithoutUserNestedInput
   bans?: Prisma.UserBanUncheckedUpdateManyWithoutUserNestedInput
+  bansRevoked?: Prisma.UserBanUncheckedUpdateManyWithoutRevokedByNestedInput
+  verificationEvents?: Prisma.AlumniVerificationEventUncheckedUpdateManyWithoutUserNestedInput
+  verificationActions?: Prisma.AlumniVerificationEventUncheckedUpdateManyWithoutActorNestedInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  emailOtps?: Prisma.EmailOtpUncheckedUpdateManyWithoutUserNestedInput
+  conversationParticipants?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
+  sentMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+}
+
+export type UserUpsertWithoutBansRevokedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutBansRevokedInput, Prisma.UserUncheckedUpdateWithoutBansRevokedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutBansRevokedInput, Prisma.UserUncheckedCreateWithoutBansRevokedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutBansRevokedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutBansRevokedInput, Prisma.UserUncheckedUpdateWithoutBansRevokedInput>
+}
+
+export type UserUpdateWithoutBansRevokedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationStatus?: Prisma.NullableEnumAlumniVerificationStatusFieldUpdateOperationsInput | $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  socialMedia?: Prisma.SocialMediaUpdateOneWithoutUserNestedInput
+  experiences?: Prisma.ExperienceUpdateManyWithoutUserNestedInput
+  bans?: Prisma.UserBanUpdateManyWithoutUserNestedInput
+  bansIssued?: Prisma.UserBanUpdateManyWithoutBannedByNestedInput
+  verificationEvents?: Prisma.AlumniVerificationEventUpdateManyWithoutUserNestedInput
+  verificationActions?: Prisma.AlumniVerificationEventUpdateManyWithoutActorNestedInput
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  emailOtps?: Prisma.EmailOtpUpdateManyWithoutUserNestedInput
+  conversationParticipants?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
+  sentMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+}
+
+export type UserUncheckedUpdateWithoutBansRevokedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationStatus?: Prisma.NullableEnumAlumniVerificationStatusFieldUpdateOperationsInput | $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  socialMedia?: Prisma.SocialMediaUncheckedUpdateOneWithoutUserNestedInput
+  experiences?: Prisma.ExperienceUncheckedUpdateManyWithoutUserNestedInput
+  bans?: Prisma.UserBanUncheckedUpdateManyWithoutUserNestedInput
+  bansIssued?: Prisma.UserBanUncheckedUpdateManyWithoutBannedByNestedInput
+  verificationEvents?: Prisma.AlumniVerificationEventUncheckedUpdateManyWithoutUserNestedInput
+  verificationActions?: Prisma.AlumniVerificationEventUncheckedUpdateManyWithoutActorNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   emailOtps?: Prisma.EmailOtpUncheckedUpdateManyWithoutUserNestedInput
   conversationParticipants?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
@@ -1785,6 +2414,9 @@ export type UserCountOutputType = {
   experiences: number
   bans: number
   bansIssued: number
+  bansRevoked: number
+  verificationEvents: number
+  verificationActions: number
   refreshTokens: number
   emailOtps: number
   conversationParticipants: number
@@ -1795,6 +2427,9 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   experiences?: boolean | UserCountOutputTypeCountExperiencesArgs
   bans?: boolean | UserCountOutputTypeCountBansArgs
   bansIssued?: boolean | UserCountOutputTypeCountBansIssuedArgs
+  bansRevoked?: boolean | UserCountOutputTypeCountBansRevokedArgs
+  verificationEvents?: boolean | UserCountOutputTypeCountVerificationEventsArgs
+  verificationActions?: boolean | UserCountOutputTypeCountVerificationActionsArgs
   refreshTokens?: boolean | UserCountOutputTypeCountRefreshTokensArgs
   emailOtps?: boolean | UserCountOutputTypeCountEmailOtpsArgs
   conversationParticipants?: boolean | UserCountOutputTypeCountConversationParticipantsArgs
@@ -1830,6 +2465,27 @@ export type UserCountOutputTypeCountBansArgs<ExtArgs extends runtime.Types.Exten
  */
 export type UserCountOutputTypeCountBansIssuedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.UserBanWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountBansRevokedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserBanWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountVerificationEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AlumniVerificationEventWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountVerificationActionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AlumniVerificationEventWhereInput
 }
 
 /**
@@ -1872,6 +2528,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   emailVerified?: boolean
   emailVerifiedAt?: boolean
   verificationStatus?: boolean
+  verificationSubmittedAt?: boolean
   profileCompleted?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1881,6 +2538,9 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   experiences?: boolean | Prisma.User$experiencesArgs<ExtArgs>
   bans?: boolean | Prisma.User$bansArgs<ExtArgs>
   bansIssued?: boolean | Prisma.User$bansIssuedArgs<ExtArgs>
+  bansRevoked?: boolean | Prisma.User$bansRevokedArgs<ExtArgs>
+  verificationEvents?: boolean | Prisma.User$verificationEventsArgs<ExtArgs>
+  verificationActions?: boolean | Prisma.User$verificationActionsArgs<ExtArgs>
   refreshTokens?: boolean | Prisma.User$refreshTokensArgs<ExtArgs>
   emailOtps?: boolean | Prisma.User$emailOtpsArgs<ExtArgs>
   conversationParticipants?: boolean | Prisma.User$conversationParticipantsArgs<ExtArgs>
@@ -1899,6 +2559,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   emailVerified?: boolean
   emailVerifiedAt?: boolean
   verificationStatus?: boolean
+  verificationSubmittedAt?: boolean
   profileCompleted?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1916,6 +2577,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   emailVerified?: boolean
   emailVerifiedAt?: boolean
   verificationStatus?: boolean
+  verificationSubmittedAt?: boolean
   profileCompleted?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1933,19 +2595,23 @@ export type UserSelectScalar = {
   emailVerified?: boolean
   emailVerifiedAt?: boolean
   verificationStatus?: boolean
+  verificationSubmittedAt?: boolean
   profileCompleted?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   lastSeenAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "firstName" | "lastName" | "email" | "passwordHash" | "googleId" | "role" | "emailVerified" | "emailVerifiedAt" | "verificationStatus" | "profileCompleted" | "createdAt" | "updatedAt" | "lastSeenAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "firstName" | "lastName" | "email" | "passwordHash" | "googleId" | "role" | "emailVerified" | "emailVerifiedAt" | "verificationStatus" | "verificationSubmittedAt" | "profileCompleted" | "createdAt" | "updatedAt" | "lastSeenAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   profile?: boolean | Prisma.User$profileArgs<ExtArgs>
   socialMedia?: boolean | Prisma.User$socialMediaArgs<ExtArgs>
   experiences?: boolean | Prisma.User$experiencesArgs<ExtArgs>
   bans?: boolean | Prisma.User$bansArgs<ExtArgs>
   bansIssued?: boolean | Prisma.User$bansIssuedArgs<ExtArgs>
+  bansRevoked?: boolean | Prisma.User$bansRevokedArgs<ExtArgs>
+  verificationEvents?: boolean | Prisma.User$verificationEventsArgs<ExtArgs>
+  verificationActions?: boolean | Prisma.User$verificationActionsArgs<ExtArgs>
   refreshTokens?: boolean | Prisma.User$refreshTokensArgs<ExtArgs>
   emailOtps?: boolean | Prisma.User$emailOtpsArgs<ExtArgs>
   conversationParticipants?: boolean | Prisma.User$conversationParticipantsArgs<ExtArgs>
@@ -1963,6 +2629,9 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     experiences: Prisma.$ExperiencePayload<ExtArgs>[]
     bans: Prisma.$UserBanPayload<ExtArgs>[]
     bansIssued: Prisma.$UserBanPayload<ExtArgs>[]
+    bansRevoked: Prisma.$UserBanPayload<ExtArgs>[]
+    verificationEvents: Prisma.$AlumniVerificationEventPayload<ExtArgs>[]
+    verificationActions: Prisma.$AlumniVerificationEventPayload<ExtArgs>[]
     refreshTokens: Prisma.$RefreshTokenPayload<ExtArgs>[]
     emailOtps: Prisma.$EmailOtpPayload<ExtArgs>[]
     conversationParticipants: Prisma.$ConversationParticipantPayload<ExtArgs>[]
@@ -1979,6 +2648,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     emailVerified: boolean
     emailVerifiedAt: Date | null
     verificationStatus: $Enums.AlumniVerificationStatus | null
+    verificationSubmittedAt: Date | null
     profileCompleted: boolean
     createdAt: Date
     updatedAt: Date
@@ -2382,6 +3052,9 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   experiences<T extends Prisma.User$experiencesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$experiencesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ExperiencePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   bans<T extends Prisma.User$bansArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$bansArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserBanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   bansIssued<T extends Prisma.User$bansIssuedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$bansIssuedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserBanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  bansRevoked<T extends Prisma.User$bansRevokedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$bansRevokedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserBanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  verificationEvents<T extends Prisma.User$verificationEventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$verificationEventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AlumniVerificationEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  verificationActions<T extends Prisma.User$verificationActionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$verificationActionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AlumniVerificationEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   refreshTokens<T extends Prisma.User$refreshTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$refreshTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   emailOtps<T extends Prisma.User$emailOtpsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$emailOtpsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EmailOtpPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   conversationParticipants<T extends Prisma.User$conversationParticipantsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$conversationParticipantsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ConversationParticipantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -2425,6 +3098,7 @@ export interface UserFieldRefs {
   readonly emailVerified: Prisma.FieldRef<"User", 'Boolean'>
   readonly emailVerifiedAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly verificationStatus: Prisma.FieldRef<"User", 'AlumniVerificationStatus'>
+  readonly verificationSubmittedAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly profileCompleted: Prisma.FieldRef<"User", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
@@ -2929,6 +3603,78 @@ export type User$bansIssuedArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   distinct?: Prisma.UserBanScalarFieldEnum | Prisma.UserBanScalarFieldEnum[]
+}
+
+/**
+ * User.bansRevoked
+ */
+export type User$bansRevokedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserBan
+   */
+  select?: Prisma.UserBanSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserBan
+   */
+  omit?: Prisma.UserBanOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserBanInclude<ExtArgs> | null
+  where?: Prisma.UserBanWhereInput
+  orderBy?: Prisma.UserBanOrderByWithRelationInput | Prisma.UserBanOrderByWithRelationInput[]
+  cursor?: Prisma.UserBanWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserBanScalarFieldEnum | Prisma.UserBanScalarFieldEnum[]
+}
+
+/**
+ * User.verificationEvents
+ */
+export type User$verificationEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AlumniVerificationEvent
+   */
+  select?: Prisma.AlumniVerificationEventSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AlumniVerificationEvent
+   */
+  omit?: Prisma.AlumniVerificationEventOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AlumniVerificationEventInclude<ExtArgs> | null
+  where?: Prisma.AlumniVerificationEventWhereInput
+  orderBy?: Prisma.AlumniVerificationEventOrderByWithRelationInput | Prisma.AlumniVerificationEventOrderByWithRelationInput[]
+  cursor?: Prisma.AlumniVerificationEventWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AlumniVerificationEventScalarFieldEnum | Prisma.AlumniVerificationEventScalarFieldEnum[]
+}
+
+/**
+ * User.verificationActions
+ */
+export type User$verificationActionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AlumniVerificationEvent
+   */
+  select?: Prisma.AlumniVerificationEventSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AlumniVerificationEvent
+   */
+  omit?: Prisma.AlumniVerificationEventOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AlumniVerificationEventInclude<ExtArgs> | null
+  where?: Prisma.AlumniVerificationEventWhereInput
+  orderBy?: Prisma.AlumniVerificationEventOrderByWithRelationInput | Prisma.AlumniVerificationEventOrderByWithRelationInput[]
+  cursor?: Prisma.AlumniVerificationEventWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AlumniVerificationEventScalarFieldEnum | Prisma.AlumniVerificationEventScalarFieldEnum[]
 }
 
 /**

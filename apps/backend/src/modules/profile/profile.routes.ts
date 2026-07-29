@@ -1,6 +1,8 @@
 import type { FastifyPluginAsync } from "fastify";
 import type { ZodTypeProvider } from "fastify-type-provider-zod";
-import { protect } from "../../middlewares/auth.middleware";
+import { env } from "../../config/env.config";
+import { requireApplicationAccess } from "../../middlewares/auth.middleware";
+import { RedisAccessRevocationPublisher } from "../access/access-revocation.service";
 import { ProfileController } from "./profile.controller";
 import { ProfileRepository } from "./profile.repository";
 import * as schema from "./profile.schema";
@@ -8,14 +10,15 @@ import { ProfileService } from "./profile.service";
 
 const profileRoutes: FastifyPluginAsync = async (fastify) => {
 	const repository = new ProfileRepository(fastify.prisma);
-	const service = new ProfileService(repository);
+	const revocations = new RedisAccessRevocationPublisher(env.REDIS_URL);
+	const service = new ProfileService(repository, revocations);
 	const controller = new ProfileController(service);
 	const app = fastify.withTypeProvider<ZodTypeProvider>();
 
 	app.post(
 		"/",
 		{
-			preHandler: protect,
+			preHandler: requireApplicationAccess,
 			schema: {
 				summary: "Create user profile",
 				description:
@@ -34,7 +37,7 @@ const profileRoutes: FastifyPluginAsync = async (fastify) => {
 	app.put(
 		"/",
 		{
-			preHandler: protect,
+			preHandler: requireApplicationAccess,
 			validatorCompiler: () => () => true, // Bypass json body validator to handle multipart manually
 			schema: {
 				summary: "Edit user profile",
@@ -55,7 +58,7 @@ const profileRoutes: FastifyPluginAsync = async (fastify) => {
 	app.get(
 		"/me",
 		{
-			preHandler: protect,
+			preHandler: requireApplicationAccess,
 			schema: {
 				summary: "Get current user profile",
 				description: "Retrieves the profile of the currently logged-in user.",
@@ -68,6 +71,8 @@ const profileRoutes: FastifyPluginAsync = async (fastify) => {
 		},
 		controller.getProfile,
 	);
+
+	fastify.addHook("onClose", () => revocations.close());
 };
 
 export default profileRoutes;

@@ -13,6 +13,7 @@ RUN --mount=type=cache,target=/root/.bun/install/cache \
 		--network-concurrency 8
 
 COPY apps/backend ./apps/backend
+COPY packages/database ./packages/database
 
 RUN bun apps/backend/node_modules/prisma/build/index.js generate --schema apps/backend/src/database/prisma/schema.prisma
 

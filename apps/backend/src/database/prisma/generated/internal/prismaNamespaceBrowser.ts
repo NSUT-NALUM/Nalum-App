@@ -58,6 +58,7 @@ export const ModelName = {
   RefreshToken: 'RefreshToken',
   EmailOtp: 'EmailOtp',
   Profile: 'Profile',
+  AlumniVerificationEvent: 'AlumniVerificationEvent',
   SocialMedia: 'SocialMedia',
   Experience: 'Experience',
   UserBan: 'UserBan'
@@ -90,6 +91,7 @@ export const UserScalarFieldEnum = {
   emailVerified: 'emailVerified',
   emailVerifiedAt: 'emailVerifiedAt',
   verificationStatus: 'verificationStatus',
+  verificationSubmittedAt: 'verificationSubmittedAt',
   profileCompleted: 'profileCompleted',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
@@ -165,9 +167,12 @@ export type EmailOtpScalarFieldEnum = (typeof EmailOtpScalarFieldEnum)[keyof typ
 
 export const ProfileScalarFieldEnum = {
   userId: 'userId',
+  rollNumber: 'rollNumber',
   batch: 'batch',
   branch: 'branch',
   campus: 'campus',
+  phoneNumber: 'phoneNumber',
+  alternateEmail: 'alternateEmail',
   city: 'city',
   country: 'country',
   latitude: 'latitude',
@@ -180,6 +185,24 @@ export const ProfileScalarFieldEnum = {
 } as const
 
 export type ProfileScalarFieldEnum = (typeof ProfileScalarFieldEnum)[keyof typeof ProfileScalarFieldEnum]
+
+
+export const AlumniVerificationEventScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  actorId: 'actorId',
+  type: 'type',
+  previousStatus: 'previousStatus',
+  newStatus: 'newStatus',
+  reason: 'reason',
+  notificationState: 'notificationState',
+  notificationError: 'notificationError',
+  notificationQueuedAt: 'notificationQueuedAt',
+  notificationSentAt: 'notificationSentAt',
+  createdAt: 'createdAt'
+} as const
+
+export type AlumniVerificationEventScalarFieldEnum = (typeof AlumniVerificationEventScalarFieldEnum)[keyof typeof AlumniVerificationEventScalarFieldEnum]
 
 
 export const SocialMediaScalarFieldEnum = {
@@ -214,6 +237,7 @@ export const UserBanScalarFieldEnum = {
   startsAt: 'startsAt',
   expiresAt: 'expiresAt',
   revokedAt: 'revokedAt',
+  revokedById: 'revokedById',
   bannedById: 'bannedById'
 } as const
 

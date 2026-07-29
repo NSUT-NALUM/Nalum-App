@@ -53,6 +53,11 @@ export type EmailOtp = Prisma.EmailOtpModel
  */
 export type Profile = Prisma.ProfileModel
 /**
+ * Model AlumniVerificationEvent
+ * 
+ */
+export type AlumniVerificationEvent = Prisma.AlumniVerificationEventModel
+/**
  * Model SocialMedia
  * 
  */

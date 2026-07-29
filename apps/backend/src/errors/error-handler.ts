@@ -16,7 +16,10 @@ const errorHandler = (
 	// Send the shared error response shape.
 	reply.status(appError.error.statusCode).send({
 		success: appError.success,
-		error: appError.error,
+		error: {
+			...appError.error,
+			status: appError.error.statusCode,
+		},
 	});
 };
 

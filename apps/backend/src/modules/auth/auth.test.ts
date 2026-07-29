@@ -1,13 +1,16 @@
 import argon2 from "argon2";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import type { IEmailService } from "../email";
 import {
 	EmailAlreadyExistsError,
+	EmailOtpRateLimitedError,
 	InvalidCredentialsError,
 	InvalidRefreshTokenError,
+	UserBannedError,
 } from "./auth.errors";
+import { registerSchemaRequest } from "./auth.schema";
 import { type AuthRepositoryContract, AuthService } from "./auth.service";
 import type { UserWithPassword } from "./auth.types";
-import type { IEmailService } from "../email";
 
 const now = new Date();
 
@@ -20,6 +23,8 @@ const user: UserWithPassword = {
 	googleId: null,
 	role: "STUDENT",
 	emailVerified: false,
+	verificationStatus: null,
+	verificationSubmittedAt: null,
 	profileCompleted: false,
 	createdAt: now,
 	updatedAt: now,
@@ -33,6 +38,7 @@ const createRepository = (): MockAuthRepository =>
 	({
 		findUserByEmail: vi.fn(),
 		findUserByGoogleId: vi.fn(),
+		findActiveBan: vi.fn(),
 		createUser: vi.fn(),
 		updateUserGoogleId: vi.fn(),
 		updateUserEmailVerified: vi.fn(),
@@ -54,6 +60,7 @@ describe("AuthService", () => {
 		repository = createRepository();
 		const mockEmailService: IEmailService = {
 			sendEmailVerificationOtp: vi.fn().mockResolvedValue(undefined),
+			sendAlumniDecision: vi.fn().mockResolvedValue(undefined),
 		};
 		service = new AuthService(repository, mockEmailService);
 	});
@@ -86,6 +93,26 @@ describe("AuthService", () => {
 				password: "wrong-password",
 			}),
 		).rejects.toBeInstanceOf(InvalidCredentialsError);
+	});
+
+	it("does not issue a new session to an actively banned user", async () => {
+		repository.findUserByEmail.mockResolvedValue({
+			...user,
+			passwordHash: await argon2.hash("correct-password", {
+				type: argon2.argon2id,
+			}),
+		});
+		repository.findActiveBan.mockResolvedValue({
+			reason: "Policy violation",
+			expiresAt: null,
+		});
+		await expect(
+			service.login({
+				email: user.email,
+				password: "correct-password",
+			}),
+		).rejects.toBeInstanceOf(UserBannedError);
+		expect(repository.createRefreshToken).not.toHaveBeenCalled();
 	});
 
 	it("rotates a valid refresh token", async () => {
@@ -163,5 +190,41 @@ describe("AuthService", () => {
 		expect(repository.revokeRefreshTokenByHash).toHaveBeenCalledWith(
 			expect.stringMatching(/^[a-f0-9]{64}$/),
 		);
+	});
+
+	it("accepts only public student and alumni roles", () => {
+		expect(
+			registerSchemaRequest.safeParse({
+				firstName: "Admin",
+				lastName: "Attempt",
+				email: "admin@example.com",
+				password: "password123",
+				role: "ADMIN",
+			}).success,
+		).toBe(false);
+		expect(
+			registerSchemaRequest.safeParse({
+				firstName: "Alumni",
+				lastName: "User",
+				email: "alumni@example.com",
+				password: "password123",
+				role: "ALUMNI",
+			}).success,
+		).toBe(true);
+	});
+
+	it("rate limits OTP resends while the latest code is active", async () => {
+		repository.findLatestEmailOtp.mockResolvedValue({
+			id: crypto.randomUUID(),
+			userId: user.id,
+			otpHash: "hash",
+			expiresAt: new Date(Date.now() + 600_000),
+			consumedAt: null,
+			createdAt: new Date(),
+		});
+		await expect(service.sendEmailVerificationOtp(user)).rejects.toBeInstanceOf(
+			EmailOtpRateLimitedError,
+		);
+		expect(repository.createEmailOtp).not.toHaveBeenCalled();
 	});
 });

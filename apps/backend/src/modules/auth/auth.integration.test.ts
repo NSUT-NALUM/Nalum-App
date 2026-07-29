@@ -41,7 +41,7 @@ describeWithDatabase("Auth routes", () => {
 	});
 
 	it("registers and logs in a user", async () => {
-		const email = `auth-${Date.now()}@example.com`;
+		const email = `auth-${Date.now()}@nsut.ac.in`;
 
 		const registerResponse = await app.inject({
 			method: "POST",

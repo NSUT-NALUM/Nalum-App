@@ -7,6 +7,7 @@ import type {
 	SocialMedia,
 } from "../../database/prisma/generated/client";
 import BadRequestError from "../../errors/bad-request.error";
+import { getCurrentUser } from "../../middlewares/auth.middleware";
 import {
 	PROFILE_PICTURE_UPLOAD_PREFIX,
 	toStorageObjectUrl,
@@ -14,6 +15,7 @@ import {
 import {
 	type CreateProfileBody,
 	type ExperienceInput,
+	editProfileSchemaRequest,
 	experienceInputSchema,
 	type SocialMediaInput,
 	socialMediaInputSchema,
@@ -27,14 +29,21 @@ export class ProfileController {
 		request: FastifyRequest,
 		reply: FastifyReply,
 	): Promise<void> => {
-		const userId = request.currentUser!.id;
-		const { batch, branch, campus } = request.body as CreateProfileBody;
+		const currentUser = getCurrentUser(request);
+		const userId = currentUser.id;
+		const { batch, branch, campus, rollNumber } =
+			request.body as CreateProfileBody;
 
-		const profile = await this.profileService.createProfile(userId, {
-			batch,
-			branch: branch as Branch,
-			campus: campus as Campus,
-		});
+		const profile = await this.profileService.createProfile(
+			userId,
+			{
+				batch,
+				branch: branch as Branch,
+				campus: campus as Campus,
+				rollNumber,
+			},
+			currentUser.role,
+		);
 
 		await reply.success(
 			this.toProfileResponse(profile),
@@ -47,7 +56,7 @@ export class ProfileController {
 		request: FastifyRequest,
 		reply: FastifyReply,
 	): Promise<void> => {
-		const userId = request.currentUser!.id;
+		const userId = getCurrentUser(request).id;
 		const profile = await this.profileService.getProfile(userId);
 
 		await reply.success(
@@ -60,7 +69,8 @@ export class ProfileController {
 		request: FastifyRequest,
 		reply: FastifyReply,
 	): Promise<void> => {
-		const userId = request.currentUser!.id;
+		const currentUser = getCurrentUser(request);
+		const userId = currentUser.id;
 
 		if (!request.isMultipart()) {
 			throw new BadRequestError(
@@ -96,27 +106,28 @@ export class ProfileController {
 		const updateData: Partial<
 			Omit<Profile, "userId" | "createdAt" | "updatedAt">
 		> = {};
+		const validatedFields = editProfileSchemaRequest.parse(fields);
 
-		if (fields.batch !== undefined) {
-			const parsedBatch = parseInt(fields.batch, 10);
-			if (Number.isNaN(parsedBatch)) {
-				throw new BadRequestError(
-					"Batch must be a valid number",
-					"INVALID_BATCH",
-				);
-			}
-			updateData.batch = parsedBatch;
-		}
-		if (fields.branch !== undefined)
-			updateData.branch = fields.branch as Branch;
-		if (fields.campus !== undefined)
-			updateData.campus = fields.campus as Campus;
-		if (fields.city !== undefined) updateData.city = fields.city;
-		if (fields.country !== undefined) updateData.country = fields.country;
-		if (fields.currentCompany !== undefined)
-			updateData.currentCompany = fields.currentCompany;
-		if (fields.currentRole !== undefined)
-			updateData.currentRole = fields.currentRole;
+		if (validatedFields.batch !== undefined)
+			updateData.batch = validatedFields.batch;
+		if (validatedFields.rollNumber !== undefined)
+			updateData.rollNumber = validatedFields.rollNumber;
+		if (validatedFields.branch !== undefined)
+			updateData.branch = validatedFields.branch as Branch;
+		if (validatedFields.campus !== undefined)
+			updateData.campus = validatedFields.campus as Campus;
+		if (validatedFields.phoneNumber !== undefined)
+			updateData.phoneNumber = validatedFields.phoneNumber;
+		if (validatedFields.alternateEmail !== undefined)
+			updateData.alternateEmail = validatedFields.alternateEmail;
+		if (validatedFields.city !== undefined)
+			updateData.city = validatedFields.city;
+		if (validatedFields.country !== undefined)
+			updateData.country = validatedFields.country;
+		if (validatedFields.currentCompany !== undefined)
+			updateData.currentCompany = validatedFields.currentCompany;
+		if (validatedFields.currentRole !== undefined)
+			updateData.currentRole = validatedFields.currentRole;
 		if (profilePictureKey !== undefined)
 			updateData.profilePicture = profilePictureKey;
 
@@ -126,6 +137,10 @@ export class ProfileController {
 			userId,
 			updateData,
 			nestedData,
+			{
+				role: currentUser.role,
+				verificationStatus: currentUser.verificationStatus,
+			},
 		);
 
 		await reply.success(

@@ -31,6 +31,7 @@ export type UserBanMinAggregateOutputType = {
   startsAt: Date | null
   expiresAt: Date | null
   revokedAt: Date | null
+  revokedById: string | null
   bannedById: string | null
 }
 
@@ -41,6 +42,7 @@ export type UserBanMaxAggregateOutputType = {
   startsAt: Date | null
   expiresAt: Date | null
   revokedAt: Date | null
+  revokedById: string | null
   bannedById: string | null
 }
 
@@ -51,6 +53,7 @@ export type UserBanCountAggregateOutputType = {
   startsAt: number
   expiresAt: number
   revokedAt: number
+  revokedById: number
   bannedById: number
   _all: number
 }
@@ -63,6 +66,7 @@ export type UserBanMinAggregateInputType = {
   startsAt?: true
   expiresAt?: true
   revokedAt?: true
+  revokedById?: true
   bannedById?: true
 }
 
@@ -73,6 +77,7 @@ export type UserBanMaxAggregateInputType = {
   startsAt?: true
   expiresAt?: true
   revokedAt?: true
+  revokedById?: true
   bannedById?: true
 }
 
@@ -83,6 +88,7 @@ export type UserBanCountAggregateInputType = {
   startsAt?: true
   expiresAt?: true
   revokedAt?: true
+  revokedById?: true
   bannedById?: true
   _all?: true
 }
@@ -162,10 +168,11 @@ export type UserBanGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
 export type UserBanGroupByOutputType = {
   id: string
   userId: string
-  reason: string | null
+  reason: string
   startsAt: Date
   expiresAt: Date | null
   revokedAt: Date | null
+  revokedById: string | null
   bannedById: string | null
   _count: UserBanCountAggregateOutputType | null
   _min: UserBanMinAggregateOutputType | null
@@ -193,25 +200,29 @@ export type UserBanWhereInput = {
   NOT?: Prisma.UserBanWhereInput | Prisma.UserBanWhereInput[]
   id?: Prisma.UuidFilter<"UserBan"> | string
   userId?: Prisma.UuidFilter<"UserBan"> | string
-  reason?: Prisma.StringNullableFilter<"UserBan"> | string | null
+  reason?: Prisma.StringFilter<"UserBan"> | string
   startsAt?: Prisma.DateTimeFilter<"UserBan"> | Date | string
   expiresAt?: Prisma.DateTimeNullableFilter<"UserBan"> | Date | string | null
   revokedAt?: Prisma.DateTimeNullableFilter<"UserBan"> | Date | string | null
+  revokedById?: Prisma.UuidNullableFilter<"UserBan"> | string | null
   bannedById?: Prisma.UuidNullableFilter<"UserBan"> | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   bannedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  revokedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }
 
 export type UserBanOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  reason?: Prisma.SortOrderInput | Prisma.SortOrder
+  reason?: Prisma.SortOrder
   startsAt?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
   revokedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  revokedById?: Prisma.SortOrderInput | Prisma.SortOrder
   bannedById?: Prisma.SortOrderInput | Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   bannedBy?: Prisma.UserOrderByWithRelationInput
+  revokedBy?: Prisma.UserOrderByWithRelationInput
 }
 
 export type UserBanWhereUniqueInput = Prisma.AtLeast<{
@@ -220,22 +231,25 @@ export type UserBanWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.UserBanWhereInput[]
   NOT?: Prisma.UserBanWhereInput | Prisma.UserBanWhereInput[]
   userId?: Prisma.UuidFilter<"UserBan"> | string
-  reason?: Prisma.StringNullableFilter<"UserBan"> | string | null
+  reason?: Prisma.StringFilter<"UserBan"> | string
   startsAt?: Prisma.DateTimeFilter<"UserBan"> | Date | string
   expiresAt?: Prisma.DateTimeNullableFilter<"UserBan"> | Date | string | null
   revokedAt?: Prisma.DateTimeNullableFilter<"UserBan"> | Date | string | null
+  revokedById?: Prisma.UuidNullableFilter<"UserBan"> | string | null
   bannedById?: Prisma.UuidNullableFilter<"UserBan"> | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   bannedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  revokedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }, "id">
 
 export type UserBanOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  reason?: Prisma.SortOrderInput | Prisma.SortOrder
+  reason?: Prisma.SortOrder
   startsAt?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
   revokedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  revokedById?: Prisma.SortOrderInput | Prisma.SortOrder
   bannedById?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.UserBanCountOrderByAggregateInput
   _max?: Prisma.UserBanMaxOrderByAggregateInput
@@ -248,66 +262,72 @@ export type UserBanScalarWhereWithAggregatesInput = {
   NOT?: Prisma.UserBanScalarWhereWithAggregatesInput | Prisma.UserBanScalarWhereWithAggregatesInput[]
   id?: Prisma.UuidWithAggregatesFilter<"UserBan"> | string
   userId?: Prisma.UuidWithAggregatesFilter<"UserBan"> | string
-  reason?: Prisma.StringNullableWithAggregatesFilter<"UserBan"> | string | null
+  reason?: Prisma.StringWithAggregatesFilter<"UserBan"> | string
   startsAt?: Prisma.DateTimeWithAggregatesFilter<"UserBan"> | Date | string
   expiresAt?: Prisma.DateTimeNullableWithAggregatesFilter<"UserBan"> | Date | string | null
   revokedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"UserBan"> | Date | string | null
+  revokedById?: Prisma.UuidNullableWithAggregatesFilter<"UserBan"> | string | null
   bannedById?: Prisma.UuidNullableWithAggregatesFilter<"UserBan"> | string | null
 }
 
 export type UserBanCreateInput = {
   id?: string
-  reason?: string | null
+  reason: string
   startsAt?: Date | string
   expiresAt?: Date | string | null
   revokedAt?: Date | string | null
   user: Prisma.UserCreateNestedOneWithoutBansInput
   bannedBy?: Prisma.UserCreateNestedOneWithoutBansIssuedInput
+  revokedBy?: Prisma.UserCreateNestedOneWithoutBansRevokedInput
 }
 
 export type UserBanUncheckedCreateInput = {
   id?: string
   userId: string
-  reason?: string | null
+  reason: string
   startsAt?: Date | string
   expiresAt?: Date | string | null
   revokedAt?: Date | string | null
+  revokedById?: string | null
   bannedById?: string | null
 }
 
 export type UserBanUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reason?: Prisma.StringFieldUpdateOperationsInput | string
   startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutBansNestedInput
   bannedBy?: Prisma.UserUpdateOneWithoutBansIssuedNestedInput
+  revokedBy?: Prisma.UserUpdateOneWithoutBansRevokedNestedInput
 }
 
 export type UserBanUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reason?: Prisma.StringFieldUpdateOperationsInput | string
   startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revokedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bannedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type UserBanCreateManyInput = {
   id?: string
   userId: string
-  reason?: string | null
+  reason: string
   startsAt?: Date | string
   expiresAt?: Date | string | null
   revokedAt?: Date | string | null
+  revokedById?: string | null
   bannedById?: string | null
 }
 
 export type UserBanUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reason?: Prisma.StringFieldUpdateOperationsInput | string
   startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -316,10 +336,11 @@ export type UserBanUpdateManyMutationInput = {
 export type UserBanUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reason?: Prisma.StringFieldUpdateOperationsInput | string
   startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revokedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bannedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
@@ -340,6 +361,7 @@ export type UserBanCountOrderByAggregateInput = {
   startsAt?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   revokedAt?: Prisma.SortOrder
+  revokedById?: Prisma.SortOrder
   bannedById?: Prisma.SortOrder
 }
 
@@ -350,6 +372,7 @@ export type UserBanMaxOrderByAggregateInput = {
   startsAt?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   revokedAt?: Prisma.SortOrder
+  revokedById?: Prisma.SortOrder
   bannedById?: Prisma.SortOrder
 }
 
@@ -360,6 +383,7 @@ export type UserBanMinOrderByAggregateInput = {
   startsAt?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   revokedAt?: Prisma.SortOrder
+  revokedById?: Prisma.SortOrder
   bannedById?: Prisma.SortOrder
 }
 
@@ -377,6 +401,13 @@ export type UserBanCreateNestedManyWithoutBannedByInput = {
   connect?: Prisma.UserBanWhereUniqueInput | Prisma.UserBanWhereUniqueInput[]
 }
 
+export type UserBanCreateNestedManyWithoutRevokedByInput = {
+  create?: Prisma.XOR<Prisma.UserBanCreateWithoutRevokedByInput, Prisma.UserBanUncheckedCreateWithoutRevokedByInput> | Prisma.UserBanCreateWithoutRevokedByInput[] | Prisma.UserBanUncheckedCreateWithoutRevokedByInput[]
+  connectOrCreate?: Prisma.UserBanCreateOrConnectWithoutRevokedByInput | Prisma.UserBanCreateOrConnectWithoutRevokedByInput[]
+  createMany?: Prisma.UserBanCreateManyRevokedByInputEnvelope
+  connect?: Prisma.UserBanWhereUniqueInput | Prisma.UserBanWhereUniqueInput[]
+}
+
 export type UserBanUncheckedCreateNestedManyWithoutUserInput = {
   create?: Prisma.XOR<Prisma.UserBanCreateWithoutUserInput, Prisma.UserBanUncheckedCreateWithoutUserInput> | Prisma.UserBanCreateWithoutUserInput[] | Prisma.UserBanUncheckedCreateWithoutUserInput[]
   connectOrCreate?: Prisma.UserBanCreateOrConnectWithoutUserInput | Prisma.UserBanCreateOrConnectWithoutUserInput[]
@@ -388,6 +419,13 @@ export type UserBanUncheckedCreateNestedManyWithoutBannedByInput = {
   create?: Prisma.XOR<Prisma.UserBanCreateWithoutBannedByInput, Prisma.UserBanUncheckedCreateWithoutBannedByInput> | Prisma.UserBanCreateWithoutBannedByInput[] | Prisma.UserBanUncheckedCreateWithoutBannedByInput[]
   connectOrCreate?: Prisma.UserBanCreateOrConnectWithoutBannedByInput | Prisma.UserBanCreateOrConnectWithoutBannedByInput[]
   createMany?: Prisma.UserBanCreateManyBannedByInputEnvelope
+  connect?: Prisma.UserBanWhereUniqueInput | Prisma.UserBanWhereUniqueInput[]
+}
+
+export type UserBanUncheckedCreateNestedManyWithoutRevokedByInput = {
+  create?: Prisma.XOR<Prisma.UserBanCreateWithoutRevokedByInput, Prisma.UserBanUncheckedCreateWithoutRevokedByInput> | Prisma.UserBanCreateWithoutRevokedByInput[] | Prisma.UserBanUncheckedCreateWithoutRevokedByInput[]
+  connectOrCreate?: Prisma.UserBanCreateOrConnectWithoutRevokedByInput | Prisma.UserBanCreateOrConnectWithoutRevokedByInput[]
+  createMany?: Prisma.UserBanCreateManyRevokedByInputEnvelope
   connect?: Prisma.UserBanWhereUniqueInput | Prisma.UserBanWhereUniqueInput[]
 }
 
@@ -419,6 +457,20 @@ export type UserBanUpdateManyWithoutBannedByNestedInput = {
   deleteMany?: Prisma.UserBanScalarWhereInput | Prisma.UserBanScalarWhereInput[]
 }
 
+export type UserBanUpdateManyWithoutRevokedByNestedInput = {
+  create?: Prisma.XOR<Prisma.UserBanCreateWithoutRevokedByInput, Prisma.UserBanUncheckedCreateWithoutRevokedByInput> | Prisma.UserBanCreateWithoutRevokedByInput[] | Prisma.UserBanUncheckedCreateWithoutRevokedByInput[]
+  connectOrCreate?: Prisma.UserBanCreateOrConnectWithoutRevokedByInput | Prisma.UserBanCreateOrConnectWithoutRevokedByInput[]
+  upsert?: Prisma.UserBanUpsertWithWhereUniqueWithoutRevokedByInput | Prisma.UserBanUpsertWithWhereUniqueWithoutRevokedByInput[]
+  createMany?: Prisma.UserBanCreateManyRevokedByInputEnvelope
+  set?: Prisma.UserBanWhereUniqueInput | Prisma.UserBanWhereUniqueInput[]
+  disconnect?: Prisma.UserBanWhereUniqueInput | Prisma.UserBanWhereUniqueInput[]
+  delete?: Prisma.UserBanWhereUniqueInput | Prisma.UserBanWhereUniqueInput[]
+  connect?: Prisma.UserBanWhereUniqueInput | Prisma.UserBanWhereUniqueInput[]
+  update?: Prisma.UserBanUpdateWithWhereUniqueWithoutRevokedByInput | Prisma.UserBanUpdateWithWhereUniqueWithoutRevokedByInput[]
+  updateMany?: Prisma.UserBanUpdateManyWithWhereWithoutRevokedByInput | Prisma.UserBanUpdateManyWithWhereWithoutRevokedByInput[]
+  deleteMany?: Prisma.UserBanScalarWhereInput | Prisma.UserBanScalarWhereInput[]
+}
+
 export type UserBanUncheckedUpdateManyWithoutUserNestedInput = {
   create?: Prisma.XOR<Prisma.UserBanCreateWithoutUserInput, Prisma.UserBanUncheckedCreateWithoutUserInput> | Prisma.UserBanCreateWithoutUserInput[] | Prisma.UserBanUncheckedCreateWithoutUserInput[]
   connectOrCreate?: Prisma.UserBanCreateOrConnectWithoutUserInput | Prisma.UserBanCreateOrConnectWithoutUserInput[]
@@ -447,21 +499,37 @@ export type UserBanUncheckedUpdateManyWithoutBannedByNestedInput = {
   deleteMany?: Prisma.UserBanScalarWhereInput | Prisma.UserBanScalarWhereInput[]
 }
 
+export type UserBanUncheckedUpdateManyWithoutRevokedByNestedInput = {
+  create?: Prisma.XOR<Prisma.UserBanCreateWithoutRevokedByInput, Prisma.UserBanUncheckedCreateWithoutRevokedByInput> | Prisma.UserBanCreateWithoutRevokedByInput[] | Prisma.UserBanUncheckedCreateWithoutRevokedByInput[]
+  connectOrCreate?: Prisma.UserBanCreateOrConnectWithoutRevokedByInput | Prisma.UserBanCreateOrConnectWithoutRevokedByInput[]
+  upsert?: Prisma.UserBanUpsertWithWhereUniqueWithoutRevokedByInput | Prisma.UserBanUpsertWithWhereUniqueWithoutRevokedByInput[]
+  createMany?: Prisma.UserBanCreateManyRevokedByInputEnvelope
+  set?: Prisma.UserBanWhereUniqueInput | Prisma.UserBanWhereUniqueInput[]
+  disconnect?: Prisma.UserBanWhereUniqueInput | Prisma.UserBanWhereUniqueInput[]
+  delete?: Prisma.UserBanWhereUniqueInput | Prisma.UserBanWhereUniqueInput[]
+  connect?: Prisma.UserBanWhereUniqueInput | Prisma.UserBanWhereUniqueInput[]
+  update?: Prisma.UserBanUpdateWithWhereUniqueWithoutRevokedByInput | Prisma.UserBanUpdateWithWhereUniqueWithoutRevokedByInput[]
+  updateMany?: Prisma.UserBanUpdateManyWithWhereWithoutRevokedByInput | Prisma.UserBanUpdateManyWithWhereWithoutRevokedByInput[]
+  deleteMany?: Prisma.UserBanScalarWhereInput | Prisma.UserBanScalarWhereInput[]
+}
+
 export type UserBanCreateWithoutUserInput = {
   id?: string
-  reason?: string | null
+  reason: string
   startsAt?: Date | string
   expiresAt?: Date | string | null
   revokedAt?: Date | string | null
   bannedBy?: Prisma.UserCreateNestedOneWithoutBansIssuedInput
+  revokedBy?: Prisma.UserCreateNestedOneWithoutBansRevokedInput
 }
 
 export type UserBanUncheckedCreateWithoutUserInput = {
   id?: string
-  reason?: string | null
+  reason: string
   startsAt?: Date | string
   expiresAt?: Date | string | null
   revokedAt?: Date | string | null
+  revokedById?: string | null
   bannedById?: string | null
 }
 
@@ -477,20 +545,22 @@ export type UserBanCreateManyUserInputEnvelope = {
 
 export type UserBanCreateWithoutBannedByInput = {
   id?: string
-  reason?: string | null
+  reason: string
   startsAt?: Date | string
   expiresAt?: Date | string | null
   revokedAt?: Date | string | null
   user: Prisma.UserCreateNestedOneWithoutBansInput
+  revokedBy?: Prisma.UserCreateNestedOneWithoutBansRevokedInput
 }
 
 export type UserBanUncheckedCreateWithoutBannedByInput = {
   id?: string
   userId: string
-  reason?: string | null
+  reason: string
   startsAt?: Date | string
   expiresAt?: Date | string | null
   revokedAt?: Date | string | null
+  revokedById?: string | null
 }
 
 export type UserBanCreateOrConnectWithoutBannedByInput = {
@@ -500,6 +570,36 @@ export type UserBanCreateOrConnectWithoutBannedByInput = {
 
 export type UserBanCreateManyBannedByInputEnvelope = {
   data: Prisma.UserBanCreateManyBannedByInput | Prisma.UserBanCreateManyBannedByInput[]
+  skipDuplicates?: boolean
+}
+
+export type UserBanCreateWithoutRevokedByInput = {
+  id?: string
+  reason: string
+  startsAt?: Date | string
+  expiresAt?: Date | string | null
+  revokedAt?: Date | string | null
+  user: Prisma.UserCreateNestedOneWithoutBansInput
+  bannedBy?: Prisma.UserCreateNestedOneWithoutBansIssuedInput
+}
+
+export type UserBanUncheckedCreateWithoutRevokedByInput = {
+  id?: string
+  userId: string
+  reason: string
+  startsAt?: Date | string
+  expiresAt?: Date | string | null
+  revokedAt?: Date | string | null
+  bannedById?: string | null
+}
+
+export type UserBanCreateOrConnectWithoutRevokedByInput = {
+  where: Prisma.UserBanWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserBanCreateWithoutRevokedByInput, Prisma.UserBanUncheckedCreateWithoutRevokedByInput>
+}
+
+export type UserBanCreateManyRevokedByInputEnvelope = {
+  data: Prisma.UserBanCreateManyRevokedByInput | Prisma.UserBanCreateManyRevokedByInput[]
   skipDuplicates?: boolean
 }
 
@@ -525,10 +625,11 @@ export type UserBanScalarWhereInput = {
   NOT?: Prisma.UserBanScalarWhereInput | Prisma.UserBanScalarWhereInput[]
   id?: Prisma.UuidFilter<"UserBan"> | string
   userId?: Prisma.UuidFilter<"UserBan"> | string
-  reason?: Prisma.StringNullableFilter<"UserBan"> | string | null
+  reason?: Prisma.StringFilter<"UserBan"> | string
   startsAt?: Prisma.DateTimeFilter<"UserBan"> | Date | string
   expiresAt?: Prisma.DateTimeNullableFilter<"UserBan"> | Date | string | null
   revokedAt?: Prisma.DateTimeNullableFilter<"UserBan"> | Date | string | null
+  revokedById?: Prisma.UuidNullableFilter<"UserBan"> | string | null
   bannedById?: Prisma.UuidNullableFilter<"UserBan"> | string | null
 }
 
@@ -548,76 +649,140 @@ export type UserBanUpdateManyWithWhereWithoutBannedByInput = {
   data: Prisma.XOR<Prisma.UserBanUpdateManyMutationInput, Prisma.UserBanUncheckedUpdateManyWithoutBannedByInput>
 }
 
+export type UserBanUpsertWithWhereUniqueWithoutRevokedByInput = {
+  where: Prisma.UserBanWhereUniqueInput
+  update: Prisma.XOR<Prisma.UserBanUpdateWithoutRevokedByInput, Prisma.UserBanUncheckedUpdateWithoutRevokedByInput>
+  create: Prisma.XOR<Prisma.UserBanCreateWithoutRevokedByInput, Prisma.UserBanUncheckedCreateWithoutRevokedByInput>
+}
+
+export type UserBanUpdateWithWhereUniqueWithoutRevokedByInput = {
+  where: Prisma.UserBanWhereUniqueInput
+  data: Prisma.XOR<Prisma.UserBanUpdateWithoutRevokedByInput, Prisma.UserBanUncheckedUpdateWithoutRevokedByInput>
+}
+
+export type UserBanUpdateManyWithWhereWithoutRevokedByInput = {
+  where: Prisma.UserBanScalarWhereInput
+  data: Prisma.XOR<Prisma.UserBanUpdateManyMutationInput, Prisma.UserBanUncheckedUpdateManyWithoutRevokedByInput>
+}
+
 export type UserBanCreateManyUserInput = {
   id?: string
-  reason?: string | null
+  reason: string
   startsAt?: Date | string
   expiresAt?: Date | string | null
   revokedAt?: Date | string | null
+  revokedById?: string | null
   bannedById?: string | null
 }
 
 export type UserBanCreateManyBannedByInput = {
   id?: string
   userId: string
-  reason?: string | null
+  reason: string
   startsAt?: Date | string
   expiresAt?: Date | string | null
   revokedAt?: Date | string | null
+  revokedById?: string | null
+}
+
+export type UserBanCreateManyRevokedByInput = {
+  id?: string
+  userId: string
+  reason: string
+  startsAt?: Date | string
+  expiresAt?: Date | string | null
+  revokedAt?: Date | string | null
+  bannedById?: string | null
 }
 
 export type UserBanUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reason?: Prisma.StringFieldUpdateOperationsInput | string
   startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   bannedBy?: Prisma.UserUpdateOneWithoutBansIssuedNestedInput
+  revokedBy?: Prisma.UserUpdateOneWithoutBansRevokedNestedInput
 }
 
 export type UserBanUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reason?: Prisma.StringFieldUpdateOperationsInput | string
   startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revokedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bannedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type UserBanUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reason?: Prisma.StringFieldUpdateOperationsInput | string
+  startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revokedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bannedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type UserBanUpdateWithoutBannedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  reason?: Prisma.StringFieldUpdateOperationsInput | string
+  startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  user?: Prisma.UserUpdateOneRequiredWithoutBansNestedInput
+  revokedBy?: Prisma.UserUpdateOneWithoutBansRevokedNestedInput
+}
+
+export type UserBanUncheckedUpdateWithoutBannedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  reason?: Prisma.StringFieldUpdateOperationsInput | string
+  startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revokedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type UserBanUncheckedUpdateManyWithoutBannedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  reason?: Prisma.StringFieldUpdateOperationsInput | string
+  startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revokedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type UserBanUpdateWithoutRevokedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  reason?: Prisma.StringFieldUpdateOperationsInput | string
+  startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  user?: Prisma.UserUpdateOneRequiredWithoutBansNestedInput
+  bannedBy?: Prisma.UserUpdateOneWithoutBansIssuedNestedInput
+}
+
+export type UserBanUncheckedUpdateWithoutRevokedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  reason?: Prisma.StringFieldUpdateOperationsInput | string
   startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   bannedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
-export type UserBanUpdateWithoutBannedByInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  user?: Prisma.UserUpdateOneRequiredWithoutBansNestedInput
-}
-
-export type UserBanUncheckedUpdateWithoutBannedByInput = {
+export type UserBanUncheckedUpdateManyWithoutRevokedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reason?: Prisma.StringFieldUpdateOperationsInput | string
   startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-}
-
-export type UserBanUncheckedUpdateManyWithoutBannedByInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
-  reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bannedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -629,9 +794,11 @@ export type UserBanSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   startsAt?: boolean
   expiresAt?: boolean
   revokedAt?: boolean
+  revokedById?: boolean
   bannedById?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   bannedBy?: boolean | Prisma.UserBan$bannedByArgs<ExtArgs>
+  revokedBy?: boolean | Prisma.UserBan$revokedByArgs<ExtArgs>
 }, ExtArgs["result"]["userBan"]>
 
 export type UserBanSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -641,9 +808,11 @@ export type UserBanSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   startsAt?: boolean
   expiresAt?: boolean
   revokedAt?: boolean
+  revokedById?: boolean
   bannedById?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   bannedBy?: boolean | Prisma.UserBan$bannedByArgs<ExtArgs>
+  revokedBy?: boolean | Prisma.UserBan$revokedByArgs<ExtArgs>
 }, ExtArgs["result"]["userBan"]>
 
 export type UserBanSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -653,9 +822,11 @@ export type UserBanSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   startsAt?: boolean
   expiresAt?: boolean
   revokedAt?: boolean
+  revokedById?: boolean
   bannedById?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   bannedBy?: boolean | Prisma.UserBan$bannedByArgs<ExtArgs>
+  revokedBy?: boolean | Prisma.UserBan$revokedByArgs<ExtArgs>
 }, ExtArgs["result"]["userBan"]>
 
 export type UserBanSelectScalar = {
@@ -665,21 +836,25 @@ export type UserBanSelectScalar = {
   startsAt?: boolean
   expiresAt?: boolean
   revokedAt?: boolean
+  revokedById?: boolean
   bannedById?: boolean
 }
 
-export type UserBanOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "reason" | "startsAt" | "expiresAt" | "revokedAt" | "bannedById", ExtArgs["result"]["userBan"]>
+export type UserBanOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "reason" | "startsAt" | "expiresAt" | "revokedAt" | "revokedById" | "bannedById", ExtArgs["result"]["userBan"]>
 export type UserBanInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   bannedBy?: boolean | Prisma.UserBan$bannedByArgs<ExtArgs>
+  revokedBy?: boolean | Prisma.UserBan$revokedByArgs<ExtArgs>
 }
 export type UserBanIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   bannedBy?: boolean | Prisma.UserBan$bannedByArgs<ExtArgs>
+  revokedBy?: boolean | Prisma.UserBan$revokedByArgs<ExtArgs>
 }
 export type UserBanIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   bannedBy?: boolean | Prisma.UserBan$bannedByArgs<ExtArgs>
+  revokedBy?: boolean | Prisma.UserBan$revokedByArgs<ExtArgs>
 }
 
 export type $UserBanPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -687,14 +862,16 @@ export type $UserBanPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
     bannedBy: Prisma.$UserPayload<ExtArgs> | null
+    revokedBy: Prisma.$UserPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     userId: string
-    reason: string | null
+    reason: string
     startsAt: Date
     expiresAt: Date | null
     revokedAt: Date | null
+    revokedById: string | null
     bannedById: string | null
   }, ExtArgs["result"]["userBan"]>
   composites: {}
@@ -1092,6 +1269,7 @@ export interface Prisma__UserBanClient<T, Null = never, ExtArgs extends runtime.
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   bannedBy<T extends Prisma.UserBan$bannedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserBan$bannedByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  revokedBy<T extends Prisma.UserBan$revokedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserBan$revokedByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1127,6 +1305,7 @@ export interface UserBanFieldRefs {
   readonly startsAt: Prisma.FieldRef<"UserBan", 'DateTime'>
   readonly expiresAt: Prisma.FieldRef<"UserBan", 'DateTime'>
   readonly revokedAt: Prisma.FieldRef<"UserBan", 'DateTime'>
+  readonly revokedById: Prisma.FieldRef<"UserBan", 'String'>
   readonly bannedById: Prisma.FieldRef<"UserBan", 'String'>
 }
     
@@ -1532,6 +1711,25 @@ export type UserBanDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
  * UserBan.bannedBy
  */
 export type UserBan$bannedByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
+}
+
+/**
+ * UserBan.revokedBy
+ */
+export type UserBan$revokedByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the User
    */

@@ -1,6 +1,9 @@
 import type { FastifyPluginAsync } from "fastify";
 import type { ZodTypeProvider } from "fastify-type-provider-zod";
-import { protect } from "../../middlewares/auth.middleware";
+import {
+	authenticateUser,
+	requirePlatformAccess,
+} from "../../middlewares/auth.middleware";
 import { UserController } from "./user.controller";
 import { UserRepository } from "./user.repository";
 import * as schema from "./user.schema";
@@ -15,7 +18,7 @@ const userRoutes: FastifyPluginAsync = async (fastify) => {
 	app.get(
 		"/me",
 		{
-			preHandler: protect,
+			preHandler: authenticateUser,
 			schema: {
 				summary: "Get current user details",
 				description:
@@ -33,7 +36,7 @@ const userRoutes: FastifyPluginAsync = async (fastify) => {
 	app.get(
 		"/search",
 		{
-			preHandler: protect,
+			preHandler: requirePlatformAccess,
 			schema: {
 				summary: "Search users",
 				description: "Searches users by text query and profile filters.",

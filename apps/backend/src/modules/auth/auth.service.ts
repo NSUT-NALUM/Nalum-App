@@ -13,15 +13,18 @@
  */
 import { createHash, randomBytes, randomInt } from "node:crypto";
 import argon2 from "argon2";
+import type { IEmailService } from "../email";
 import { REFRESH_TOKEN_TTL_DAYS } from "./auth.constants";
 import {
 	EmailAlreadyExistsError,
 	EmailAlreadyVerifiedError,
+	EmailOtpRateLimitedError,
 	InvalidCredentialsError,
 	InvalidEmailError,
 	InvalidEmailOtpError,
 	InvalidRefreshTokenError,
 	MissingRefreshTokenError,
+	UserBannedError,
 } from "./auth.errors";
 import type { LoginBody, RegisterBody } from "./auth.schema";
 import type {
@@ -34,7 +37,6 @@ import type {
 	RefreshTokenRecord,
 	UserWithPassword,
 } from "./auth.types";
-import type { IEmailService } from "../email";
 
 export class AuthService {
 	constructor(
@@ -64,6 +66,7 @@ export class AuthService {
 			role: input.role,
 		});
 
+		await this.trySendInitialEmailVerificationOtp(user);
 		return this.createSession(user, device);
 	}
 
@@ -77,7 +80,10 @@ export class AuthService {
 			throw new InvalidCredentialsError();
 		}
 
-		const passwordMatches = await this.verifyPassword(input.password, user.passwordHash);
+		const passwordMatches = await this.verifyPassword(
+			input.password,
+			user.passwordHash,
+		);
 
 		if (!passwordMatches) {
 			throw new InvalidCredentialsError();
@@ -88,6 +94,7 @@ export class AuthService {
 				await this.hashPassword(input.password),
 			);
 		}
+		await this.assertNotBanned(user.id);
 		return this.createSession(user, device);
 	}
 
@@ -95,11 +102,15 @@ export class AuthService {
 		profile: GoogleUserInfo,
 		device: AuthDevice = DEFAULT_AUTH_DEVICE,
 	): Promise<AuthSession> {
+		if (profile.email_verified === false) {
+			throw new InvalidEmailError();
+		}
 		const userByGoogleId = await this.repository.findUserByGoogleId(
 			profile.sub,
 		);
 
 		if (userByGoogleId) {
+			await this.assertNotBanned(userByGoogleId.id);
 			return this.createSession(userByGoogleId, device);
 		}
 
@@ -111,6 +122,7 @@ export class AuthService {
 				profile.sub,
 			);
 
+			await this.assertNotBanned(linkedUser.id);
 			return this.createSession(linkedUser, device);
 		}
 		const Role = profile.email.endsWith("@nsut.ac.in") ? "STUDENT" : "ALUMNI";
@@ -133,6 +145,14 @@ export class AuthService {
 			throw new EmailAlreadyVerifiedError();
 		}
 
+		const latestOtp = await this.repository.findLatestEmailOtp(user.id);
+		const retryAt = latestOtp ? latestOtp.createdAt.getTime() + 60_000 : 0;
+		if (retryAt > Date.now()) {
+			throw new EmailOtpRateLimitedError(
+				Math.ceil((retryAt - Date.now()) / 1000),
+			);
+		}
+
 		const otp = this.generateEmailOtp();
 		const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
 
@@ -147,6 +167,20 @@ export class AuthService {
 			firstName: user.firstName,
 			otp,
 		});
+	}
+
+	private async trySendInitialEmailVerificationOtp(user: AuthUser) {
+		try {
+			await this.sendEmailVerificationOtp(user);
+		} catch {
+			const latestOtp = await this.repository.findLatestEmailOtp(user.id);
+			if (latestOtp) await this.repository.consumeEmailOtp(latestOtp.id);
+		}
+	}
+
+	private async assertNotBanned(userId: string) {
+		const ban = await this.repository.findActiveBan(userId);
+		if (ban) throw new UserBannedError(ban);
 	}
 
 	async verifyEmailOtp(user: AuthUser, otp: string) {
@@ -179,6 +213,7 @@ export class AuthService {
 		if (!this.isUsableRefreshToken(currentToken)) {
 			throw new InvalidRefreshTokenError();
 		}
+		await this.assertNotBanned(currentToken.userId);
 
 		const nextRefreshToken = this.generateRefreshToken();
 		const nextRefreshTokenExpiresAt = this.getRefreshTokenExpiry();
@@ -270,7 +305,10 @@ export class AuthService {
 	}
 
 	private async verifyPassword(password: string, passwordHash: string) {
-		if (!this.isArgon2idHash(passwordHash) && !this.isLegacyBcryptHash(passwordHash)) {
+		if (
+			!this.isArgon2idHash(passwordHash) &&
+			!this.isLegacyBcryptHash(passwordHash)
+		) {
 			return false;
 		}
 		try {
@@ -320,6 +358,8 @@ export class AuthService {
 			email: user.email,
 			role: user.role,
 			emailVerified: user.emailVerified,
+			verificationStatus: user.verificationStatus,
+			verificationSubmittedAt: user.verificationSubmittedAt,
 			profileCompleted: user.profileCompleted,
 			createdAt: user.createdAt,
 			updatedAt: user.updatedAt,
@@ -343,6 +383,9 @@ export class AuthService {
 export interface AuthRepositoryContract {
 	findUserByEmail(email: string): Promise<UserWithPassword | null>;
 	findUserByGoogleId(googleId: string): Promise<UserWithPassword | null>;
+	findActiveBan(
+		userId: string,
+	): Promise<{ reason: string; expiresAt: Date | null } | null>;
 	createUser(input: {
 		firstName: string;
 		lastName: string;

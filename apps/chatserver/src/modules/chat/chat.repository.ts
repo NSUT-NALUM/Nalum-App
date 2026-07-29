@@ -1,14 +1,19 @@
-import type { PrismaClient } from "../../../../../packages/database/src/client";
+import type { PrismaClient } from "@nalum/database/client";
 
 export class ChatRepository {
 	constructor(private readonly prisma: PrismaClient) {}
 
 	findUserById(id: string) {
-		return this.prisma.user.findUnique({ where: { id } });
+		return this.prisma.user.findFirst({
+			where: { id, ...this.eligibleUserWhere() },
+		});
 	}
 
 	findUsersByIds(ids: string[]) {
-		return this.prisma.user.findMany({ where: { id: { in: ids } }, select: { id: true } });
+		return this.prisma.user.findMany({
+			where: { id: { in: ids }, ...this.eligibleUserWhere() },
+			select: { id: true },
+		});
 	}
 
 	findDirectConversation(directPairKey: string) {
@@ -37,10 +42,17 @@ export class ChatRepository {
 	}
 
 	findConversation(conversationId: string) {
-		return this.prisma.conversation.findUnique({ where: { id: conversationId } });
+		return this.prisma.conversation.findUnique({
+			where: { id: conversationId },
+		});
 	}
 
-	async createMessage(input: { conversationId: string; senderId: string; clientMessageId: string; text: string }) {
+	async createMessage(input: {
+		conversationId: string;
+		senderId: string;
+		clientMessageId: string;
+		text: string;
+	}) {
 		return this.prisma.$transaction(async (tx) => {
 			const existing = await tx.message.findUnique({
 				where: {
@@ -63,7 +75,11 @@ export class ChatRepository {
 
 	findActiveParticipantUserIds(conversationId: string) {
 		return this.prisma.conversationParticipant.findMany({
-			where: { conversationId, leftAt: null },
+			where: {
+				conversationId,
+				leftAt: null,
+				user: this.eligibleUserWhere(),
+			},
 			select: { userId: true },
 		});
 	}
@@ -72,6 +88,7 @@ export class ChatRepository {
 		return this.prisma.conversationParticipant.findMany({
 			where: {
 				leftAt: null,
+				user: this.eligibleUserWhere(),
 				conversation: { participants: { some: { userId, leftAt: null } } },
 			},
 			select: { userId: true },
@@ -80,20 +97,27 @@ export class ChatRepository {
 	}
 
 	updateLastSeenAt(userId: string, lastSeenAt: Date) {
-		return this.prisma.user.update({ where: { id: userId }, data: { lastSeenAt } });
+		return this.prisma.user.update({
+			where: { id: userId },
+			data: { lastSeenAt },
+		});
 	}
 
-	findMessages(conversationId: string, cursor: { createdAt: Date; id: string } | null, limit: number) {
+	findMessages(
+		conversationId: string,
+		cursor: { createdAt: Date; id: string } | null,
+		limit: number,
+	) {
 		return this.prisma.message.findMany({
 			where: {
 				conversationId,
 				...(cursor
 					? {
-						OR: [
-							{ createdAt: { lt: cursor.createdAt } },
-							{ createdAt: cursor.createdAt, id: { lt: cursor.id } },
-						],
-					}
+							OR: [
+								{ createdAt: { lt: cursor.createdAt } },
+								{ createdAt: cursor.createdAt, id: { lt: cursor.id } },
+							],
+						}
 					: {}),
 			},
 			orderBy: [{ createdAt: "desc" }, { id: "desc" }],
@@ -101,21 +125,28 @@ export class ChatRepository {
 		});
 	}
 
-	findConversations(userId: string, cursor: { lastMessageAt: Date; id: string } | null, limit: number) {
+	findConversations(
+		userId: string,
+		cursor: { lastMessageAt: Date; id: string } | null,
+		limit: number,
+	) {
 		return this.prisma.conversation.findMany({
 			where: {
 				participants: { some: { userId, leftAt: null } },
 				...(cursor
 					? {
-						OR: [
-							{ lastMessageAt: { lt: cursor.lastMessageAt } },
-							{ lastMessageAt: cursor.lastMessageAt, id: { lt: cursor.id } },
-						],
-					}
+							OR: [
+								{ lastMessageAt: { lt: cursor.lastMessageAt } },
+								{ lastMessageAt: cursor.lastMessageAt, id: { lt: cursor.id } },
+							],
+						}
 					: {}),
 			},
 			include: {
-				participants: { where: { leftAt: null }, select: { userId: true, role: true } },
+				participants: {
+					where: { leftAt: null },
+					select: { userId: true, role: true },
+				},
 				messages: { orderBy: { createdAt: "desc" }, take: 1 },
 			},
 			orderBy: [{ lastMessageAt: "desc" }, { id: "desc" }],
@@ -154,10 +185,39 @@ export class ChatRepository {
 		});
 	}
 
-	updateMemberRole(conversationId: string, userId: string, role: "ADMIN" | "MEMBER") {
+	updateMemberRole(
+		conversationId: string,
+		userId: string,
+		role: "ADMIN" | "MEMBER",
+	) {
 		return this.prisma.conversationParticipant.update({
 			where: { conversationId_userId: { conversationId, userId } },
 			data: { role },
 		});
+	}
+
+	private eligibleUserWhere() {
+		const now = new Date();
+		return {
+			AND: [
+				{
+					OR: [
+						{ role: { not: "ALUMNI" as const } },
+						{
+							role: "ALUMNI" as const,
+							verificationStatus: "VERIFIED" as const,
+						},
+					],
+				},
+				{
+					bans: {
+						none: {
+							revokedAt: null,
+							OR: [{ expiresAt: null }, { expiresAt: { gt: now } }],
+						},
+					},
+				},
+			],
+		};
 	}
 }

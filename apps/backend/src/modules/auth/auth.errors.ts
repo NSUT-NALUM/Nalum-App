@@ -14,8 +14,10 @@
  * - Duplicate generic errors that belong in shared packages.
  */
 
+import AppError from "../../errors/app.error";
 import BadRequestError from "../../errors/bad-request.error";
 import ConflictError from "../../errors/conflict.error";
+import ForbiddenError from "../../errors/forbidden.error";
 import UnauthorizedError from "../../errors/unauthorized.error";
 
 export class EmailAlreadyExistsError extends ConflictError {
@@ -64,5 +66,28 @@ export class InvalidEmailOtpError extends BadRequestError {
 	constructor() {
 		super("OTP is invalid or expired", "AUTH_EMAIL_OTP_INVALID");
 		this.name = "InvalidEmailOtpError";
+	}
+}
+
+export class EmailOtpRateLimitedError extends AppError {
+	constructor(retryAfterSeconds: number) {
+		super(false, {
+			code: "AUTH_EMAIL_OTP_RATE_LIMITED",
+			message: "Please wait before requesting another verification code",
+			statusCode: 429,
+			details: { retryAfterSeconds },
+		});
+		this.name = "EmailOtpRateLimitedError";
+	}
+}
+
+export class UserBannedError extends ForbiddenError {
+	constructor(ban: { reason: string; expiresAt: Date | null }) {
+		super("Your account is banned from the platform", "USER_BANNED", {
+			reason: ban.reason,
+			expiresAt: ban.expiresAt,
+			permanent: ban.expiresAt === null,
+		});
+		this.name = "UserBannedError";
 	}
 }

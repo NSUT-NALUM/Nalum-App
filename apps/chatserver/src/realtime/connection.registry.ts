@@ -1,10 +1,14 @@
 type SocketConnection = {
 	readyState: number;
 	send(message: string): void;
+	close?(code?: number, reason?: string): void;
 };
 
 export class ConnectionRegistry {
-	private readonly connectionsByUserId = new Map<string, Set<SocketConnection>>();
+	private readonly connectionsByUserId = new Map<
+		string,
+		Set<SocketConnection>
+	>();
 
 	add(userId: string, socket: SocketConnection) {
 		const connections = this.connectionsByUserId.get(userId) ?? new Set();
@@ -24,5 +28,12 @@ export class ConnectionRegistry {
 		for (const socket of this.connectionsByUserId.get(userId) ?? []) {
 			if (socket.readyState === 1) socket.send(serializedMessage);
 		}
+	}
+
+	disconnect(userId: string, code = 4003, reason = "Platform access revoked") {
+		for (const socket of this.connectionsByUserId.get(userId) ?? []) {
+			socket.close?.(code, reason);
+		}
+		this.connectionsByUserId.delete(userId);
 	}
 }

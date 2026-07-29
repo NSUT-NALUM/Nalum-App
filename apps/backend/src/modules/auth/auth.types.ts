@@ -25,6 +25,8 @@ export type AuthUser = Pick<
 	| "email"
 	| "role"
 	| "emailVerified"
+	| "verificationStatus"
+	| "verificationSubmittedAt"
 	| "profileCompleted"
 	| "createdAt"
 	| "updatedAt"
