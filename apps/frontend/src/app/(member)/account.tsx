@@ -5,7 +5,7 @@ import { useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 import { Button, Card, Screen } from "@/components/ui/nalum";
 import { useTheme } from "@/hooks/use-theme";
-import { authApi } from "@/lib/api";
+import { apiImageSource, authApi } from "@/lib/api";
 import { useAuthStore } from "@/stores/auth-store";
 
 export default function Account() {
@@ -45,7 +45,7 @@ export default function Account() {
 							{profile?.profilePicture ? (
 								<Image
 									accessibilityLabel="Your profile photo"
-									source={profile.profilePicture}
+									source={apiImageSource(profile.profilePicture)}
 									style={{ height: 96, width: 96 }}
 								/>
 							) : (

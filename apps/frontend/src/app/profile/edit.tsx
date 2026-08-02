@@ -13,8 +13,15 @@ import {
 } from "react-native";
 import { Button, Card, Field, Screen } from "@/components/ui/nalum";
 import { useTheme } from "@/hooks/use-theme";
-import { authApi, type Branch, type Campus, profileApi } from "@/lib/api";
+import {
+	apiImageSource,
+	authApi,
+	type Branch,
+	type Campus,
+	profileApi,
+} from "@/lib/api";
 import { getAuthRoute } from "@/lib/auth-navigation";
+import { appendPickedImage } from "@/lib/image-upload";
 import { useAuthStore } from "@/stores/auth-store";
 
 const branches: Branch[] = [
@@ -56,7 +63,7 @@ export default function ProfileEditor() {
 	const [experienceRole, setExperienceRole] = useState(
 		user?.experiences[0]?.role ?? "",
 	);
-	const [photo, setPhoto] = useState<string>();
+	const [photo, setPhoto] = useState<ImagePicker.ImagePickerAsset>();
 	const [busy, setBusy] = useState(false);
 	const [error, setError] = useState("");
 
@@ -113,7 +120,7 @@ export default function ProfileEditor() {
 			mediaTypes: ["images"],
 			quality: 0.8,
 		});
-		if (!result.canceled) setPhoto(result.assets[0].uri);
+		if (!result.canceled) setPhoto(result.assets[0]);
 	};
 
 	const save = async () => {
@@ -168,13 +175,7 @@ export default function ProfileEditor() {
 						: [],
 				),
 			);
-			if (photo) {
-				form.append("profilePicture", {
-					uri: photo,
-					name: "profile.jpg",
-					type: "image/jpeg",
-				} as unknown as Blob);
-			}
+			if (photo) appendPickedImage(form, "profilePicture", photo);
 			await profileApi.update(form);
 			const nextUser = await authApi.refreshUser();
 			useAuthStore.getState().setUser(nextUser);
@@ -215,7 +216,12 @@ export default function ProfileEditor() {
 							<View className="items-start gap-3">
 								<Image
 									accessibilityLabel="Profile photo"
-									source={photo ?? profile?.profilePicture ?? undefined}
+									source={
+										photo?.uri ??
+										(profile?.profilePicture
+											? apiImageSource(profile.profilePicture)
+											: undefined)
+									}
 									style={{
 										height: 88,
 										width: 88,

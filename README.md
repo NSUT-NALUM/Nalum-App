@@ -62,6 +62,21 @@ Short-term convenience must never compromise long-term maintainability.
 * Nginx
 * GitHub Actions
 
+## Local development
+
+Run `bun run app` to start PostgreSQL, Redis, MinIO, MinIO Console,
+pgAdmin, RedisInsight, the backend, chatserver, and email worker. The local
+processes use Bun hot reload; containers remain running when you stop the
+command with Ctrl-C.
+
+Set the backend and chatserver `DATABASE_URL` values to the localhost URL in
+their `.env.example` files when running these processes on your machine.
+
+The command waits for infrastructure health and applies pending Prisma
+migrations without resetting local data. The development dashboards are
+available at MinIO Console (`http://localhost:9001`), pgAdmin
+(`http://localhost:5050`), and RedisInsight (`http://localhost:5540`).
+
 ---
 
 # Architecture

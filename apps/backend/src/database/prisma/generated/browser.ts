@@ -107,3 +107,28 @@ export type Event = Prisma.EventModel
  * 
  */
 export type EventRegistration = Prisma.EventRegistrationModel
+/**
+ * Model Post
+ * 
+ */
+export type Post = Prisma.PostModel
+/**
+ * Model Comment
+ * 
+ */
+export type Comment = Prisma.CommentModel
+/**
+ * Model PostVote
+ * 
+ */
+export type PostVote = Prisma.PostVoteModel
+/**
+ * Model CommentVote
+ * 
+ */
+export type CommentVote = Prisma.CommentVoteModel
+/**
+ * Model ContentReport
+ * 
+ */
+export type ContentReport = Prisma.ContentReportModel

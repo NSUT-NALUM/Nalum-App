@@ -99,6 +99,8 @@ function AppNavigator() {
 				<Stack.Screen name="admin/review/[userId]" />
 				<Stack.Screen name="admin/user/[userId]" />
 				<Stack.Screen name="admin/events/[eventId]" />
+				<Stack.Screen name="admin/posts" />
+				<Stack.Screen name="admin/posts/[postId]" />
 			</Stack.Protected>
 		</Stack>
 	);

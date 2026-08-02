@@ -53,6 +53,7 @@ export const buildApp = async (options: FastifyServerOptions = {}) => {
 	await fanout.connect();
 	await app.register(cors, {
 		credentials: true,
+		methods: ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
 		origin: (origin, callback) => callback(null, isAllowedOrigin(origin)),
 	});
 	await presence.connect(

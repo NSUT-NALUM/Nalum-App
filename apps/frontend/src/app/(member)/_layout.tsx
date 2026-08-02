@@ -3,6 +3,7 @@ import {
 	CalendarDays,
 	Compass,
 	MessageCircle,
+	MessageSquare,
 	UserRound,
 	UsersRound,
 } from "lucide-react-native";
@@ -32,6 +33,16 @@ export default function MemberTabs() {
 					tabBarLabelStyle: { fontSize: 12, fontWeight: "600" },
 				}}
 			>
+				<Tabs.Screen
+					name="posts"
+					options={{
+						title: "Posts",
+						tabBarAccessibilityLabel: "Posts tab",
+						tabBarIcon: ({ color, size }) => (
+							<MessageSquare color={color} size={size} />
+						),
+					}}
+				/>
 				<Tabs.Screen
 					name="directory"
 					options={{

@@ -70,6 +70,24 @@ enum EventStatus {
   CANCELLED
 }
 
+enum PostStatus {
+  PENDING
+  PUBLISHED
+  REJECTED
+  REMOVED
+}
+
+enum VoteDirection {
+  UP
+  DOWN
+}
+
+enum ContentReportStatus {
+  PENDING
+  DISMISSED
+  RESOLVED
+}
+
 enum ConversationType {
   DIRECT
   GROUP
@@ -137,6 +155,14 @@ model User {
   authoredEvents           Event[]                   @relation("EventAuthor")
   reviewedEvents           Event[]                   @relation("EventReviewer")
   eventRegistrations       EventRegistration[]
+  authoredPosts          Post[]          @relation("PostAuthor")
+  reviewedPosts          Post[]          @relation("PostReviewer")
+  authoredComments       Comment[]       @relation("CommentAuthor")
+  removedComments        Comment[]       @relation("CommentRemover")
+  postVotes              PostVote[]
+  commentVotes           CommentVote[]
+  contentReports         ContentReport[] @relation("ContentReportReporter")
+  reviewedContentReports ContentReport[] @relation("ContentReportReviewer")
 
   @@index([firstName])
   @@index([lastName])
@@ -423,4 +449,100 @@ model EventRegistration {
 
   @@id([eventId, userId])
   @@index([userId, createdAt])
+}
+
+model Post {
+  id              String               @id @default(uuid(7)) @db.Uuid
+  title           String
+  body            String
+  imageKeys       String[]
+  status          PostStatus           @default(PENDING)
+  authorId        String               @db.Uuid
+  reviewerId      String?              @db.Uuid
+  moderationNote  String?
+  rejectionReason String?
+  removedAt       DateTime?
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+  author          User                 @relation("PostAuthor", fields: [authorId], references: [id], onDelete: Cascade)
+  reviewer        User?                @relation("PostReviewer", fields: [reviewerId], references: [id], onDelete: SetNull)
+  comments        Comment[]
+  votes           PostVote[]
+  reports         ContentReport[]
+
+  @@index([status, createdAt])
+  @@index([authorId, status, createdAt])
+  @@index([reviewerId])
+}
+
+model Comment {
+  id          String                  @id @default(uuid(7)) @db.Uuid
+  postId      String                  @db.Uuid
+  parentId    String?                 @db.Uuid
+  authorId    String                  @db.Uuid
+  body        String
+  editedAt    DateTime?
+  removedAt   DateTime?
+  removedById String?                 @db.Uuid
+  createdAt   DateTime                @default(now())
+  updatedAt   DateTime                @updatedAt
+  post        Post                    @relation(fields: [postId], references: [id], onDelete: Cascade)
+  parent      Comment?                @relation("CommentReplies", fields: [parentId], references: [id], onDelete: SetNull)
+  replies     Comment[]               @relation("CommentReplies")
+  author      User                    @relation("CommentAuthor", fields: [authorId], references: [id], onDelete: Cascade)
+  removedBy   User?                   @relation("CommentRemover", fields: [removedById], references: [id], onDelete: SetNull)
+  votes       CommentVote[]
+  reports     ContentReport[]
+
+  @@index([postId, parentId, createdAt])
+  @@index([authorId, createdAt])
+  @@index([removedById])
+}
+
+model PostVote {
+  postId    String                  @db.Uuid
+  userId    String                  @db.Uuid
+  direction VoteDirection
+  createdAt DateTime                @default(now())
+  updatedAt DateTime                @updatedAt
+  post      Post                    @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([postId, userId])
+  @@index([postId, direction])
+}
+
+model CommentVote {
+  commentId String                  @db.Uuid
+  userId    String                  @db.Uuid
+  direction VoteDirection
+  createdAt DateTime                @default(now())
+  updatedAt DateTime                @updatedAt
+  comment   Comment                 @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  user      User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([commentId, userId])
+  @@index([commentId, direction])
+}
+
+model ContentReport {
+  id           String                @id @default(uuid(7)) @db.Uuid
+  postId       String?               @db.Uuid
+  commentId    String?               @db.Uuid
+  reporterId   String                @db.Uuid
+  reason       String
+  status       ContentReportStatus   @default(PENDING)
+  reviewerId   String?               @db.Uuid
+  reviewedAt   DateTime?
+  createdAt    DateTime              @default(now())
+  post         Post?                 @relation(fields: [postId], references: [id], onDelete: Cascade)
+  comment      Comment?              @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  reporter     User                  @relation("ContentReportReporter", fields: [reporterId], references: [id], onDelete: Cascade)
+  reviewer     User?                 @relation("ContentReportReviewer", fields: [reviewerId], references: [id], onDelete: SetNull)
+
+  @@index([status, createdAt])
+  @@index([postId, status])
+  @@index([commentId, status])
+  @@index([reporterId, createdAt])
+  @@index([reviewerId])
 }

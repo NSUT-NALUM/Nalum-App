@@ -8,6 +8,7 @@
 		"packages/*"
 	],
 	"scripts": {
+		"app": "bun scripts/app.ts",
 		"infra": "bun index.ts",
 		"module": "bun scripts/utils/create-module.ts",
 		"middleware": "bun scripts/utils/create-middleware.ts",

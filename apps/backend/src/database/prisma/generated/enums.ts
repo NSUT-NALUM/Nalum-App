@@ -87,6 +87,33 @@ export const EventStatus = {
 export type EventStatus = (typeof EventStatus)[keyof typeof EventStatus]
 
 
+export const PostStatus = {
+  PENDING: 'PENDING',
+  PUBLISHED: 'PUBLISHED',
+  REJECTED: 'REJECTED',
+  REMOVED: 'REMOVED'
+} as const
+
+export type PostStatus = (typeof PostStatus)[keyof typeof PostStatus]
+
+
+export const VoteDirection = {
+  UP: 'UP',
+  DOWN: 'DOWN'
+} as const
+
+export type VoteDirection = (typeof VoteDirection)[keyof typeof VoteDirection]
+
+
+export const ContentReportStatus = {
+  PENDING: 'PENDING',
+  DISMISSED: 'DISMISSED',
+  RESOLVED: 'RESOLVED'
+} as const
+
+export type ContentReportStatus = (typeof ContentReportStatus)[keyof typeof ContentReportStatus]
+
+
 export const ConversationType = {
   DIRECT: 'DIRECT',
   GROUP: 'GROUP'

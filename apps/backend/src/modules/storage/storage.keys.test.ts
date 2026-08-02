@@ -8,11 +8,12 @@ describe("storage keys", () => {
 		);
 	});
 
-	it("allows profile picture, event, and chat image object keys", () => {
+	it("allows profile picture, event, Post, and chat image object keys", () => {
 		expect(
 			isAllowedStorageObjectKey("profilepicture/user-id/avatar.webp"),
 		).toBe(true);
 		expect(isAllowedStorageObjectKey("events/event-id/banner.webp")).toBe(true);
+		expect(isAllowedStorageObjectKey("posts/post-id/idea.webp")).toBe(true);
 		expect(
 			isAllowedStorageObjectKey("chat/conversation-id/user-id/image.webp"),
 		).toBe(true);

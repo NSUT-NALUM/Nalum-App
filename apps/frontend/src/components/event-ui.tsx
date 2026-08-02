@@ -7,6 +7,7 @@ import { Platform, Pressable, ScrollView, Text, View } from "react-native";
 import { Button, Card, Field } from "@/components/ui/nalum";
 import { useTheme } from "@/hooks/use-theme";
 import { apiImageSource, type Event, type EventStatus } from "@/lib/api";
+import { appendPickedImage } from "@/lib/image-upload";
 
 export const formatEventDate = (value: string | Date) =>
 	new Date(value).toLocaleString(undefined, {
@@ -135,11 +136,7 @@ export function toEventFormData(value: EventFormValue) {
 	form.append("endsAt", value.endsAt.toISOString());
 	form.append("meetUrl", value.meetUrl.trim());
 	for (const image of value.images ?? []) {
-		form.append("images", {
-			uri: image.uri,
-			name: image.fileName ?? "event-image.jpg",
-			type: image.mimeType ?? "image/jpeg",
-		} as unknown as Blob);
+		appendPickedImage(form, "images", image);
 	}
 	return form;
 }

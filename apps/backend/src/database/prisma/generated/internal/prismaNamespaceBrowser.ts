@@ -68,7 +68,12 @@ export const ModelName = {
   Experience: 'Experience',
   UserBan: 'UserBan',
   Event: 'Event',
-  EventRegistration: 'EventRegistration'
+  EventRegistration: 'EventRegistration',
+  Post: 'Post',
+  Comment: 'Comment',
+  PostVote: 'PostVote',
+  CommentVote: 'CommentVote',
+  ContentReport: 'ContentReport'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -348,6 +353,77 @@ export const EventRegistrationScalarFieldEnum = {
 } as const
 
 export type EventRegistrationScalarFieldEnum = (typeof EventRegistrationScalarFieldEnum)[keyof typeof EventRegistrationScalarFieldEnum]
+
+
+export const PostScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  body: 'body',
+  imageKeys: 'imageKeys',
+  status: 'status',
+  authorId: 'authorId',
+  reviewerId: 'reviewerId',
+  moderationNote: 'moderationNote',
+  rejectionReason: 'rejectionReason',
+  removedAt: 'removedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PostScalarFieldEnum = (typeof PostScalarFieldEnum)[keyof typeof PostScalarFieldEnum]
+
+
+export const CommentScalarFieldEnum = {
+  id: 'id',
+  postId: 'postId',
+  parentId: 'parentId',
+  authorId: 'authorId',
+  body: 'body',
+  editedAt: 'editedAt',
+  removedAt: 'removedAt',
+  removedById: 'removedById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CommentScalarFieldEnum = (typeof CommentScalarFieldEnum)[keyof typeof CommentScalarFieldEnum]
+
+
+export const PostVoteScalarFieldEnum = {
+  postId: 'postId',
+  userId: 'userId',
+  direction: 'direction',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PostVoteScalarFieldEnum = (typeof PostVoteScalarFieldEnum)[keyof typeof PostVoteScalarFieldEnum]
+
+
+export const CommentVoteScalarFieldEnum = {
+  commentId: 'commentId',
+  userId: 'userId',
+  direction: 'direction',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CommentVoteScalarFieldEnum = (typeof CommentVoteScalarFieldEnum)[keyof typeof CommentVoteScalarFieldEnum]
+
+
+export const ContentReportScalarFieldEnum = {
+  id: 'id',
+  postId: 'postId',
+  commentId: 'commentId',
+  reporterId: 'reporterId',
+  reason: 'reason',
+  status: 'status',
+  reviewerId: 'reviewerId',
+  reviewedAt: 'reviewedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type ContentReportScalarFieldEnum = (typeof ContentReportScalarFieldEnum)[keyof typeof ContentReportScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -31,6 +31,82 @@ export type Profile = {
 	profilePicture: string | null;
 };
 export type EventStatus = "PENDING" | "PUBLISHED" | "REJECTED" | "CANCELLED";
+export type PostStatus = "PENDING" | "PUBLISHED" | "REJECTED" | "REMOVED";
+export type VoteDirection = "UP" | "DOWN";
+export type PostAuthor = { id: string; firstName: string; lastName: string };
+export type Post = {
+	id: string;
+	title: string;
+	body: string;
+	images: string[];
+	status: PostStatus;
+	authorId: string;
+	reviewerId: string | null;
+	moderationNote: string | null;
+	rejectionReason: string | null;
+	removedAt: string | null;
+	createdAt: string;
+	updatedAt: string;
+	author: PostAuthor;
+	reviewer: PostAuthor | null;
+	commentCount: number;
+	upvotes: number;
+	downvotes: number;
+	score: number;
+	myVote: VoteDirection | null;
+};
+export type PostComment = {
+	id: string;
+	postId: string;
+	parentId: string | null;
+	authorId: string;
+	body: string | null;
+	editedAt: string | null;
+	createdAt: string;
+	updatedAt: string;
+	author: PostAuthor;
+	isRemoved: boolean;
+	upvotes: number;
+	downvotes: number;
+	score: number;
+	myVote: VoteDirection | null;
+	replies: PostComment[];
+};
+export type PostPage = {
+	posts: Post[];
+	total: number;
+	limit: number;
+	offset: number;
+};
+export type PostCommentPage = {
+	comments: PostComment[];
+	total: number;
+	limit: number;
+	offset: number;
+};
+export type ContentReportStatus = "PENDING" | "DISMISSED" | "RESOLVED";
+export type ContentReport = {
+	id: string;
+	reason: string;
+	status: ContentReportStatus;
+	createdAt: string;
+	reviewedAt: string | null;
+	reporter: PostAuthor;
+	reviewer: PostAuthor | null;
+	post: {
+		id: string;
+		title: string;
+		status: PostStatus;
+		author: PostAuthor;
+	} | null;
+	comment: {
+		id: string;
+		body: string;
+		removedAt: string | null;
+		author: PostAuthor;
+		post: { id: string; title: string; status: PostStatus };
+	} | null;
+};
 export type Event = {
 	id: string;
 	title: string;
@@ -577,6 +653,16 @@ export type AdminEventListParams = EventListParams & {
 	q?: string;
 };
 
+export type PostListParams = { limit?: number; offset?: number };
+export type AdminPostListParams = PostListParams & {
+	status?: PostStatus;
+	q?: string;
+};
+export type ReportListParams = PostListParams & {
+	status?: ContentReportStatus;
+	target?: "post" | "comment";
+};
+
 export const eventsApi = {
 	list: (params: EventListParams = {}) =>
 		api<EventPage>(`/events?${queryString(params)}`),
@@ -630,6 +716,111 @@ export const eventsApi = {
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({ reason }),
 			},
+		),
+};
+
+export const postsApi = {
+	list: (params: PostListParams = {}) =>
+		api<PostPage>(`/posts?${queryString(params)}`),
+	mine: (params: PostListParams = {}) =>
+		api<PostPage>(`/posts/mine?${queryString(params)}`),
+	get: (postId: string) => api<Post>(`/posts/${postId}`),
+	create: (form: FormData) =>
+		api<Post>("/posts", { method: "POST", body: form }),
+	update: (postId: string, form: FormData) =>
+		api<Post>(`/posts/${postId}`, { method: "PATCH", body: form }),
+	comments: (postId: string, params: PostListParams = {}) =>
+		api<PostCommentPage>(`/posts/${postId}/comments?${queryString(params)}`),
+	createComment: (postId: string, body: string, parentId?: string) =>
+		api<PostComment>(`/posts/${postId}/comments`, {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ body, parentId }),
+		}),
+	updateComment: (commentId: string, body: string) =>
+		api<PostComment>(`/posts/comments/${commentId}`, {
+			method: "PATCH",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ body }),
+		}),
+	setPostVote: (postId: string, direction: VoteDirection) =>
+		api<{ postId: string; direction: VoteDirection }>(`/posts/${postId}/vote`, {
+			method: "PUT",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ direction }),
+		}),
+	removePostVote: (postId: string) =>
+		api<{ postId: string; direction: null }>(`/posts/${postId}/vote`, {
+			method: "DELETE",
+		}),
+	setCommentVote: (commentId: string, direction: VoteDirection) =>
+		api<{ commentId: string; direction: VoteDirection }>(
+			`/posts/comments/${commentId}/vote`,
+			{
+				method: "PUT",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ direction }),
+			},
+		),
+	removeCommentVote: (commentId: string) =>
+		api<{ commentId: string; direction: null }>(
+			`/posts/comments/${commentId}/vote`,
+			{ method: "DELETE" },
+		),
+	reportPost: (postId: string, reason: string) =>
+		api<{ reportId: string; status: ContentReportStatus }>(
+			`/posts/${postId}/reports`,
+			{
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ reason }),
+			},
+		),
+	reportComment: (commentId: string, reason: string) =>
+		api<{ reportId: string; status: ContentReportStatus }>(
+			`/posts/comments/${commentId}/reports`,
+			{
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ reason }),
+			},
+		),
+	adminList: (params: AdminPostListParams = {}) =>
+		api<PostPage>(`/admin/posts?${queryString(params)}`),
+	approve: (postId: string, note?: string) =>
+		api<{ postId: string; status: "PUBLISHED" }>(
+			`/admin/posts/${postId}/approve`,
+			{
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ note: note || undefined }),
+			},
+		),
+	reject: (postId: string, reason: string) =>
+		api<{ postId: string; status: "REJECTED" }>(
+			`/admin/posts/${postId}/reject`,
+			{
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ reason }),
+			},
+		),
+	reports: (params: ReportListParams = {}) =>
+		api<{
+			reports: ContentReport[];
+			total: number;
+			limit: number;
+			offset: number;
+		}>(`/admin/posts/reports?${queryString(params)}`),
+	dismissReport: (reportId: string) =>
+		api<{ reportId: string; status: "DISMISSED" }>(
+			`/admin/posts/reports/${reportId}/dismiss`,
+			{ method: "POST" },
+		),
+	removeReportedContent: (reportId: string) =>
+		api<{ outcome: "POST_REMOVED" | "COMMENT_REMOVED" }>(
+			`/admin/posts/reports/${reportId}/remove-content`,
+			{ method: "POST" },
 		),
 };
 export const usersApi = (

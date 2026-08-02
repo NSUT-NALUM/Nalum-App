@@ -5,6 +5,7 @@ import { UnsupportedStorageObjectKeyError } from "./storage.errors";
 import {
 	isAllowedStorageObjectKey,
 	isChatImageObjectKey,
+	isPostImageObjectKey,
 	toStorageObjectUrl,
 } from "./storage.keys";
 
@@ -61,6 +62,23 @@ const storageRoutes: FastifyPluginAsync = async (fastify) => {
 				throw new ForbiddenError(
 					"You cannot access this chat attachment",
 					"CHAT_ATTACHMENT_FORBIDDEN",
+				);
+		}
+		if (isPostImageObjectKey(key)) {
+			const user = getCurrentUser(request);
+			const post = await request.server.prisma.post.findFirst({
+				where: {
+					imageKeys: { has: key },
+					...(user.role === "ADMIN"
+						? {}
+						: { OR: [{ status: "PUBLISHED" }, { authorId: user.id }] }),
+				},
+				select: { id: true },
+			});
+			if (!post)
+				throw new ForbiddenError(
+					"You cannot access this post image",
+					"POST_IMAGE_FORBIDDEN",
 				);
 		}
 

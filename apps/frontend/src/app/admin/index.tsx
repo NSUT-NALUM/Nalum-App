@@ -16,10 +16,10 @@ import {
 	type AdminUser,
 	type AlumniVerificationStatus,
 	adminApi,
-	eventsApi,
 	type Event,
 	type EventPage,
 	type EventStatus,
+	eventsApi,
 } from "@/lib/api";
 
 type Tab = "reviews" | "users" | "events";
@@ -133,6 +133,12 @@ export default function AdminPortal() {
 						onPress={() => setTab("events")}
 					>
 						Event moderation
+					</Button>
+					<Button
+						variant="secondary"
+						onPress={() => router.push("/admin/posts" as never)}
+					>
+						Post moderation
 					</Button>
 				</View>
 				<Card>

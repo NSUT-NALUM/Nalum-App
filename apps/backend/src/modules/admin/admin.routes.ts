@@ -8,6 +8,10 @@ import { EventsController } from "../events/events.controller";
 import { EventsRepository } from "../events/events.repository";
 import * as eventsSchema from "../events/events.schema";
 import { EventsService } from "../events/events.service";
+import { PostController } from "../post/post.controller";
+import { PostRepository } from "../post/post.repository";
+import * as postSchema from "../post/post.schema";
+import { PostService } from "../post/post.service";
 import { AdminController } from "./admin.controller";
 import { AdminRepository } from "./admin.repository";
 import * as schema from "./admin.schema";
@@ -20,6 +24,9 @@ const adminRoutes: FastifyPluginAsync = async (fastify) => {
 	const controller = new AdminController(service);
 	const eventsController = new EventsController(
 		new EventsService(new EventsRepository(fastify.prisma)),
+	);
+	const postController = new PostController(
+		new PostService(new PostRepository(fastify.prisma)),
 	);
 	const app = fastify.withTypeProvider<ZodTypeProvider>();
 	const secured = {
@@ -128,7 +135,10 @@ const adminRoutes: FastifyPluginAsync = async (fastify) => {
 		"/events",
 		{
 			...secured,
-			schema: { ...secured.schema, querystring: eventsSchema.moderationEventsQuerySchema },
+			schema: {
+				...secured.schema,
+				querystring: eventsSchema.moderationEventsQuerySchema,
+			},
 		},
 		eventsController.moderationList,
 	);
@@ -136,7 +146,11 @@ const adminRoutes: FastifyPluginAsync = async (fastify) => {
 		"/events/:eventId/approve",
 		{
 			...secured,
-			schema: { ...secured.schema, params: eventsSchema.eventIdParamsSchema, body: eventsSchema.moderationNoteSchema },
+			schema: {
+				...secured.schema,
+				params: eventsSchema.eventIdParamsSchema,
+				body: eventsSchema.moderationNoteSchema,
+			},
 		},
 		eventsController.approve,
 	);
@@ -144,9 +158,72 @@ const adminRoutes: FastifyPluginAsync = async (fastify) => {
 		"/events/:eventId/reject",
 		{
 			...secured,
-			schema: { ...secured.schema, params: eventsSchema.eventIdParamsSchema, body: eventsSchema.rejectionSchema },
+			schema: {
+				...secured.schema,
+				params: eventsSchema.eventIdParamsSchema,
+				body: eventsSchema.rejectionSchema,
+			},
 		},
 		eventsController.reject,
+	);
+	app.get(
+		"/posts",
+		{
+			...secured,
+			schema: {
+				...secured.schema,
+				querystring: postSchema.moderationPostsQuerySchema,
+			},
+		},
+		postController.moderationList,
+	);
+	app.post(
+		"/posts/:postId/approve",
+		{
+			...secured,
+			schema: {
+				...secured.schema,
+				params: postSchema.postIdParamsSchema,
+				body: postSchema.moderationNoteSchema,
+			},
+		},
+		postController.approve,
+	);
+	app.post(
+		"/posts/:postId/reject",
+		{
+			...secured,
+			schema: {
+				...secured.schema,
+				params: postSchema.postIdParamsSchema,
+				body: postSchema.rejectionSchema,
+			},
+		},
+		postController.reject,
+	);
+	app.get(
+		"/posts/reports",
+		{
+			...secured,
+			schema: { ...secured.schema, querystring: postSchema.reportsQuerySchema },
+		},
+		postController.listReports,
+	);
+	app.post(
+		"/posts/reports/:reportId/dismiss",
+		{
+			...secured,
+			schema: { ...secured.schema, params: postSchema.reportIdParamsSchema },
+		},
+		postController.dismissReport,
+	);
+	app.post(
+		"/posts/reports/:reportId/remove-content",
+		{
+			...secured,
+			schema: { ...secured.schema, params: postSchema.reportIdParamsSchema },
+		},
+		postController.removeReportedContent,
 	);
 
 	fastify.addHook("onReady", async () => {

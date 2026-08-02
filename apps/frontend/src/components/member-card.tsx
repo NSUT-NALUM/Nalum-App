@@ -4,7 +4,7 @@ import { Text, View } from "react-native";
 import { Button, Card } from "@/components/ui/nalum";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTheme } from "@/hooks/use-theme";
-import type { User } from "@/lib/api";
+import { apiImageSource, type User } from "@/lib/api";
 
 export function MemberCard({
 	user,
@@ -25,7 +25,7 @@ export function MemberCard({
 					{profile?.profilePicture ? (
 						<Image
 							accessibilityLabel={`${user.firstName} ${user.lastName}'s profile photo`}
-							source={profile.profilePicture}
+							source={apiImageSource(profile.profilePicture)}
 							style={{ height: 56, width: 56 }}
 						/>
 					) : (
