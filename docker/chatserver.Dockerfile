@@ -10,7 +10,7 @@ COPY apps/frontend/package.json ./apps/frontend/package.json
 COPY packages/database/package.json ./packages/database/package.json
 
 RUN --mount=type=cache,target=/root/.bun/install/cache \
-	bun install --frozen-lockfile --production --filter chatserver --ignore-scripts \
+	bun install --frozen-lockfile --production --filter chatserver --filter backend --ignore-scripts \
 		--network-concurrency 8
 
 COPY apps/chatserver ./apps/chatserver

@@ -31,6 +31,7 @@ const envSchema = z.object({
 	BREVO_FROM_EMAIL: z.email().optional(),
 	BREVO_FROM_NAME: z.string().default("NSUT ALUMNI ASSOCIATION"),
 	EMAIL_QUEUE_NAME: z.string(),
+	EVENTS_NOTIFICATION_EMAIL: z.email().optional(),
 	S3_ENDPOINT: z.url().default("http://localhost:9000"),
 	S3_REGION: z.string().default("us-east-1"),
 	S3_ACCESS_KEY_ID: z.string().optional(),
@@ -63,6 +64,11 @@ if (
 	(!parseResult.data.S3_ACCESS_KEY_ID || !parseResult.data.S3_SECRET_ACCESS_KEY)
 ) {
 	console.error("Invalid environment variables: S3 credentials are required");
+	process.exit(1);
+}
+
+if (parseResult.data.NODE_ENV !== "test" && !parseResult.data.EVENTS_NOTIFICATION_EMAIL) {
+	console.error("Invalid environment variables: EVENTS_NOTIFICATION_EMAIL is required");
 	process.exit(1);
 }
 

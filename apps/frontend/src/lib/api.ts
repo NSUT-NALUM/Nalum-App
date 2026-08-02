@@ -30,6 +30,42 @@ export type Profile = {
 	currentRole: string | null;
 	profilePicture: string | null;
 };
+export type EventStatus = "PENDING" | "PUBLISHED" | "REJECTED" | "CANCELLED";
+export type Event = {
+	id: string;
+	title: string;
+	description: string;
+	startsAt: string;
+	endsAt: string;
+	venue: string;
+	meetUrl: string | null;
+	images: string[];
+	status: EventStatus;
+	authorId: string;
+	reviewerId: string | null;
+	moderationNote: string | null;
+	rejectionReason: string | null;
+	createdAt: string;
+	updatedAt: string;
+	author: { id: string; firstName: string; lastName: string };
+	reviewer: { id: string; firstName: string; lastName: string } | null;
+	attendeeCount: number;
+	isJoined: boolean;
+};
+export type EventPage = {
+	events: Event[];
+	total: number;
+	limit: number;
+	offset: number;
+};
+export type EventAttendee = {
+	id: string;
+	firstName: string;
+	lastName: string;
+	email: string;
+	joinedAt: string;
+	profile: Pick<Profile, "batch" | "branch" | "campus"> | null;
+};
 export type Experience = {
 	id?: string;
 	company: string;
@@ -92,12 +128,29 @@ const localApiUrl = Platform.select({
 
 const baseUrl =
 	process.env.EXPO_PUBLIC_API_URL ?? (__DEV__ ? localApiUrl : "/api");
+const localChatApiUrl = Platform.select({
+	web: "http://localhost:3001/api",
+	default: "http://10.0.2.2:3001/api",
+});
+const chatBaseUrl =
+	process.env.EXPO_PUBLIC_CHAT_API_URL ??
+	(__DEV__ ? localChatApiUrl : "/chat-api");
 let accessToken: string | null = null;
 let refreshing: Promise<string | null> | null = null;
 export const getToken = () => accessToken;
 export const clearToken = () => {
 	accessToken = null;
 };
+
+export const apiImageSource = (uri: string) => ({
+	uri:
+		uri.startsWith("http://") ||
+		uri.startsWith("https://") ||
+		!baseUrl.startsWith("http")
+			? uri
+			: new URL(uri, baseUrl).toString(),
+	headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : undefined,
+});
 async function refresh() {
 	if (!refreshing)
 		refreshing = fetch(`${baseUrl}/auth/refresh`, {
@@ -117,6 +170,9 @@ async function refresh() {
 	accessToken = await refreshing;
 	return accessToken;
 }
+
+export const getChatToken = async (forceRefresh = false) =>
+	forceRefresh ? refresh() : (accessToken ?? refresh());
 export async function api<T>(
 	path: string,
 	init: RequestInit = {},
@@ -157,6 +213,207 @@ export async function api<T>(
 	}
 	return (payload as Envelope<T>).data;
 }
+
+async function chatRequest<T>(
+	path: string,
+	init: RequestInit = {},
+	retry = true,
+): Promise<T> {
+	const token = await getChatToken();
+	const headers = new Headers(init.headers);
+	if (token) headers.set("Authorization", `Bearer ${token}`);
+	const response = await fetch(`${chatBaseUrl}${path}`, { ...init, headers });
+	if (response.status === 401 && retry && (await refresh()))
+		return chatRequest<T>(path, init, false);
+	const payload = (await response.json().catch(() => null)) as
+		| T
+		| { code?: string; message?: string }
+		| null;
+	if (!response.ok)
+		throw new ApiError(
+			response.status,
+			payload && typeof payload === "object" && "code" in payload
+				? (payload.code ?? "REQUEST_FAILED")
+				: "REQUEST_FAILED",
+			payload && typeof payload === "object" && "message" in payload
+				? (payload.message ?? "Request failed")
+				: "Request failed",
+		);
+	return payload as T;
+}
+
+export type ChatPerson = { id: string; firstName: string; lastName: string };
+export type ChatAttachment = {
+	id: string;
+	key: string;
+	contentType: string;
+	url: string;
+};
+export type ChatReaction = {
+	emoji: string;
+	count: number;
+	reactedByMe: boolean;
+};
+export type ChatReadReceipt = {
+	userId: string;
+	lastReadMessageId: string | null;
+	lastReadAt: string | null;
+};
+export type ChatMessage = {
+	id: string;
+	conversationId: string;
+	senderId: string;
+	clientMessageId: string;
+	type: "USER" | "SYSTEM";
+	text: string;
+	createdAt: string;
+	editedAt: string | null;
+	deletedAt: string | null;
+	replyTo: {
+		messageId: string;
+		text: string | null;
+		senderId: string | null;
+	} | null;
+	attachments: ChatAttachment[];
+	mentionUserIds: string[];
+	mentionsEveryone: boolean;
+	reactions: ChatReaction[];
+};
+export type Conversation = {
+	id: string;
+	type: "DIRECT" | "GROUP";
+	name: string | null;
+	lastMessageAt: string;
+	unreadCount: number;
+	unreadMentionCount: number;
+	participants: Array<{
+		userId: string;
+		role: "OWNER" | "ADMIN" | "MEMBER";
+		joinedAt: string;
+		lastReadMessageId: string | null;
+		lastReadAt: string | null;
+		user: Omit<ChatPerson, "id">;
+	}>;
+	messages: ChatMessage[];
+};
+export type ChatMessagePage = {
+	messages: ChatMessage[];
+	readReceipt: ChatReadReceipt;
+	readReceipts: ChatReadReceipt[];
+	nextCursor: string | null;
+};
+export type GroupInvitation = {
+	id: string;
+	conversationId: string;
+	inviterId: string;
+	inviteeId: string;
+	status: "PENDING" | "ACCEPTED" | "DECLINED";
+	createdAt: string;
+	updatedAt: string;
+	conversation: Pick<Conversation, "id" | "name" | "type">;
+	inviter: ChatPerson;
+};
+export type ConnectionRequest = {
+	id: string;
+	requesterId: string;
+	recipientId: string;
+	text: string;
+	status: "PENDING" | "ACCEPTED" | "DECLINED";
+	createdAt: string;
+	updatedAt: string;
+	requester: ChatPerson;
+	recipient: ChatPerson;
+};
+
+export const chatApi = {
+	conversations: () =>
+		chatRequest<{ conversations: Conversation[] }>("/conversations"),
+	messages: (conversationId: string, cursor?: string) =>
+		chatRequest<ChatMessagePage>(
+			`/conversations/${conversationId}/messages${cursor ? `?cursor=${encodeURIComponent(cursor)}` : ""}`,
+		),
+	uploadImage: (conversationId: string, form: FormData) =>
+		api<ChatAttachment>(
+			`/chat/attachments?conversationId=${encodeURIComponent(conversationId)}`,
+			{ method: "POST", body: form },
+		),
+	requests: (direction: "incoming" | "outgoing") =>
+		chatRequest<ConnectionRequest[]>(`/connection-requests/${direction}`),
+	createRequest: (recipientUserId: string, text: string) =>
+		chatRequest<ConnectionRequest>("/connection-requests", {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ recipientUserId, text }),
+		}),
+	acceptRequest: (requestId: string) =>
+		chatRequest<{ conversation: Conversation }>(
+			`/connection-requests/${requestId}/accept`,
+			{ method: "POST" },
+		),
+	declineRequest: (requestId: string) =>
+		chatRequest(`/connection-requests/${requestId}/decline`, {
+			method: "POST",
+		}),
+	createGroup: (name: string, inviteeIds: string[]) =>
+		chatRequest<{ id: string }>("/conversations/groups", {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ name, inviteeIds }),
+		}),
+	groupInvitations: () =>
+		chatRequest<GroupInvitation[]>("/group-invitations/incoming"),
+	acceptGroupInvitation: (invitationId: string) =>
+		chatRequest(`/group-invitations/${invitationId}/accept`, {
+			method: "POST",
+		}),
+	declineGroupInvitation: (invitationId: string) =>
+		chatRequest(`/group-invitations/${invitationId}/decline`, {
+			method: "POST",
+		}),
+	inviteMember: (conversationId: string, userId: string) =>
+		chatRequest(`/conversations/${conversationId}/invitations`, {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ userId }),
+		}),
+	removeMember: (conversationId: string, userId: string) =>
+		chatRequest(`/conversations/${conversationId}/members/${userId}`, {
+			method: "DELETE",
+		}),
+	leaveGroup: (conversationId: string) =>
+		chatRequest(`/conversations/${conversationId}/leave`, { method: "POST" }),
+	updateMemberRole: (
+		conversationId: string,
+		userId: string,
+		role: "ADMIN" | "MEMBER",
+	) =>
+		chatRequest(`/conversations/${conversationId}/members/${userId}/role`, {
+			method: "PATCH",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ role }),
+		}),
+	transferOwnership: (conversationId: string, userId: string) =>
+		chatRequest(
+			`/conversations/${conversationId}/members/${userId}/ownership`,
+			{ method: "POST" },
+		),
+};
+
+export const getChatWebSocketUrl = () => {
+	if (process.env.EXPO_PUBLIC_CHAT_WS_URL)
+		return process.env.EXPO_PUBLIC_CHAT_WS_URL;
+	if (__DEV__)
+		return (
+			Platform.select({
+				web: "ws://localhost:3001/ws",
+				default: "ws://10.0.2.2:3001/ws",
+			}) ?? null
+		);
+	if (Platform.OS === "web" && typeof window !== "undefined") {
+		return `${window.location.protocol === "https:" ? "wss" : "ws"}://${window.location.host}/ws`;
+	}
+	return null;
+};
 export const authApi = {
 	restore: async () => {
 		await refresh();
@@ -304,6 +561,76 @@ export const adminApi = {
 		}),
 	unban: (userId: string) =>
 		api(`/admin/users/${userId}/unban`, { method: "POST" }),
+};
+
+export type EventListParams = {
+	when?: "upcoming" | "past";
+	startsFrom?: string;
+	startsTo?: string;
+	limit?: number;
+	offset?: number;
+};
+
+export type AdminEventListParams = EventListParams & {
+	status?: EventStatus;
+	authorId?: string;
+	q?: string;
+};
+
+export const eventsApi = {
+	list: (params: EventListParams = {}) =>
+		api<EventPage>(`/events?${queryString(params)}`),
+	mine: (params: EventListParams = {}) =>
+		api<EventPage>(`/events/mine?${queryString(params)}`),
+	get: (eventId: string) => api<Event>(`/events/${eventId}`),
+	create: (form: FormData) =>
+		api<Event>("/events", { method: "POST", body: form }),
+	update: (eventId: string, form: FormData) =>
+		api<Event>(`/events/${eventId}`, { method: "PATCH", body: form }),
+	remove: (eventId: string) =>
+		api<{ eventId: string }>(`/events/${eventId}`, { method: "DELETE" }),
+	cancel: (eventId: string) =>
+		api<{ eventId: string; status: "CANCELLED" }>(`/events/${eventId}/cancel`, {
+			method: "POST",
+		}),
+	join: (eventId: string) =>
+		api<{ eventId: string; isJoined: true }>(`/events/${eventId}/join`, {
+			method: "POST",
+		}),
+	leave: (eventId: string) =>
+		api<{ eventId: string; isJoined: false }>(`/events/${eventId}/join`, {
+			method: "DELETE",
+		}),
+	attendees: (
+		eventId: string,
+		params: Pick<EventListParams, "limit" | "offset"> = {},
+	) =>
+		api<{
+			attendees: EventAttendee[];
+			total: number;
+			limit: number;
+			offset: number;
+		}>(`/events/${eventId}/attendees?${queryString(params)}`),
+	adminList: (params: AdminEventListParams = {}) =>
+		api<EventPage>(`/admin/events?${queryString(params)}`),
+	approve: (eventId: string, note?: string) =>
+		api<{ eventId: string; status: "PUBLISHED" }>(
+			`/admin/events/${eventId}/approve`,
+			{
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ note: note || undefined }),
+			},
+		),
+	reject: (eventId: string, reason: string) =>
+		api<{ eventId: string; status: "REJECTED" }>(
+			`/admin/events/${eventId}/reject`,
+			{
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ reason }),
+			},
+		),
 };
 export const usersApi = (
 	params: Record<string, string | number | boolean | undefined>,

@@ -41,6 +41,19 @@ export type EmailJobPayload =
 				reason: string;
 				signInUrl: string;
 			};
+		  }
+		| {
+			template: "event-notification";
+			payload: {
+				eventId: string;
+				to: string;
+				authorName: string;
+				authorEmail: string;
+				title: string;
+				startsAt: string;
+				endsAt: string;
+				status: "PENDING" | "PUBLISHED";
+		  };
 	  };
 
 export const EMAIL_QUEUE_NAME = env.EMAIL_QUEUE_NAME;

@@ -3,9 +3,11 @@ import { useCallback, useEffect, useState } from "react";
 import { ActivityIndicator, Alert, ScrollView, Text, View } from "react-native";
 import { AdminShell } from "@/components/admin-shell";
 import { Button, Card, Field } from "@/components/ui/nalum";
+import { useTheme } from "@/hooks/use-theme";
 import { type AdminUser, adminApi } from "@/lib/api";
 
 export default function AdminUserDetail() {
+	const theme = useTheme();
 	const { userId } = useLocalSearchParams<{ userId: string }>();
 	const [user, setUser] = useState<AdminUser | null>(null);
 	const [showBan, setShowBan] = useState(false);
@@ -82,7 +84,7 @@ export default function AdminUserDetail() {
 					</Button>
 				</View>
 				{!user ? (
-					<ActivityIndicator color="#7a1f35" />
+					<ActivityIndicator color={theme.primary} />
 				) : (
 					<View className="gap-4">
 						<Card>
@@ -108,7 +110,7 @@ export default function AdminUserDetail() {
 							</Text>
 							{activeBan ? (
 								<View className="gap-2">
-									<Text className="font-semibold text-red-700">
+									<Text className="font-semibold text-destructive">
 										Active {activeBan.expiresAt ? "temporary" : "permanent"} ban
 									</Text>
 									<Text className="text-muted">{activeBan.reason}</Text>
@@ -132,11 +134,13 @@ export default function AdminUserDetail() {
 										Confirm account ban
 									</Text>
 									<Field
+										label="Reason"
 										value={reason}
 										onChangeText={setReason}
 										placeholder="Required reason"
 									/>
 									<Field
+										label="Restriction duration"
 										value={hours}
 										onChangeText={setHours}
 										placeholder="Hours (leave blank for permanent)"

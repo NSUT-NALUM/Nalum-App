@@ -14,7 +14,7 @@ const storagePlugin: FastifyPluginAsync = async (fastify) => {
 	await fastify.register(fastifyMultipart, {
 		limits: {
 			fileSize: 10 * 1024 * 1024,
-			files: 1,
+			files: 10,
 		},
 	});
 

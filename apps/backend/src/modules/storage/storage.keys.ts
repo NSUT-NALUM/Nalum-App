@@ -1,4 +1,6 @@
 export const PROFILE_PICTURE_UPLOAD_PREFIX = "profilepicture";
+export const EVENT_IMAGE_UPLOAD_PREFIX = "events";
+export const CHAT_IMAGE_UPLOAD_PREFIX = "chat";
 
 export const toStorageObjectUrl = (key: string | null | undefined) => {
 	if (!key) return null;
@@ -12,5 +14,12 @@ export const toStorageObjectUrl = (key: string | null | undefined) => {
 
 export const isAllowedStorageObjectKey = (key: string) => {
 	if (!key || key.startsWith("/") || key.includes("..")) return false;
-	return key.startsWith(`${PROFILE_PICTURE_UPLOAD_PREFIX}/`);
+	return (
+		key.startsWith(`${PROFILE_PICTURE_UPLOAD_PREFIX}/`) ||
+		/^events\/[^/]+\/[^/]+$/.test(key) ||
+		/^chat\/[^/]+\/[^/]+\/[^/]+$/.test(key)
+	);
 };
+
+export const isChatImageObjectKey = (key: string) =>
+	key.startsWith(`${CHAT_IMAGE_UPLOAD_PREFIX}/`);

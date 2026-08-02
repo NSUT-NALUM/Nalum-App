@@ -23,6 +23,11 @@ export * from './enums.ts';
  */
 export type User = Prisma.UserModel
 /**
+ * Model ConnectionRequest
+ * 
+ */
+export type ConnectionRequest = Prisma.ConnectionRequestModel
+/**
  * Model Conversation
  * 
  */
@@ -33,10 +38,30 @@ export type Conversation = Prisma.ConversationModel
  */
 export type ConversationParticipant = Prisma.ConversationParticipantModel
 /**
+ * Model GroupInvitation
+ * 
+ */
+export type GroupInvitation = Prisma.GroupInvitationModel
+/**
  * Model Message
  * 
  */
 export type Message = Prisma.MessageModel
+/**
+ * Model MessageAttachment
+ * 
+ */
+export type MessageAttachment = Prisma.MessageAttachmentModel
+/**
+ * Model MessageReaction
+ * 
+ */
+export type MessageReaction = Prisma.MessageReactionModel
+/**
+ * Model MessageMention
+ * 
+ */
+export type MessageMention = Prisma.MessageMentionModel
 /**
  * Model RefreshToken
  * 
@@ -72,3 +97,13 @@ export type Experience = Prisma.ExperienceModel
  * 
  */
 export type UserBan = Prisma.UserBanModel
+/**
+ * Model Event
+ * 
+ */
+export type Event = Prisma.EventModel
+/**
+ * Model EventRegistration
+ * 
+ */
+export type EventRegistration = Prisma.EventRegistrationModel

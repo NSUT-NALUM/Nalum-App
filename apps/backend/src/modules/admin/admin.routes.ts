@@ -4,6 +4,10 @@ import { env } from "../../config/env.config";
 import { requireAdmin } from "../../middlewares/auth.middleware";
 import { RedisAccessRevocationPublisher } from "../access/access-revocation.service";
 import { EmailService } from "../email";
+import { EventsController } from "../events/events.controller";
+import { EventsRepository } from "../events/events.repository";
+import * as eventsSchema from "../events/events.schema";
+import { EventsService } from "../events/events.service";
 import { AdminController } from "./admin.controller";
 import { AdminRepository } from "./admin.repository";
 import * as schema from "./admin.schema";
@@ -14,6 +18,9 @@ const adminRoutes: FastifyPluginAsync = async (fastify) => {
 	const revocations = new RedisAccessRevocationPublisher(env.REDIS_URL);
 	const service = new AdminService(repository, new EmailService(), revocations);
 	const controller = new AdminController(service);
+	const eventsController = new EventsController(
+		new EventsService(new EventsRepository(fastify.prisma)),
+	);
 	const app = fastify.withTypeProvider<ZodTypeProvider>();
 	const secured = {
 		preHandler: requireAdmin,
@@ -116,6 +123,30 @@ const adminRoutes: FastifyPluginAsync = async (fastify) => {
 			schema: { ...secured.schema, params: schema.userIdParamsSchema },
 		},
 		controller.unban,
+	);
+	app.get(
+		"/events",
+		{
+			...secured,
+			schema: { ...secured.schema, querystring: eventsSchema.moderationEventsQuerySchema },
+		},
+		eventsController.moderationList,
+	);
+	app.post(
+		"/events/:eventId/approve",
+		{
+			...secured,
+			schema: { ...secured.schema, params: eventsSchema.eventIdParamsSchema, body: eventsSchema.moderationNoteSchema },
+		},
+		eventsController.approve,
+	);
+	app.post(
+		"/events/:eventId/reject",
+		{
+			...secured,
+			schema: { ...secured.schema, params: eventsSchema.eventIdParamsSchema, body: eventsSchema.rejectionSchema },
+		},
+		eventsController.reject,
 	);
 
 	fastify.addHook("onReady", async () => {

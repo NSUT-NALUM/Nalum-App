@@ -10,11 +10,13 @@ import {
 } from "react-native";
 import { AdminShell } from "@/components/admin-shell";
 import { Button, Card, Field } from "@/components/ui/nalum";
+import { useTheme } from "@/hooks/use-theme";
 import { type AdminUser, adminApi } from "@/lib/api";
 
 type Action = "approve" | "reject" | "reopen" | null;
 
 export default function ReviewDetail() {
+	const theme = useTheme();
 	const { userId } = useLocalSearchParams<{ userId: string }>();
 	const [application, setApplication] = useState<AdminUser | null>(null);
 	const [action, setAction] = useState<Action>(null);
@@ -68,7 +70,7 @@ export default function ReviewDetail() {
 					</Button>
 				</View>
 				{!application ? (
-					<ActivityIndicator color="#7a1f35" />
+					<ActivityIndicator color={theme.primary} />
 				) : (
 					<View className="gap-4">
 						<Card>
@@ -212,6 +214,7 @@ export default function ReviewDetail() {
 										Confirm {action}
 									</Text>
 									<Field
+										label={action === "approve" ? "Approval note" : "Reason"}
 										value={reason}
 										onChangeText={setReason}
 										placeholder={

@@ -63,15 +63,39 @@ enum VerificationNotificationState {
   FAILED
 }
 
+enum EventStatus {
+  PENDING
+  PUBLISHED
+  REJECTED
+  CANCELLED
+}
+
 enum ConversationType {
   DIRECT
   GROUP
 }
 
 enum ConversationParticipantRole {
-  OWNER
-  ADMIN
-  MEMBER
+	OWNER
+	ADMIN
+	MEMBER
+}
+
+enum MessageType {
+	USER
+	SYSTEM
+}
+
+enum ConnectionRequestStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+}
+
+enum GroupInvitationStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
 }
 
 model User {
@@ -103,10 +127,37 @@ model User {
   emailOtps                EmailOtp[]
   conversationParticipants ConversationParticipant[]
   sentMessages             Message[]                 @relation("MessageSender")
+  uploadedMessageAttachments MessageAttachment[]     @relation("MessageAttachmentOwner")
+	messageReactions         MessageReaction[]
+	messageMentions          MessageMention[]
+  sentConnectionRequests   ConnectionRequest[]       @relation("ConnectionRequestSender")
+  receivedConnectionRequests ConnectionRequest[]     @relation("ConnectionRequestRecipient")
+	groupInvitationsSent     GroupInvitation[]         @relation("GroupInvitationSender")
+	groupInvitationsReceived GroupInvitation[]         @relation("GroupInvitationRecipient")
+  authoredEvents           Event[]                   @relation("EventAuthor")
+  reviewedEvents           Event[]                   @relation("EventReviewer")
+  eventRegistrations       EventRegistration[]
 
   @@index([firstName])
   @@index([lastName])
   @@index([role, verificationStatus, verificationSubmittedAt])
+}
+
+model ConnectionRequest {
+  id          String                  @id @default(uuid(7)) @db.Uuid
+  pairKey     String                  @unique
+  requesterId String                  @db.Uuid
+  recipientId String                  @db.Uuid
+  text        String
+  status      ConnectionRequestStatus @default(PENDING)
+  respondedAt DateTime?
+  createdAt   DateTime                @default(now())
+  updatedAt   DateTime                @updatedAt
+  requester   User                    @relation("ConnectionRequestSender", fields: [requesterId], references: [id], onDelete: Cascade)
+  recipient   User                    @relation("ConnectionRequestRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
+
+  @@index([recipientId, status, updatedAt])
+  @@index([requesterId, status, updatedAt])
 }
 
 model Conversation {
@@ -119,6 +170,8 @@ model Conversation {
   updatedAt     DateTime                  @updatedAt
   participants  ConversationParticipant[]
   messages      Message[]
+	attachments   MessageAttachment[]
+	groupInvitations GroupInvitation[]
 
   @@index([lastMessageAt, id])
 }
@@ -129,11 +182,29 @@ model ConversationParticipant {
   role           ConversationParticipantRole @default(MEMBER)
   joinedAt       DateTime                    @default(now())
   leftAt         DateTime?
+  lastReadMessageId String?                  @db.Uuid
+  lastReadAt     DateTime?
   conversation   Conversation                @relation(fields: [conversationId], references: [id], onDelete: Cascade)
   user           User                        @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([conversationId, userId])
   @@index([userId, leftAt, joinedAt])
+}
+
+model GroupInvitation {
+  id             String                @id @default(uuid(7)) @db.Uuid
+  conversationId String                @db.Uuid
+  inviterId      String                @db.Uuid
+  inviteeId      String                @db.Uuid
+  status         GroupInvitationStatus @default(PENDING)
+  createdAt      DateTime              @default(now())
+  updatedAt      DateTime              @updatedAt
+  conversation   Conversation          @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  inviter        User                  @relation("GroupInvitationSender", fields: [inviterId], references: [id], onDelete: Cascade)
+  invitee        User                  @relation("GroupInvitationRecipient", fields: [inviteeId], references: [id], onDelete: Cascade)
+
+  @@unique([conversationId, inviteeId])
+  @@index([inviteeId, status, updatedAt])
 }
 
 model Message {
@@ -142,12 +213,63 @@ model Message {
   senderId        String       @db.Uuid
   clientMessageId String
   text            String
+  type            MessageType  @default(USER)
+  replyToId       String?      @db.Uuid
+  replyPreview    String?
+  replySenderId   String?      @db.Uuid
+  editedAt        DateTime?
+  deletedAt       DateTime?
+  mentionsEveryone Boolean     @default(false)
   createdAt       DateTime     @default(now())
   conversation    Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
   sender          User         @relation("MessageSender", fields: [senderId], references: [id], onDelete: Restrict)
+  replyTo         Message?     @relation("MessageReplies", fields: [replyToId], references: [id], onDelete: SetNull)
+  replies         Message[]    @relation("MessageReplies")
+  attachments     MessageAttachment[]
+  reactions       MessageReaction[]
+  mentions        MessageMention[]
 
   @@unique([conversationId, senderId, clientMessageId])
   @@index([conversationId, createdAt, id])
+  @@index([replyToId])
+}
+
+model MessageAttachment {
+  id             String       @id @default(uuid(7)) @db.Uuid
+  conversationId String       @db.Uuid
+  ownerId        String       @db.Uuid
+  messageId      String?      @db.Uuid
+  key            String       @unique
+  contentType    String
+  createdAt      DateTime     @default(now())
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  owner          User         @relation("MessageAttachmentOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  message        Message?     @relation(fields: [messageId], references: [id], onDelete: Cascade)
+
+  @@index([conversationId, ownerId, messageId])
+}
+
+model MessageReaction {
+  messageId String   @db.Uuid
+  userId    String   @db.Uuid
+  emoji     String
+  createdAt DateTime @default(now())
+  message   Message  @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([messageId, userId, emoji])
+  @@index([messageId, emoji])
+}
+
+model MessageMention {
+  messageId String   @db.Uuid
+  userId    String   @db.Uuid
+  createdAt DateTime @default(now())
+  message   Message  @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([messageId, userId])
+  @@index([userId, createdAt])
 }
 
 model RefreshToken {
@@ -265,4 +387,40 @@ model UserBan {
   @@index([userId, expiresAt, revokedAt])
   @@index([bannedById])
   @@index([revokedById])
+}
+
+model Event {
+  id              String              @id @default(uuid(7)) @db.Uuid
+  title           String
+  description     String
+  startsAt        DateTime
+  endsAt          DateTime
+  venue           String
+  meetUrl         String?
+  imageKeys       String[]
+  status          EventStatus         @default(PENDING)
+  authorId        String              @db.Uuid
+  reviewerId      String?             @db.Uuid
+  moderationNote  String?
+  rejectionReason String?
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+  author          User                @relation("EventAuthor", fields: [authorId], references: [id], onDelete: Cascade)
+  reviewer        User?               @relation("EventReviewer", fields: [reviewerId], references: [id], onDelete: SetNull)
+  registrations   EventRegistration[]
+
+  @@index([status, startsAt])
+  @@index([authorId, createdAt])
+  @@index([reviewerId])
+}
+
+model EventRegistration {
+  eventId   String   @db.Uuid
+  userId    String   @db.Uuid
+  createdAt DateTime @default(now())
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([eventId, userId])
+  @@index([userId, createdAt])
 }

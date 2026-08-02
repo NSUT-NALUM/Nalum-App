@@ -8,6 +8,7 @@ import {
 	renderAlumniRejectedEmail,
 } from "../templates/alumni-review.template";
 import { renderOtpEmail } from "../templates/otp.template";
+import { renderEventNotificationEmail } from "../templates/event-notification.template";
 
 const prisma = createPrismaClient(env.DATABASE_URL);
 
@@ -95,6 +96,11 @@ export async function emailProcessor(
 			EmailJobPayload,
 			{ template: "email-verification-otp" }
 		>["payload"];
+		const user = await prisma.user.findUnique({
+			where: { email: to },
+			select: { emailVerified: true },
+		});
+		if (user?.emailVerified !== false) return;
 		const rendered = renderOtpEmail({ firstName, otp });
 		await mailSender.sendMail({
 			to,
@@ -153,6 +159,21 @@ export async function emailProcessor(
 			});
 			throw error;
 		}
+		return;
+	}
+
+	if (job.name === "event-notification") {
+		const payload = job.data as Extract<
+			EmailJobPayload,
+			{ template: "event-notification" }
+		>["payload"];
+		const rendered = renderEventNotificationEmail(payload);
+		await mailSender.sendMail({
+			to: payload.to,
+			subject: rendered.subject,
+			text: rendered.text,
+			html: rendered.html,
+		});
 		return;
 	}
 

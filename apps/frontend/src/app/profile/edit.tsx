@@ -1,25 +1,53 @@
-import { useState } from "react";
-import { Alert, ScrollView, Text, View } from "react-native";
-import * as ImagePicker from "expo-image-picker";
 import { Image } from "expo-image";
+import * as ImagePicker from "expo-image-picker";
 import { router } from "expo-router";
+import { useCallback, useEffect, useState } from "react";
+import {
+	Alert,
+	BackHandler,
+	KeyboardAvoidingView,
+	Platform,
+	ScrollView,
+	Text,
+	View,
+} from "react-native";
 import { Button, Card, Field, Screen } from "@/components/ui/nalum";
-import { authApi, profileApi, type Branch, type Campus } from "@/lib/api";
+import { useTheme } from "@/hooks/use-theme";
+import { authApi, type Branch, type Campus, profileApi } from "@/lib/api";
 import { getAuthRoute } from "@/lib/auth-navigation";
 import { useAuthStore } from "@/stores/auth-store";
-export default function ProfileScreen() {
-	const user = useAuthStore((s) => s.user);
-	const p = user?.profile;
-	const [city, setCity] = useState(p?.city ?? "");
-	const [country, setCountry] = useState(p?.country ?? "");
-	const [company, setCompany] = useState(p?.currentCompany ?? "");
-	const [role, setRole] = useState(p?.currentRole ?? "");
-	const [rollNumber, setRollNumber] = useState(p?.rollNumber ?? "");
-	const [batch, setBatch] = useState(String(p?.batch ?? ""));
-	const [branch, setBranch] = useState<Branch>(p?.branch ?? "CSE");
-	const [campus, setCampus] = useState<Campus>(p?.campus ?? "MAIN");
-	const [phoneNumber, setPhoneNumber] = useState(p?.phoneNumber ?? "");
-	const [alternateEmail, setAlternateEmail] = useState(p?.alternateEmail ?? "");
+
+const branches: Branch[] = [
+	"CSE",
+	"ECE",
+	"MECH",
+	"CIVIL",
+	"CHEMICAL",
+	"BIOTECH",
+	"ELECTRICAL",
+	"INSTRUMENTATION",
+	"AEROSPACE",
+	"MATERIALS",
+	"INDUSTRIAL",
+	"PRODUCTION",
+];
+
+export default function ProfileEditor() {
+	const user = useAuthStore((state) => state.user);
+	const profile = user?.profile;
+	const theme = useTheme();
+	const [city, setCity] = useState(profile?.city ?? "");
+	const [country, setCountry] = useState(profile?.country ?? "");
+	const [company, setCompany] = useState(profile?.currentCompany ?? "");
+	const [role, setRole] = useState(profile?.currentRole ?? "");
+	const [rollNumber, setRollNumber] = useState(profile?.rollNumber ?? "");
+	const [batch, setBatch] = useState(String(profile?.batch ?? ""));
+	const [branch, setBranch] = useState<Branch>(profile?.branch ?? "CSE");
+	const [campus, setCampus] = useState<Campus>(profile?.campus ?? "MAIN");
+	const [phoneNumber, setPhoneNumber] = useState(profile?.phoneNumber ?? "");
+	const [alternateEmail, setAlternateEmail] = useState(
+		profile?.alternateEmail ?? "",
+	);
 	const [linkedin, setLinkedin] = useState(user?.socialMedia?.linkedin ?? "");
 	const [github, setGithub] = useState(user?.socialMedia?.github ?? "");
 	const [experienceCompany, setExperienceCompany] = useState(
@@ -28,212 +56,364 @@ export default function ProfileScreen() {
 	const [experienceRole, setExperienceRole] = useState(
 		user?.experiences[0]?.role ?? "",
 	);
-	const [photo, setPhoto] = useState<string | undefined>();
+	const [photo, setPhoto] = useState<string>();
+	const [busy, setBusy] = useState(false);
+	const [error, setError] = useState("");
+
+	const dirty = Boolean(
+		photo ||
+			city !== (profile?.city ?? "") ||
+			country !== (profile?.country ?? "") ||
+			company !== (profile?.currentCompany ?? "") ||
+			role !== (profile?.currentRole ?? "") ||
+			rollNumber !== (profile?.rollNumber ?? "") ||
+			batch !== String(profile?.batch ?? "") ||
+			branch !== (profile?.branch ?? "CSE") ||
+			campus !== (profile?.campus ?? "MAIN") ||
+			phoneNumber !== (profile?.phoneNumber ?? "") ||
+			alternateEmail !== (profile?.alternateEmail ?? "") ||
+			linkedin !== (user?.socialMedia?.linkedin ?? "") ||
+			github !== (user?.socialMedia?.github ?? "") ||
+			experienceCompany !== (user?.experiences[0]?.company ?? "") ||
+			experienceRole !== (user?.experiences[0]?.role ?? ""),
+	);
+
+	const leave = useCallback(() => {
+		if (!user) return;
+		const go = () => router.replace(getAuthRoute(user));
+		if (!dirty) {
+			go();
+			return;
+		}
+		Alert.alert(
+			"Discard changes?",
+			"Your unsaved profile changes will be lost.",
+			[
+				{ text: "Keep editing", style: "cancel" },
+				{ text: "Discard", style: "destructive", onPress: go },
+			],
+		);
+	}, [dirty, user]);
+
+	useEffect(() => {
+		const subscription = BackHandler.addEventListener(
+			"hardwareBackPress",
+			() => {
+				leave();
+				return true;
+			},
+		);
+		return () => subscription.remove();
+	}, [leave]);
+
 	if (!user) return null;
+
 	const pick = async () => {
-		const r = await ImagePicker.launchImageLibraryAsync({
+		const result = await ImagePicker.launchImageLibraryAsync({
 			mediaTypes: ["images"],
 			quality: 0.8,
 		});
-		if (!r.canceled) setPhoto(r.assets[0].uri);
+		if (!result.canceled) setPhoto(result.assets[0].uri);
 	};
+
 	const save = async () => {
+		if (user.role === "ALUMNI" && !/^(19|20|21)\d{2}$/.test(batch)) {
+			setError("Enter a valid four-digit graduation batch.");
+			return;
+		}
+		if (phoneNumber && !/^\+[1-9]\d{6,14}$/.test(phoneNumber)) {
+			setError("Use an international phone number such as +919876543210.");
+			return;
+		}
+		if (alternateEmail && !/^\S+@\S+\.\S+$/.test(alternateEmail)) {
+			setError("Enter a valid alternate email address.");
+			return;
+		}
+		if (Boolean(experienceCompany) !== Boolean(experienceRole)) {
+			setError("Add both a company and role for current experience.");
+			return;
+		}
+		setBusy(true);
+		setError("");
 		try {
 			const form = new FormData();
-			form.append("city", city);
-			form.append("country", country);
-			form.append("currentCompany", company);
-			form.append("currentRole", role);
+			form.append("city", city.trim());
+			form.append("country", country.trim());
+			form.append("currentCompany", company.trim());
+			form.append("currentRole", role.trim());
 			if (user.role === "ALUMNI") {
-				form.append("rollNumber", rollNumber);
+				form.append("rollNumber", rollNumber.trim());
 				form.append("batch", batch);
 				form.append("branch", branch);
 				form.append("campus", campus);
 				if (phoneNumber) form.append("phoneNumber", phoneNumber);
-				if (alternateEmail) form.append("alternateEmail", alternateEmail);
+				if (alternateEmail)
+					form.append("alternateEmail", alternateEmail.trim());
 			}
 			form.append(
 				"socialMedia",
 				JSON.stringify({ linkedin: linkedin || null, github: github || null }),
 			);
-			if (experienceCompany && experienceRole)
-				form.append(
-					"experiences",
-					JSON.stringify([
-						{
-							company: experienceCompany,
-							role: experienceRole,
-							isCurrent: true,
-						},
-					]),
-				);
-			if (photo)
+			form.append(
+				"experiences",
+				JSON.stringify(
+					experienceCompany && experienceRole
+						? [
+								{
+									company: experienceCompany,
+									role: experienceRole,
+									isCurrent: true,
+								},
+							]
+						: [],
+				),
+			);
+			if (photo) {
 				form.append("profilePicture", {
 					uri: photo,
 					name: "profile.jpg",
 					type: "image/jpeg",
 				} as unknown as Blob);
+			}
 			await profileApi.update(form);
 			const nextUser = await authApi.refreshUser();
 			useAuthStore.getState().setUser(nextUser);
-			Alert.alert("Saved", "Your profile has been updated.");
 			router.replace(getAuthRoute(nextUser));
-		} catch (e) {
-			Alert.alert(
-				"Could not save",
-				e instanceof Error ? e.message : "Try again.",
-			);
+		} catch (reason) {
+			setError(reason instanceof Error ? reason.message : "Try again.");
+		} finally {
+			setBusy(false);
 		}
 	};
+
 	return (
 		<Screen>
-			<ScrollView showsVerticalScrollIndicator={false}>
-				<Text className="mb-5 text-3xl font-bold text-foreground">
-					My profile
-				</Text>
-				<Card>
-					<View className="gap-3">
-						<Image
-							source={photo ?? p?.profilePicture ?? undefined}
-							style={{
-								height: 88,
-								width: 88,
-								borderRadius: 44,
-								backgroundColor: "#ded6d7",
-							}}
-						/>
-						<Button variant="secondary" onPress={pick}>
-							Change photo
-						</Button>
-						<Text className="text-xl font-semibold text-foreground">
-							{user.firstName} {user.lastName}
-						</Text>
-						<Text className="text-muted">{user.email}</Text>
+			<KeyboardAvoidingView
+				className="flex-1"
+				behavior={Platform.OS === "ios" ? "padding" : undefined}
+			>
+				<ScrollView
+					contentContainerStyle={{ paddingBottom: 24 }}
+					keyboardShouldPersistTaps="handled"
+					showsVerticalScrollIndicator={false}
+				>
+					<Text
+						accessibilityRole="header"
+						className="mb-2 text-3xl font-bold text-foreground"
+					>
+						Edit profile
+					</Text>
+					<Text className="mb-5 text-muted">
+						Keep your directory details current.
+					</Text>
+
+					<View className="gap-4">
+						<Card>
+							<Text className="mb-4 text-lg font-semibold text-foreground">
+								Identity
+							</Text>
+							<View className="items-start gap-3">
+								<Image
+									accessibilityLabel="Profile photo"
+									source={photo ?? profile?.profilePicture ?? undefined}
+									style={{
+										height: 88,
+										width: 88,
+										borderRadius: 44,
+										backgroundColor: theme.border,
+									}}
+								/>
+								<Text className="text-xl font-semibold text-foreground">
+									{user.firstName} {user.lastName}
+								</Text>
+								<Text className="text-muted">{user.email}</Text>
+								<Button variant="secondary" onPress={pick}>
+									Change photo
+								</Button>
+							</View>
+						</Card>
+
 						{user.role === "ALUMNI" ? (
-							<>
-								<Text className="mt-2 font-semibold text-foreground">
-									Verification details
+							<Card>
+								<Text className="mb-2 text-lg font-semibold text-foreground">
+									Verification
 								</Text>
-								<Text className="text-sm text-muted">
-									Changing roll number, batch, branch, or campus submits your
-									application for a new review and pauses platform access.
+								<Text className="mb-4 text-sm text-muted">
+									Changing academic details submits your profile for a new
+									review and pauses member access.
 								</Text>
-								<Field
-									value={rollNumber}
-									onChangeText={setRollNumber}
-									placeholder="University roll number"
-								/>
-								<Field
-									value={batch}
-									onChangeText={setBatch}
-									placeholder="Graduation batch"
-									keyboardType="numeric"
-								/>
-								<Text className="font-medium text-foreground">Branch</Text>
-								<View className="flex-row flex-wrap gap-2">
-									{(
-										[
-											"CSE",
-											"ECE",
-											"MECH",
-											"CIVIL",
-											"CHEMICAL",
-											"BIOTECH",
-											"ELECTRICAL",
-											"INSTRUMENTATION",
-											"AEROSPACE",
-											"MATERIALS",
-											"INDUSTRIAL",
-											"PRODUCTION",
-										] as Branch[]
-									).map((value) => (
-										<Button
-											key={value}
-											variant={branch === value ? "primary" : "secondary"}
-											onPress={() => setBranch(value)}
-										>
-											{value}
-										</Button>
-									))}
+								<View className="gap-4">
+									<Field
+										label="University roll number"
+										value={rollNumber}
+										onChangeText={setRollNumber}
+										placeholder="Your roll number"
+										autoCapitalize="characters"
+									/>
+									<Field
+										label="Graduation batch"
+										value={batch}
+										onChangeText={setBatch}
+										placeholder="For example, 2018"
+										keyboardType="number-pad"
+										maxLength={4}
+									/>
+									<Text className="text-sm font-medium text-foreground">
+										Branch
+									</Text>
+									<View
+										accessibilityRole="radiogroup"
+										className="flex-row flex-wrap gap-2"
+									>
+										{branches.map((value) => (
+											<Button
+												key={value}
+												selected={branch === value}
+												variant={branch === value ? "primary" : "secondary"}
+												onPress={() => setBranch(value)}
+											>
+												{value}
+											</Button>
+										))}
+									</View>
+									<Text className="text-sm font-medium text-foreground">
+										Campus
+									</Text>
+									<View
+										accessibilityRole="radiogroup"
+										className="flex-row flex-wrap gap-2"
+									>
+										{(["MAIN", "EAST", "WEST"] as Campus[]).map((value) => (
+											<Button
+												key={value}
+												selected={campus === value}
+												variant={campus === value ? "primary" : "secondary"}
+												onPress={() => setCampus(value)}
+											>
+												{value}
+											</Button>
+										))}
+									</View>
 								</View>
-								<Text className="font-medium text-foreground">Campus</Text>
-								<View className="flex-row gap-2">
-									{(["MAIN", "EAST", "WEST"] as Campus[]).map((value) => (
-										<Button
-											key={value}
-											variant={campus === value ? "primary" : "secondary"}
-											onPress={() => setCampus(value)}
-										>
-											{value}
-										</Button>
-									))}
-								</View>
-								<Field
-									value={phoneNumber}
-									onChangeText={setPhoneNumber}
-									placeholder="Phone / WhatsApp (+country code)"
-								/>
-								<Field
-									value={alternateEmail}
-									onChangeText={setAlternateEmail}
-									placeholder="Alternate email"
-									keyboardType="email-address"
-								/>
-							</>
+							</Card>
 						) : null}
-						<Field
-							value={city}
-							onChangeText={setCity}
-							placeholder="Current city"
-						/>
-						<Field
-							value={country}
-							onChangeText={setCountry}
-							placeholder="Country"
-						/>
-						<Field
-							value={company}
-							onChangeText={setCompany}
-							placeholder="Current company"
-						/>
-						<Field
-							value={role}
-							onChangeText={setRole}
-							placeholder="Current role"
-						/>
-						<Field
-							value={linkedin}
-							onChangeText={setLinkedin}
-							placeholder="LinkedIn URL"
-						/>
-						<Field
-							value={github}
-							onChangeText={setGithub}
-							placeholder="GitHub URL"
-						/>
-						<Text className="mt-2 font-semibold text-foreground">
-							Current experience
-						</Text>
-						<Field
-							value={experienceCompany}
-							onChangeText={setExperienceCompany}
-							placeholder="Company"
-						/>
-						<Field
-							value={experienceRole}
-							onChangeText={setExperienceRole}
-							placeholder="Role"
-						/>
-						<Button onPress={save}>Save changes</Button>
-						<Button
-							variant="ghost"
-							onPress={() => router.replace(getAuthRoute(user))}
-						>
+
+						<Card>
+							<Text className="mb-4 text-lg font-semibold text-foreground">
+								Location & work
+							</Text>
+							<View className="gap-4">
+								{user.role === "ALUMNI" ? (
+									<>
+										<Field
+											label="Phone or WhatsApp"
+											value={phoneNumber}
+											onChangeText={setPhoneNumber}
+											placeholder="+919876543210"
+											helperText="Include your country code."
+											keyboardType="phone-pad"
+											autoComplete="tel"
+										/>
+										<Field
+											label="Alternate email"
+											value={alternateEmail}
+											onChangeText={setAlternateEmail}
+											placeholder="you@example.com"
+											keyboardType="email-address"
+											autoCapitalize="none"
+											autoComplete="email"
+										/>
+									</>
+								) : null}
+								<Field
+									label="Current city"
+									value={city}
+									onChangeText={setCity}
+									placeholder="City"
+								/>
+								<Field
+									label="Country"
+									value={country}
+									onChangeText={setCountry}
+									placeholder="Country"
+									autoComplete="country"
+								/>
+								<Field
+									label="Current company"
+									value={company}
+									onChangeText={setCompany}
+									placeholder="Company"
+								/>
+								<Field
+									label="Current role"
+									value={role}
+									onChangeText={setRole}
+									placeholder="Role"
+								/>
+							</View>
+						</Card>
+
+						<Card>
+							<Text className="mb-4 text-lg font-semibold text-foreground">
+								Social
+							</Text>
+							<View className="gap-4">
+								<Field
+									label="LinkedIn"
+									value={linkedin}
+									onChangeText={setLinkedin}
+									placeholder="https://linkedin.com/in/…"
+									keyboardType="url"
+									autoCapitalize="none"
+								/>
+								<Field
+									label="GitHub"
+									value={github}
+									onChangeText={setGithub}
+									placeholder="https://github.com/…"
+									keyboardType="url"
+									autoCapitalize="none"
+								/>
+							</View>
+						</Card>
+
+						<Card>
+							<Text className="mb-4 text-lg font-semibold text-foreground">
+								Current experience
+							</Text>
+							<View className="gap-4">
+								<Field
+									label="Company"
+									value={experienceCompany}
+									onChangeText={setExperienceCompany}
+									placeholder="Company"
+								/>
+								<Field
+									label="Role"
+									value={experienceRole}
+									onChangeText={setExperienceRole}
+									placeholder="Role"
+								/>
+							</View>
+						</Card>
+
+						{error ? (
+							<Text
+								accessibilityLiveRegion="assertive"
+								className="text-sm text-destructive"
+							>
+								{error}
+							</Text>
+						) : null}
+						<Button loading={busy} disabled={!dirty} onPress={save}>
+							Save changes
+						</Button>
+						<Button variant="ghost" disabled={busy} onPress={leave}>
 							Back
 						</Button>
 					</View>
-				</Card>
-			</ScrollView>
+				</ScrollView>
+			</KeyboardAvoidingView>
 		</Screen>
 	);
 }

@@ -1,7 +1,12 @@
 import type { FastifyPluginAsync, FastifyReply, FastifyRequest } from "fastify";
-import { protect } from "../../middlewares/auth.middleware";
+import ForbiddenError from "../../errors/forbidden.error";
+import { getCurrentUser, protect } from "../../middlewares/auth.middleware";
 import { UnsupportedStorageObjectKeyError } from "./storage.errors";
-import { isAllowedStorageObjectKey, toStorageObjectUrl } from "./storage.keys";
+import {
+	isAllowedStorageObjectKey,
+	isChatImageObjectKey,
+	toStorageObjectUrl,
+} from "./storage.keys";
 
 type StorageObjectParams = {
 	"*": string;
@@ -30,6 +35,33 @@ const storageRoutes: FastifyPluginAsync = async (fastify) => {
 		const key = request.params["*"];
 		if (!isAllowedStorageObjectKey(key)) {
 			throw new UnsupportedStorageObjectKeyError();
+		}
+		if (isChatImageObjectKey(key)) {
+			const attachment =
+				await request.server.prisma.messageAttachment.findFirst({
+					where: {
+						key,
+						message: {
+							is: {
+								deletedAt: null,
+								conversation: {
+									participants: {
+										some: {
+											userId: getCurrentUser(request).id,
+											leftAt: null,
+										},
+									},
+								},
+							},
+						},
+					},
+					select: { id: true },
+				});
+			if (!attachment)
+				throw new ForbiddenError(
+					"You cannot access this chat attachment",
+					"CHAT_ATTACHMENT_FORBIDDEN",
+				);
 		}
 
 		const object = await request.server.storage.getObjectStream(key);

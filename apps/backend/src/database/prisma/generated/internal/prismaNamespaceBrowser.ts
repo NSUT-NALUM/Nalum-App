@@ -52,16 +52,23 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
+  ConnectionRequest: 'ConnectionRequest',
   Conversation: 'Conversation',
   ConversationParticipant: 'ConversationParticipant',
+  GroupInvitation: 'GroupInvitation',
   Message: 'Message',
+  MessageAttachment: 'MessageAttachment',
+  MessageReaction: 'MessageReaction',
+  MessageMention: 'MessageMention',
   RefreshToken: 'RefreshToken',
   EmailOtp: 'EmailOtp',
   Profile: 'Profile',
   AlumniVerificationEvent: 'AlumniVerificationEvent',
   SocialMedia: 'SocialMedia',
   Experience: 'Experience',
-  UserBan: 'UserBan'
+  UserBan: 'UserBan',
+  Event: 'Event',
+  EventRegistration: 'EventRegistration'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -101,6 +108,21 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+export const ConnectionRequestScalarFieldEnum = {
+  id: 'id',
+  pairKey: 'pairKey',
+  requesterId: 'requesterId',
+  recipientId: 'recipientId',
+  text: 'text',
+  status: 'status',
+  respondedAt: 'respondedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ConnectionRequestScalarFieldEnum = (typeof ConnectionRequestScalarFieldEnum)[keyof typeof ConnectionRequestScalarFieldEnum]
+
+
 export const ConversationScalarFieldEnum = {
   id: 'id',
   type: 'type',
@@ -119,10 +141,25 @@ export const ConversationParticipantScalarFieldEnum = {
   userId: 'userId',
   role: 'role',
   joinedAt: 'joinedAt',
-  leftAt: 'leftAt'
+  leftAt: 'leftAt',
+  lastReadMessageId: 'lastReadMessageId',
+  lastReadAt: 'lastReadAt'
 } as const
 
 export type ConversationParticipantScalarFieldEnum = (typeof ConversationParticipantScalarFieldEnum)[keyof typeof ConversationParticipantScalarFieldEnum]
+
+
+export const GroupInvitationScalarFieldEnum = {
+  id: 'id',
+  conversationId: 'conversationId',
+  inviterId: 'inviterId',
+  inviteeId: 'inviteeId',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type GroupInvitationScalarFieldEnum = (typeof GroupInvitationScalarFieldEnum)[keyof typeof GroupInvitationScalarFieldEnum]
 
 
 export const MessageScalarFieldEnum = {
@@ -131,10 +168,49 @@ export const MessageScalarFieldEnum = {
   senderId: 'senderId',
   clientMessageId: 'clientMessageId',
   text: 'text',
+  type: 'type',
+  replyToId: 'replyToId',
+  replyPreview: 'replyPreview',
+  replySenderId: 'replySenderId',
+  editedAt: 'editedAt',
+  deletedAt: 'deletedAt',
+  mentionsEveryone: 'mentionsEveryone',
   createdAt: 'createdAt'
 } as const
 
 export type MessageScalarFieldEnum = (typeof MessageScalarFieldEnum)[keyof typeof MessageScalarFieldEnum]
+
+
+export const MessageAttachmentScalarFieldEnum = {
+  id: 'id',
+  conversationId: 'conversationId',
+  ownerId: 'ownerId',
+  messageId: 'messageId',
+  key: 'key',
+  contentType: 'contentType',
+  createdAt: 'createdAt'
+} as const
+
+export type MessageAttachmentScalarFieldEnum = (typeof MessageAttachmentScalarFieldEnum)[keyof typeof MessageAttachmentScalarFieldEnum]
+
+
+export const MessageReactionScalarFieldEnum = {
+  messageId: 'messageId',
+  userId: 'userId',
+  emoji: 'emoji',
+  createdAt: 'createdAt'
+} as const
+
+export type MessageReactionScalarFieldEnum = (typeof MessageReactionScalarFieldEnum)[keyof typeof MessageReactionScalarFieldEnum]
+
+
+export const MessageMentionScalarFieldEnum = {
+  messageId: 'messageId',
+  userId: 'userId',
+  createdAt: 'createdAt'
+} as const
+
+export type MessageMentionScalarFieldEnum = (typeof MessageMentionScalarFieldEnum)[keyof typeof MessageMentionScalarFieldEnum]
 
 
 export const RefreshTokenScalarFieldEnum = {
@@ -242,6 +318,36 @@ export const UserBanScalarFieldEnum = {
 } as const
 
 export type UserBanScalarFieldEnum = (typeof UserBanScalarFieldEnum)[keyof typeof UserBanScalarFieldEnum]
+
+
+export const EventScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  startsAt: 'startsAt',
+  endsAt: 'endsAt',
+  venue: 'venue',
+  meetUrl: 'meetUrl',
+  imageKeys: 'imageKeys',
+  status: 'status',
+  authorId: 'authorId',
+  reviewerId: 'reviewerId',
+  moderationNote: 'moderationNote',
+  rejectionReason: 'rejectionReason',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EventScalarFieldEnum = (typeof EventScalarFieldEnum)[keyof typeof EventScalarFieldEnum]
+
+
+export const EventRegistrationScalarFieldEnum = {
+  eventId: 'eventId',
+  userId: 'userId',
+  createdAt: 'createdAt'
+} as const
+
+export type EventRegistrationScalarFieldEnum = (typeof EventRegistrationScalarFieldEnum)[keyof typeof EventRegistrationScalarFieldEnum]
 
 
 export const SortOrder = {

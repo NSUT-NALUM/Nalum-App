@@ -32,6 +32,11 @@ type StoredObject = {
 	body: Readable | ReadableStream | Blob | Uint8Array;
 };
 
+type ImageUploadOptions = {
+	maxInputBytes?: number;
+	maxOutputBytes?: number;
+};
+
 const allowedMimeTypes = ["image/jpeg", "image/png", "image/webp", "image/gif"];
 
 export class StorageService {
@@ -93,7 +98,8 @@ export class StorageService {
 	async uploadImage(
 		file: UploadableFile,
 		partitionSegments: string[],
-	): Promise<{ key: string }> {
+		options: ImageUploadOptions = {},
+	): Promise<{ key: string; contentType: string }> {
 		if (!allowedMimeTypes.includes(file.mimetype)) {
 			throw new BadRequestError(
 				"Invalid file type. Only JPEG, PNG, WebP, and GIF are allowed.",
@@ -102,6 +108,12 @@ export class StorageService {
 		}
 
 		const buffer = await file.toBuffer();
+		if (options.maxInputBytes && buffer.length > options.maxInputBytes) {
+			throw new BadRequestError(
+				"Image must be 5 MB or smaller",
+				"IMAGE_TOO_LARGE",
+			);
+		}
 		let processedBuffer = buffer;
 		let contentType = file.mimetype;
 		let extension = path.extname(file.filename).toLowerCase() || ".jpg";
@@ -132,6 +144,16 @@ export class StorageService {
 			// Keep current behavior: failed optimization does not block upload.
 		}
 
+		if (
+			options.maxOutputBytes &&
+			processedBuffer.length > options.maxOutputBytes
+		) {
+			throw new BadRequestError(
+				"Image is still larger than 5 MB after compression",
+				"IMAGE_TOO_LARGE",
+			);
+		}
+
 		const key = [...partitionSegments, `${uuidv4()}${extension}`].join("/");
 
 		try {
@@ -154,7 +176,7 @@ export class StorageService {
 			throw new StorageUploadFailedError();
 		}
 
-		return { key };
+		return { key, contentType };
 	}
 
 	async getObjectStream(key: string): Promise<StoredObject> {

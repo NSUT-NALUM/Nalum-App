@@ -1,3 +1,4 @@
+import cors from "@fastify/cors";
 import jwt from "@fastify/jwt";
 import websocket from "@fastify/websocket";
 import { createPrismaClient } from "@nalum/database/client";
@@ -8,7 +9,11 @@ import { ChatError } from "./modules/chat/chat.errors";
 import { ChatRepository } from "./modules/chat/chat.repository";
 import { registerChatRoutes } from "./modules/chat/chat.routes";
 import {
+	messageDeleteSchema,
+	messageEditSchema,
 	messageSendSchema,
+	reactionToggleSchema,
+	receiptReadSchema,
 	typingStartSchema,
 } from "./modules/chat/chat.schema";
 import { ChatService } from "./modules/chat/chat.service";
@@ -37,10 +42,19 @@ export const buildApp = async (options: FastifyServerOptions = {}) => {
 	const chatRepository = new ChatRepository(prisma);
 	const chatService = new ChatService(chatRepository);
 	const presence = new PresenceService(env.REDIS_URL);
+	const allowedOrigins = env.CHAT_CORS_ORIGIN.split(",").map((origin) =>
+		origin.trim(),
+	);
+	const isAllowedOrigin = (origin: string | undefined) =>
+		!origin || allowedOrigins.includes(origin);
 	const publishToUsers = async (userIds: string[], message: unknown) =>
 		Promise.all(userIds.map((userId) => fanout.publish({ userId, message })));
 
 	await fanout.connect();
+	await app.register(cors, {
+		credentials: true,
+		origin: (origin, callback) => callback(null, isAllowedOrigin(origin)),
+	});
 	await presence.connect(
 		async (userId, lastSeenAt) => {
 			await chatService.updateLastSeenAt(userId, lastSeenAt);
@@ -161,13 +175,20 @@ export const buildApp = async (options: FastifyServerOptions = {}) => {
 		return { status: "OK", service: "chatserver" };
 	});
 
-	await registerChatRoutes(app, chatService, authenticateHttp);
+	await registerChatRoutes(app, chatService, authenticateHttp, publishToUsers);
 
 	app.get(
 		"/ws",
 		{
 			websocket: true,
 			preValidation: async (request) => {
+				if (!isAllowedOrigin(request.headers.origin)) {
+					throw new ChatError(
+						"Origin is not allowed",
+						403,
+						"CHAT_ORIGIN_FORBIDDEN",
+					);
+				}
 				const protocols = request.headers["sec-websocket-protocol"]
 					?.split(",")
 					.map((value) => value.trim())
@@ -231,11 +252,86 @@ export const buildApp = async (options: FastifyServerOptions = {}) => {
 							socket.send(
 								JSON.stringify({ type: "message:accepted", payload: message }),
 							);
-							if (created)
-								await publishToUsers(
-									await chatService.getParticipantUserIds(input.conversationId),
-									{ type: "message:new", payload: message },
+							if (created) {
+								const participantIds = await chatService.getParticipantUserIds(
+									input.conversationId,
 								);
+								await publishToUsers(participantIds, {
+									type: "message:new",
+									payload: message,
+								});
+								const mentionIds = input.mentionsEveryone
+									? participantIds.filter(
+											(participantId) => participantId !== userId,
+										)
+									: input.mentionUserIds.filter(
+											(mentionId) => mentionId !== userId,
+										);
+								if (mentionIds.length)
+									await publishToUsers(mentionIds, {
+										type: "message:mention",
+										payload: {
+											conversationId: input.conversationId,
+											messageId: message.id,
+										},
+									});
+							}
+							return;
+						}
+						if (event.type === "message:edit") {
+							const input = messageEditSchema.parse(event.payload);
+							const message = await chatService.editMessage(userId, input);
+							await publishToUsers(
+								await chatService.getParticipantUserIds(message.conversationId),
+								{ type: "message:updated", payload: message },
+							);
+							return;
+						}
+						if (event.type === "message:delete") {
+							const { messageId } = messageDeleteSchema.parse(event.payload);
+							const message = await chatService.deleteMessage(
+								userId,
+								messageId,
+							);
+							await publishToUsers(
+								await chatService.getParticipantUserIds(message.conversationId),
+								{ type: "message:deleted", payload: message },
+							);
+							return;
+						}
+						if (event.type === "reaction:toggle") {
+							const { messageId, emoji } = reactionToggleSchema.parse(
+								event.payload,
+							);
+							const reaction = await chatService.toggleReaction(
+								userId,
+								messageId,
+								emoji,
+							);
+							await publishToUsers(
+								await chatService.getParticipantUserIds(
+									reaction.conversationId,
+								),
+								{ type: "reaction:updated", payload: reaction },
+							);
+							return;
+						}
+						if (event.type === "receipt:read") {
+							const { conversationId, messageId } = receiptReadSchema.parse(
+								event.payload,
+							);
+							const receipt = await chatService.markRead(
+								userId,
+								conversationId,
+								messageId,
+							);
+							await publishToUsers(
+								await chatService.getParticipantUserIds(conversationId),
+								{
+									type: "receipt:updated",
+									payload: { conversationId, ...receipt },
+								},
+							);
 							return;
 						}
 						if (event.type === "presence:heartbeat") {

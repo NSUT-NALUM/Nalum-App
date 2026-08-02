@@ -9,8 +9,9 @@ import { useAuthStore } from "@/stores/auth-store";
 export function VerificationStatus({ rejected }: { rejected: boolean }) {
 	const user = useAuthStore((state) => state.user);
 	const [refreshing, setRefreshing] = useState(false);
+	const [feedback, setFeedback] = useState("");
 
-	const refresh = useCallback(async () => {
+	const refresh = useCallback(async (announce = false) => {
 		setRefreshing(true);
 		try {
 			const nextUser = await authApi.refreshUser();
@@ -21,9 +22,13 @@ export function VerificationStatus({ rejected }: { rejected: boolean }) {
 				nextRoute !== "/verification-rejected"
 			) {
 				router.replace(nextRoute);
+			} else if (announce) {
+				setFeedback(
+					"Status is unchanged. We will keep checking automatically.",
+				);
 			}
 		} catch {
-			// Keep the last known application state during transient network errors.
+			if (announce) setFeedback("Could not refresh status. Try again.");
 		} finally {
 			setRefreshing(false);
 		}
@@ -31,15 +36,15 @@ export function VerificationStatus({ rejected }: { rejected: boolean }) {
 
 	useFocusEffect(
 		useCallback(() => {
-			void refresh();
-			const interval = setInterval(() => void refresh(), 30_000);
+			void refresh(false);
+			const interval = setInterval(() => void refresh(false), 30_000);
 			return () => clearInterval(interval);
 		}, [refresh]),
 	);
 
 	useEffect(() => {
 		const subscription = AppState.addEventListener("change", (state) => {
-			if (state === "active") void refresh();
+			if (state === "active") void refresh(false);
 		});
 		return () => subscription.remove();
 	}, [refresh]);
@@ -62,7 +67,15 @@ export function VerificationStatus({ rejected }: { rejected: boolean }) {
 				contentContainerStyle={{ paddingBottom: 40 }}
 				showsVerticalScrollIndicator={false}
 			>
-				<Text className="mb-2 text-3xl font-bold text-foreground">
+				<View className="mb-3 self-start rounded-full bg-border px-3 py-1">
+					<Text className="text-sm font-semibold text-foreground">
+						{rejected ? "ACTION REQUIRED" : "IN REVIEW"}
+					</Text>
+				</View>
+				<Text
+					accessibilityRole="header"
+					className="mb-2 text-3xl font-bold text-foreground"
+				>
 					{rejected ? "Application needs an update" : "Verification in review"}
 				</Text>
 				<Text className="mb-6 text-muted">
@@ -115,9 +128,21 @@ export function VerificationStatus({ rejected }: { rejected: boolean }) {
 					<Button onPress={() => router.push("/profile/edit")}>
 						Edit or correct application
 					</Button>
-					<Button variant="secondary" disabled={refreshing} onPress={refresh}>
-						{refreshing ? "Refreshing…" : "Refresh status"}
+					<Button
+						variant="secondary"
+						loading={refreshing}
+						onPress={() => refresh(true)}
+					>
+						Refresh status
 					</Button>
+					{feedback ? (
+						<Text
+							accessibilityLiveRegion="polite"
+							className="text-center text-sm text-muted"
+						>
+							{feedback}
+						</Text>
+					) : null}
 					<Button variant="ghost" onPress={logout}>
 						Log out
 					</Button>

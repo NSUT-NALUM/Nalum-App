@@ -77,6 +77,16 @@ export const VerificationNotificationState = {
 export type VerificationNotificationState = (typeof VerificationNotificationState)[keyof typeof VerificationNotificationState]
 
 
+export const EventStatus = {
+  PENDING: 'PENDING',
+  PUBLISHED: 'PUBLISHED',
+  REJECTED: 'REJECTED',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type EventStatus = (typeof EventStatus)[keyof typeof EventStatus]
+
+
 export const ConversationType = {
   DIRECT: 'DIRECT',
   GROUP: 'GROUP'
@@ -92,3 +102,29 @@ export const ConversationParticipantRole = {
 } as const
 
 export type ConversationParticipantRole = (typeof ConversationParticipantRole)[keyof typeof ConversationParticipantRole]
+
+
+export const MessageType = {
+  USER: 'USER',
+  SYSTEM: 'SYSTEM'
+} as const
+
+export type MessageType = (typeof MessageType)[keyof typeof MessageType]
+
+
+export const ConnectionRequestStatus = {
+  PENDING: 'PENDING',
+  ACCEPTED: 'ACCEPTED',
+  DECLINED: 'DECLINED'
+} as const
+
+export type ConnectionRequestStatus = (typeof ConnectionRequestStatus)[keyof typeof ConnectionRequestStatus]
+
+
+export const GroupInvitationStatus = {
+  PENDING: 'PENDING',
+  ACCEPTED: 'ACCEPTED',
+  DECLINED: 'DECLINED'
+} as const
+
+export type GroupInvitationStatus = (typeof GroupInvitationStatus)[keyof typeof GroupInvitationStatus]
