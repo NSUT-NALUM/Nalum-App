@@ -26,7 +26,7 @@ export default function EditEvent() {
 	if (
 		!query.data ||
 		query.data.authorId !== user?.id ||
-		query.data.status !== "PENDING"
+		query.data.status === "CANCELLED"
 	)
 		return (
 			<Screen>
@@ -54,7 +54,11 @@ export default function EditEvent() {
 				<EventForm
 					event={query.data}
 					saving={saving}
-					submitLabel="Save changes"
+					submitLabel={
+						query.data.status === "PUBLISHED"
+							? "Resubmit for review"
+							: "Save changes"
+					}
 					onSubmit={async (value) => {
 						setSaving(true);
 						setError("");

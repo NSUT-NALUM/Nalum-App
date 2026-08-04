@@ -137,6 +137,11 @@ export type EventRegistration = Prisma.EventRegistrationModel
  */
 export type Post = Prisma.PostModel
 /**
+ * Model Opportunity
+ * 
+ */
+export type Opportunity = Prisma.OpportunityModel
+/**
  * Model Comment
  * 
  */

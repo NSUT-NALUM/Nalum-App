@@ -18,6 +18,7 @@ enum UserRole {
   ALUMNI
   ADMIN
   PROFESSOR
+  VISITOR
 }
 
 enum Campus {
@@ -75,6 +76,24 @@ enum PostStatus {
   PUBLISHED
   REJECTED
   REMOVED
+}
+
+enum OpportunityStatus {
+  PENDING
+  PUBLISHED
+  REJECTED
+  REMOVED
+}
+
+enum OpportunityType {
+  INTERNSHIP
+  JOB
+}
+
+enum OpportunityWorkMode {
+  REMOTE
+  HYBRID
+  ONSITE
 }
 
 enum VoteDirection {
@@ -157,6 +176,8 @@ model User {
   eventRegistrations       EventRegistration[]
   authoredPosts          Post[]          @relation("PostAuthor")
   reviewedPosts          Post[]          @relation("PostReviewer")
+  authoredOpportunities  Opportunity[]   @relation("OpportunityAuthor")
+  reviewedOpportunities  Opportunity[]   @relation("OpportunityReviewer")
   authoredComments       Comment[]       @relation("CommentAuthor")
   removedComments        Comment[]       @relation("CommentRemover")
   postVotes              PostVote[]
@@ -471,6 +492,31 @@ model Post {
   reports         ContentReport[]
 
   @@index([status, createdAt])
+  @@index([authorId, status, createdAt])
+  @@index([reviewerId])
+}
+
+model Opportunity {
+  id              String               @id @default(uuid(7)) @db.Uuid
+  roleTitle       String
+  organization    String
+  description     String
+  type            OpportunityType
+  workMode        OpportunityWorkMode
+  location        String
+  deadline        DateTime
+  applicationUrl  String
+  status          OpportunityStatus    @default(PENDING)
+  authorId        String               @db.Uuid
+  reviewerId      String?              @db.Uuid
+  moderationNote  String?
+  rejectionReason String?
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+  author          User                 @relation("OpportunityAuthor", fields: [authorId], references: [id], onDelete: Cascade)
+  reviewer        User?                @relation("OpportunityReviewer", fields: [reviewerId], references: [id], onDelete: SetNull)
+
+  @@index([status, deadline])
   @@index([authorId, status, createdAt])
   @@index([reviewerId])
 }

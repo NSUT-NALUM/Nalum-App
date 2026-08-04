@@ -606,7 +606,11 @@ export class ChatRepository {
 			AND: [
 				{
 					OR: [
-						{ role: { not: "ALUMNI" as const } },
+						{
+							role: {
+								notIn: ["ALUMNI", "VISITOR"] as ("ALUMNI" | "VISITOR")[],
+							},
+						},
 						{
 							role: "ALUMNI" as const,
 							verificationStatus: "VERIFIED" as const,

@@ -61,6 +61,17 @@ describe("getAuthRoute", () => {
 		).toBe("/admin");
 	});
 
+	it("routes verified visitors directly to their publisher workspace", () => {
+		expect(
+			getAuthRoute({
+				...user,
+				role: "VISITOR",
+				profileCompleted: false,
+				verificationStatus: null,
+			}),
+		).toBe("/publisher");
+	});
+
 	it("routes banned users to restriction details", () => {
 		expect(
 			getAuthRoute({

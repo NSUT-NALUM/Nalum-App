@@ -82,6 +82,7 @@ export type CreateUserInput = {
 	role: UserRole;
 	emailVerified?: boolean;
 	emailVerifiedAt?: Date | null;
+	profileCompleted?: boolean;
 };
 
 export type CreateRefreshTokenInput = {

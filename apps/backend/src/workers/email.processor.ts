@@ -7,8 +7,12 @@ import {
 	renderAlumniApprovedEmail,
 	renderAlumniRejectedEmail,
 } from "../templates/alumni-review.template";
-import { renderOtpEmail } from "../templates/otp.template";
+import {
+	renderContentNotificationEmail,
+	renderOpportunityDecisionEmail,
+} from "../templates/content-notification.template";
 import { renderEventNotificationEmail } from "../templates/event-notification.template";
+import { renderOtpEmail } from "../templates/otp.template";
 
 const prisma = createPrismaClient(env.DATABASE_URL);
 
@@ -37,20 +41,8 @@ export class MailSender {
 		html: string;
 	}) {
 		if (env.NODE_ENV === "development") {
-			const otpMatch = input.text.match(/\b\d{6}\b/);
-			const otp = otpMatch ? otpMatch[0] : "";
 			console.log(
-				[
-					"",
-					"┌─────────────────────────────────────────────┐",
-					"│        📧  DEV — Email Verification OTP        │",
-					"├─────────────────────────────────────────────┤",
-					`│  To       : ${input.to.padEnd(32)}│`,
-					`│  OTP      : ${otp.padEnd(32)}│`,
-					"│  Expires  : 10 minutes                      │",
-					"└─────────────────────────────────────────────┘",
-					"",
-				].join("\n"),
+				`[DEV email]\nTo: ${input.to}\nSubject: ${input.subject}\nText: ${input.text}\nHTML: ${input.html}`,
 			);
 			return;
 		}
@@ -174,6 +166,26 @@ export async function emailProcessor(
 			text: rendered.text,
 			html: rendered.html,
 		});
+		return;
+	}
+
+	if (job.name === "content-notification") {
+		const payload = job.data as Extract<
+			EmailJobPayload,
+			{ template: "content-notification" }
+		>["payload"];
+		const rendered = renderContentNotificationEmail(payload);
+		await mailSender.sendMail({ to: payload.to, ...rendered });
+		return;
+	}
+
+	if (job.name === "opportunity-decision") {
+		const payload = job.data as Extract<
+			EmailJobPayload,
+			{ template: "opportunity-decision" }
+		>["payload"];
+		const rendered = renderOpportunityDecisionEmail(payload);
+		await mailSender.sendMail({ to: payload.to, ...rendered });
 		return;
 	}
 

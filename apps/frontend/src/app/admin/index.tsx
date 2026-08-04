@@ -140,6 +140,12 @@ export default function AdminPortal() {
 					>
 						Post moderation
 					</Button>
+					<Button
+						variant="secondary"
+						onPress={() => router.push("/admin/opportunities" as never)}
+					>
+						Opportunity moderation
+					</Button>
 				</View>
 				<Card>
 					<View className="gap-4">

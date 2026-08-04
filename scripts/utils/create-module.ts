@@ -5,7 +5,7 @@ import { renderTemplate } from "./render-template";
 const moduleName = process.argv[2];
 
 if (!moduleName) {
-	console.error("Usage: bun run module <name>");
+	console.error("Usage: bun run generate:module <name>");
 	process.exit(1);
 }
 

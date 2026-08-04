@@ -64,7 +64,7 @@ export class UserRepository {
 		const and: Prisma.UserWhereInput[] = [
 			{
 				OR: [
-					{ role: { not: "ALUMNI" } },
+					{ role: { notIn: ["ALUMNI", "VISITOR"] } },
 					{ role: "ALUMNI", verificationStatus: "VERIFIED" },
 				],
 			},

@@ -1,14 +1,14 @@
 import { router } from "expo-router";
+import { useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 import {
-	EventForm,
 	canCreateEvents,
+	EventForm,
 	toEventFormData,
 } from "@/components/event-ui";
 import { Button, Screen } from "@/components/ui/nalum";
 import { eventsApi } from "@/lib/api";
 import { useAuthStore } from "@/stores/auth-store";
-import { useState } from "react";
 
 export default function CreateEvent() {
 	const user = useAuthStore((state) => state.user);
@@ -18,7 +18,8 @@ export default function CreateEvent() {
 		return (
 			<Screen>
 				<Text className="text-muted">
-					Only verified alumni and administrators can create events.
+					Only verified alumni, professors, and administrators can create
+					events.
 				</Text>
 			</Screen>
 		);

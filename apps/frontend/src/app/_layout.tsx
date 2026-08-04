@@ -33,7 +33,9 @@ function AppNavigator() {
 
 	const signedIn = user !== null;
 	const emailVerified = signedIn && user.emailVerified;
-	const profileCompleted = emailVerified && user.profileCompleted;
+	const isVisitor = user?.role === "VISITOR";
+	const profileCompleted =
+		emailVerified && (user.profileCompleted || isVisitor);
 	const isAdmin = user?.role === "ADMIN";
 	const isBanned = Boolean(user?.activeBan);
 	const isVerifiedAlumni =
@@ -59,7 +61,9 @@ function AppNavigator() {
 				<Stack.Screen name="verify" />
 			</Stack.Protected>
 
-			<Stack.Protected guard={emailVerified && !isBanned && !profileCompleted}>
+			<Stack.Protected
+				guard={emailVerified && !isBanned && !profileCompleted && !isVisitor}
+			>
 				<Stack.Screen name="profile" />
 			</Stack.Protected>
 
@@ -78,7 +82,13 @@ function AppNavigator() {
 			</Stack.Protected>
 
 			<Stack.Protected
-				guard={profileCompleted && !isBanned && isVerifiedAlumni && !isAdmin}
+				guard={
+					profileCompleted &&
+					!isBanned &&
+					isVerifiedAlumni &&
+					!isAdmin &&
+					!isVisitor
+				}
 			>
 				<Stack.Screen name="(member)" />
 			</Stack.Protected>
@@ -88,10 +98,15 @@ function AppNavigator() {
 					profileCompleted &&
 					!isBanned &&
 					!isAdmin &&
+					!isVisitor &&
 					(isPendingAlumni || isRejectedAlumni || isVerifiedAlumni)
 				}
 			>
 				<Stack.Screen name="profile/edit" options={{ gestureEnabled: false }} />
+			</Stack.Protected>
+
+			<Stack.Protected guard={Boolean(emailVerified && !isBanned && isVisitor)}>
+				<Stack.Screen name="publisher" />
 			</Stack.Protected>
 
 			<Stack.Protected guard={Boolean(isAdmin && !isBanned)}>
@@ -101,6 +116,7 @@ function AppNavigator() {
 				<Stack.Screen name="admin/events/[eventId]" />
 				<Stack.Screen name="admin/posts" />
 				<Stack.Screen name="admin/posts/[postId]" />
+				<Stack.Screen name="admin/opportunities" />
 			</Stack.Protected>
 		</Stack>
 	);

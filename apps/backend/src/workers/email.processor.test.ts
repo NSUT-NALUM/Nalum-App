@@ -13,6 +13,13 @@ vi.mock("@nalum/database/client", () => ({
 	}),
 }));
 
+vi.mock("../config/env.config", () => ({
+	env: {
+		NODE_ENV: "test",
+		DATABASE_URL: "postgresql://test",
+	},
+}));
+
 describe("emailProcessor", () => {
 	beforeEach(() => {
 		vi.clearAllMocks();

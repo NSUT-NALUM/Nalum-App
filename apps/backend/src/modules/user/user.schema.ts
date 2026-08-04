@@ -5,7 +5,13 @@ import {
 	profileDataSchema,
 } from "../profile/profile.schema";
 
-const UserRoleEnum = z.enum(["STUDENT", "ALUMNI", "ADMIN", "PROFESSOR"]);
+const UserRoleEnum = z.enum([
+	"STUDENT",
+	"ALUMNI",
+	"ADMIN",
+	"PROFESSOR",
+	"VISITOR",
+]);
 
 const booleanQuerySchema = z.preprocess((value) => {
 	if (value === "true") return true;

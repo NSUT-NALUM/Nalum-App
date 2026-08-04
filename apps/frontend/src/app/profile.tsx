@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { Button, Card, Field, Screen } from "@/components/ui/nalum";
 import { authApi, type Branch, type Campus, profileApi } from "@/lib/api";
+import { getAuthRoute } from "@/lib/auth-navigation";
 import { useAuthStore } from "@/stores/auth-store";
 
 const branches: Branch[] = [
@@ -53,9 +54,7 @@ export default function RequiredProfile() {
 			});
 			const u = await authApi.refreshUser();
 			useAuthStore.getState().setUser({ ...u, profile });
-			router.replace(
-				user?.role === "ALUMNI" ? "/verification-pending" : "/directory",
-			);
+			router.replace(getAuthRoute({ ...u, profile }));
 		} catch (e) {
 			setError(e instanceof Error ? e.message : "Try again.");
 		} finally {

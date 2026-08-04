@@ -34,6 +34,16 @@ export class InvalidCredentialsError extends UnauthorizedError {
 	}
 }
 
+export class GoogleAccountNotRegisteredError extends UnauthorizedError {
+	constructor() {
+		super(
+			"No account exists for this Google email. Choose a role on sign-up first.",
+			"AUTH_GOOGLE_SIGNUP_REQUIRED",
+		);
+		this.name = "GoogleAccountNotRegisteredError";
+	}
+}
+
 export class MissingRefreshTokenError extends UnauthorizedError {
 	constructor() {
 		super("Refresh token is required", "AUTH_REFRESH_TOKEN_REQUIRED");

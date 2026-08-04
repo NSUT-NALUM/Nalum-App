@@ -64,7 +64,7 @@ Short-term convenience must never compromise long-term maintainability.
 
 ## Local development
 
-Run `bun run app` to start PostgreSQL, Redis, MinIO, MinIO Console,
+Run `bun run dev:stack` to start PostgreSQL, Redis, MinIO, MinIO Console,
 pgAdmin, RedisInsight, the backend, chatserver, and email worker. The local
 processes use Bun hot reload; containers remain running when you stop the
 command with Ctrl-C.
@@ -76,6 +76,10 @@ The command waits for infrastructure health and applies pending Prisma
 migrations without resetting local data. The development dashboards are
 available at MinIO Console (`http://localhost:9001`), pgAdmin
 (`http://localhost:5050`), and RedisInsight (`http://localhost:5540`).
+
+Use `bun run docker:compose -- <command>` for profile-aware Docker Compose
+commands, `bun run generate:module <name>` for a backend module, and
+`bun run generate:middleware <name>` for a backend middleware.
 
 ---
 

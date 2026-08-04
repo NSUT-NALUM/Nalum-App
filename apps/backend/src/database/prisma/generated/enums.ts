@@ -13,7 +13,8 @@ export const UserRole = {
   STUDENT: 'STUDENT',
   ALUMNI: 'ALUMNI',
   ADMIN: 'ADMIN',
-  PROFESSOR: 'PROFESSOR'
+  PROFESSOR: 'PROFESSOR',
+  VISITOR: 'VISITOR'
 } as const
 
 export type UserRole = (typeof UserRole)[keyof typeof UserRole]
@@ -95,6 +96,33 @@ export const PostStatus = {
 } as const
 
 export type PostStatus = (typeof PostStatus)[keyof typeof PostStatus]
+
+
+export const OpportunityStatus = {
+  PENDING: 'PENDING',
+  PUBLISHED: 'PUBLISHED',
+  REJECTED: 'REJECTED',
+  REMOVED: 'REMOVED'
+} as const
+
+export type OpportunityStatus = (typeof OpportunityStatus)[keyof typeof OpportunityStatus]
+
+
+export const OpportunityType = {
+  INTERNSHIP: 'INTERNSHIP',
+  JOB: 'JOB'
+} as const
+
+export type OpportunityType = (typeof OpportunityType)[keyof typeof OpportunityType]
+
+
+export const OpportunityWorkMode = {
+  REMOTE: 'REMOTE',
+  HYBRID: 'HYBRID',
+  ONSITE: 'ONSITE'
+} as const
+
+export type OpportunityWorkMode = (typeof OpportunityWorkMode)[keyof typeof OpportunityWorkMode]
 
 
 export const VoteDirection = {

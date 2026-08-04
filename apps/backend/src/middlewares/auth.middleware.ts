@@ -99,6 +99,13 @@ export const requirePlatformAccess = async (
 	await requireApplicationAccess(request, reply);
 	const user = getCurrentUser(request);
 
+	if (user.role === "VISITOR") {
+		throw new ForbiddenError(
+			"Visitor accounts only have publisher workspace access",
+			"MEMBER_ACCESS_REQUIRED",
+		);
+	}
+
 	if (user.role !== "ALUMNI" || user.verificationStatus === "VERIFIED") return;
 
 	if (user.verificationStatus === "REJECTED") {
@@ -112,6 +119,31 @@ export const requirePlatformAccess = async (
 		"Your alumni application is awaiting verification",
 		"ALUMNI_VERIFICATION_PENDING",
 	);
+};
+
+export const requirePublisherAccess = async (
+	request: FastifyRequest,
+	reply: FastifyReply,
+) => {
+	await requireApplicationAccess(request, reply);
+	const user = getCurrentUser(request);
+	if (user.role === "VISITOR") {
+		if (user.emailVerified) return;
+		throw new ForbiddenError(
+			"Verify your email before publishing",
+			"EMAIL_VERIFICATION_REQUIRED",
+		);
+	}
+	if (user.role === "ALUMNI" && user.verificationStatus !== "VERIFIED") {
+		throw new ForbiddenError(
+			user.verificationStatus === "REJECTED"
+				? "Your alumni application was rejected"
+				: "Your alumni application is awaiting verification",
+			user.verificationStatus === "REJECTED"
+				? "ALUMNI_VERIFICATION_REJECTED"
+				: "ALUMNI_VERIFICATION_PENDING",
+		);
+	}
 };
 
 export const requireAdmin = async (

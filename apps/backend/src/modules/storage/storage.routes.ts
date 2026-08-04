@@ -1,6 +1,9 @@
 import type { FastifyPluginAsync, FastifyReply, FastifyRequest } from "fastify";
 import ForbiddenError from "../../errors/forbidden.error";
-import { getCurrentUser, protect } from "../../middlewares/auth.middleware";
+import {
+	getCurrentUser,
+	requireApplicationAccess,
+} from "../../middlewares/auth.middleware";
 import { UnsupportedStorageObjectKeyError } from "./storage.errors";
 import {
 	isAllowedStorageObjectKey,
@@ -17,7 +20,7 @@ const storageRoutes: FastifyPluginAsync = async (fastify) => {
 	fastify.get<{ Params: StorageObjectParams }>(
 		"/objects/*",
 		{
-			preHandler: protect,
+			preHandler: requireApplicationAccess,
 			schema: {
 				summary: "Read protected storage object",
 				description:
@@ -34,10 +37,16 @@ const storageRoutes: FastifyPluginAsync = async (fastify) => {
 		reply: FastifyReply,
 	) {
 		const key = request.params["*"];
+		const user = getCurrentUser(request);
 		if (!isAllowedStorageObjectKey(key)) {
 			throw new UnsupportedStorageObjectKeyError();
 		}
 		if (isChatImageObjectKey(key)) {
+			if (user.role === "VISITOR")
+				throw new ForbiddenError(
+					"Visitors cannot access chat attachments",
+					"VISITOR_STORAGE_FORBIDDEN",
+				);
 			const attachment =
 				await request.server.prisma.messageAttachment.findFirst({
 					where: {
@@ -48,7 +57,7 @@ const storageRoutes: FastifyPluginAsync = async (fastify) => {
 								conversation: {
 									participants: {
 										some: {
-											userId: getCurrentUser(request).id,
+											userId: user.id,
 											leftAt: null,
 										},
 									},
@@ -65,13 +74,14 @@ const storageRoutes: FastifyPluginAsync = async (fastify) => {
 				);
 		}
 		if (isPostImageObjectKey(key)) {
-			const user = getCurrentUser(request);
 			const post = await request.server.prisma.post.findFirst({
 				where: {
 					imageKeys: { has: key },
 					...(user.role === "ADMIN"
 						? {}
-						: { OR: [{ status: "PUBLISHED" }, { authorId: user.id }] }),
+						: user.role === "VISITOR"
+							? { authorId: user.id }
+							: { OR: [{ status: "PUBLISHED" }, { authorId: user.id }] }),
 				},
 				select: { id: true },
 			});
@@ -80,6 +90,12 @@ const storageRoutes: FastifyPluginAsync = async (fastify) => {
 					"You cannot access this post image",
 					"POST_IMAGE_FORBIDDEN",
 				);
+		}
+		if (user.role === "VISITOR" && !isPostImageObjectKey(key)) {
+			throw new ForbiddenError(
+				"Visitors can only access images attached to their own posts",
+				"VISITOR_STORAGE_FORBIDDEN",
+			);
 		}
 
 		const object = await request.server.storage.getObjectStream(key);

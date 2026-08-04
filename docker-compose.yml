@@ -10,7 +10,7 @@ services:
       context: .
       dockerfile: docker/backend.Dockerfile
     # Local development starts from a clean schema and reapplies migrations.
-    command: ["bun", "src/scripts/start.ts", "--migrate=reset"]
+    command: ["bun", "run", "start:db:reset"]
     env_file:
       - ./apps/backend/.env
     environment:

@@ -1,6 +1,9 @@
 import type { FastifyPluginAsync } from "fastify";
 import type { ZodTypeProvider } from "fastify-type-provider-zod";
-import { requirePlatformAccess } from "../../middlewares/auth.middleware";
+import {
+	requirePlatformAccess,
+	requirePublisherAccess,
+} from "../../middlewares/auth.middleware";
 import { PostController } from "./post.controller";
 import { PostRepository } from "./post.repository";
 import * as schema from "./post.schema";
@@ -19,11 +22,12 @@ const postRoutes: FastifyPluginAsync = async (fastify) => {
 			response: { 200: schema.postResponseSchema },
 		},
 	};
-	const multipart = {
-		...secured,
+	const publisher = { ...secured, preHandler: requirePublisherAccess };
+	const publisherMultipart = {
+		...publisher,
 		validatorCompiler: () => () => true,
 		schema: {
-			...secured.schema,
+			...publisher.schema,
 			consumes: ["multipart/form-data"],
 			body: schema.postMultipartSchema,
 		},
@@ -32,9 +36,9 @@ const postRoutes: FastifyPluginAsync = async (fastify) => {
 	app.post(
 		"/",
 		{
-			...multipart,
+			...publisherMultipart,
 			schema: {
-				...multipart.schema,
+				...publisherMultipart.schema,
 				response: { 201: schema.postResponseSchema },
 			},
 		},
@@ -51,7 +55,7 @@ const postRoutes: FastifyPluginAsync = async (fastify) => {
 	app.get(
 		"/mine",
 		{
-			...secured,
+			...publisher,
 			schema: { ...secured.schema, querystring: schema.pageQuerySchema },
 		},
 		controller.mine,
@@ -59,7 +63,7 @@ const postRoutes: FastifyPluginAsync = async (fastify) => {
 	app.get(
 		"/:postId",
 		{
-			...secured,
+			...publisher,
 			schema: { ...secured.schema, params: schema.postIdParamsSchema },
 		},
 		controller.get,
@@ -67,8 +71,11 @@ const postRoutes: FastifyPluginAsync = async (fastify) => {
 	app.patch(
 		"/:postId",
 		{
-			...multipart,
-			schema: { ...multipart.schema, params: schema.postIdParamsSchema },
+			...publisherMultipart,
+			schema: {
+				...publisherMultipart.schema,
+				params: schema.postIdParamsSchema,
+			},
 		},
 		controller.update,
 	);

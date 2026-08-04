@@ -416,6 +416,7 @@ export const ModelName = {
   Event: 'Event',
   EventRegistration: 'EventRegistration',
   Post: 'Post',
+  Opportunity: 'Opportunity',
   Comment: 'Comment',
   PostVote: 'PostVote',
   CommentVote: 'CommentVote',
@@ -435,7 +436,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "connectionRequest" | "conversation" | "conversationParticipant" | "groupInvitation" | "message" | "messageAttachment" | "messageReaction" | "messageMention" | "refreshToken" | "emailOtp" | "profile" | "alumniVerificationEvent" | "socialMedia" | "experience" | "userBan" | "event" | "eventRegistration" | "post" | "comment" | "postVote" | "commentVote" | "contentReport"
+    modelProps: "user" | "connectionRequest" | "conversation" | "conversationParticipant" | "groupInvitation" | "message" | "messageAttachment" | "messageReaction" | "messageMention" | "refreshToken" | "emailOtp" | "profile" | "alumniVerificationEvent" | "socialMedia" | "experience" | "userBan" | "event" | "eventRegistration" | "post" | "opportunity" | "comment" | "postVote" | "commentVote" | "contentReport"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1845,6 +1846,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Opportunity: {
+      payload: Prisma.$OpportunityPayload<ExtArgs>
+      fields: Prisma.OpportunityFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.OpportunityFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpportunityPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.OpportunityFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpportunityPayload>
+        }
+        findFirst: {
+          args: Prisma.OpportunityFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpportunityPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.OpportunityFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpportunityPayload>
+        }
+        findMany: {
+          args: Prisma.OpportunityFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpportunityPayload>[]
+        }
+        create: {
+          args: Prisma.OpportunityCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpportunityPayload>
+        }
+        createMany: {
+          args: Prisma.OpportunityCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.OpportunityCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpportunityPayload>[]
+        }
+        delete: {
+          args: Prisma.OpportunityDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpportunityPayload>
+        }
+        update: {
+          args: Prisma.OpportunityUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpportunityPayload>
+        }
+        deleteMany: {
+          args: Prisma.OpportunityDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.OpportunityUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.OpportunityUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpportunityPayload>[]
+        }
+        upsert: {
+          args: Prisma.OpportunityUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpportunityPayload>
+        }
+        aggregate: {
+          args: Prisma.OpportunityAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateOpportunity>
+        }
+        groupBy: {
+          args: Prisma.OpportunityGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OpportunityGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.OpportunityCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OpportunityCountAggregateOutputType> | number
+        }
+      }
+    }
     Comment: {
       payload: Prisma.$CommentPayload<ExtArgs>
       fields: Prisma.CommentFieldRefs
@@ -2461,6 +2536,28 @@ export const PostScalarFieldEnum = {
 export type PostScalarFieldEnum = (typeof PostScalarFieldEnum)[keyof typeof PostScalarFieldEnum]
 
 
+export const OpportunityScalarFieldEnum = {
+  id: 'id',
+  roleTitle: 'roleTitle',
+  organization: 'organization',
+  description: 'description',
+  type: 'type',
+  workMode: 'workMode',
+  location: 'location',
+  deadline: 'deadline',
+  applicationUrl: 'applicationUrl',
+  status: 'status',
+  authorId: 'authorId',
+  reviewerId: 'reviewerId',
+  moderationNote: 'moderationNote',
+  rejectionReason: 'rejectionReason',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OpportunityScalarFieldEnum = (typeof OpportunityScalarFieldEnum)[keyof typeof OpportunityScalarFieldEnum]
+
+
 export const CommentScalarFieldEnum = {
   id: 'id',
   postId: 'postId',
@@ -2790,6 +2887,48 @@ export type ListEnumPostStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$P
 
 
 /**
+ * Reference to a field of type 'OpportunityType'
+ */
+export type EnumOpportunityTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OpportunityType'>
+    
+
+
+/**
+ * Reference to a field of type 'OpportunityType[]'
+ */
+export type ListEnumOpportunityTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OpportunityType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'OpportunityWorkMode'
+ */
+export type EnumOpportunityWorkModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OpportunityWorkMode'>
+    
+
+
+/**
+ * Reference to a field of type 'OpportunityWorkMode[]'
+ */
+export type ListEnumOpportunityWorkModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OpportunityWorkMode[]'>
+    
+
+
+/**
+ * Reference to a field of type 'OpportunityStatus'
+ */
+export type EnumOpportunityStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OpportunityStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'OpportunityStatus[]'
+ */
+export type ListEnumOpportunityStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OpportunityStatus[]'>
+    
+
+
+/**
  * Reference to a field of type 'VoteDirection'
  */
 export type EnumVoteDirectionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VoteDirection'>
@@ -2986,6 +3125,7 @@ export type GlobalOmitConfig = {
   event?: Prisma.EventOmit
   eventRegistration?: Prisma.EventRegistrationOmit
   post?: Prisma.PostOmit
+  opportunity?: Prisma.OpportunityOmit
   comment?: Prisma.CommentOmit
   postVote?: Prisma.PostVoteOmit
   commentVote?: Prisma.CommentVoteOmit

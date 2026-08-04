@@ -8,10 +8,10 @@
 		"packages/*"
 	],
 	"scripts": {
-		"app": "bun scripts/app.ts",
-		"infra": "bun index.ts",
-		"module": "bun scripts/utils/create-module.ts",
-		"middleware": "bun scripts/utils/create-middleware.ts",
+		"dev:stack": "bun scripts/app.ts",
+		"docker:compose": "bun index.ts",
+		"generate:module": "bun scripts/utils/create-module.ts",
+		"generate:middleware": "bun scripts/utils/create-middleware.ts",
 		"dev": "turbo run dev",
 		"build": "turbo run build",
 		"test": "turbo run test",

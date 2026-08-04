@@ -20,6 +20,7 @@ export const canCreateEvents = (user: {
 	verificationStatus: string | null;
 }) =>
 	user.role === "ADMIN" ||
+	user.role === "PROFESSOR" ||
 	(user.role === "ALUMNI" && user.verificationStatus === "VERIFIED");
 
 export function EventStatusBadge({ status }: { status: EventStatus }) {

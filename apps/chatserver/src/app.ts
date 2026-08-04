@@ -137,6 +137,13 @@ export const buildApp = async (options: FastifyServerOptions = {}) => {
 					: "ALUMNI_VERIFICATION_PENDING",
 			);
 		}
+		if (user.role === "VISITOR") {
+			throw new ChatError(
+				"Visitor accounts cannot access chat",
+				403,
+				"MEMBER_ACCESS_REQUIRED",
+			);
+		}
 		request.chatUserId = user.id;
 	};
 

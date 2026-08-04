@@ -1,6 +1,6 @@
 import { Platform } from "react-native";
 
-export type Role = "STUDENT" | "ALUMNI" | "ADMIN" | "PROFESSOR";
+export type Role = "STUDENT" | "ALUMNI" | "ADMIN" | "PROFESSOR" | "VISITOR";
 export type Branch =
 	| "CSE"
 	| "ECE"
@@ -130,6 +130,37 @@ export type Event = {
 };
 export type EventPage = {
 	events: Event[];
+	total: number;
+	limit: number;
+	offset: number;
+};
+export type OpportunityStatus =
+	| "PENDING"
+	| "PUBLISHED"
+	| "REJECTED"
+	| "REMOVED";
+export type OpportunityType = "INTERNSHIP" | "JOB";
+export type OpportunityWorkMode = "REMOTE" | "HYBRID" | "ONSITE";
+export type Opportunity = {
+	id: string;
+	roleTitle: string;
+	organization: string;
+	description: string;
+	type: OpportunityType;
+	workMode: OpportunityWorkMode;
+	location: string;
+	deadline: string;
+	applicationUrl: string;
+	status: OpportunityStatus;
+	createdAt: string;
+	updatedAt: string;
+	moderationNote: string | null;
+	rejectionReason: string | null;
+	author?: PostAuthor;
+	reviewer?: PostAuthor | null;
+};
+export type OpportunityPage = {
+	opportunities: Opportunity[];
 	total: number;
 	limit: number;
 	offset: number;
@@ -538,7 +569,9 @@ export const authApi = {
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({ otp }),
 		}),
-	googleUrl: `${baseUrl}/auth/login/google`,
+	googleUrl: `${baseUrl}/auth/google/signin`,
+	googleSignupUrl: (role: Exclude<Role, "ADMIN">) =>
+		`${baseUrl}/auth/google/signup?role=${encodeURIComponent(role)}`,
 };
 export const profileApi = {
 	create: (
@@ -656,6 +689,10 @@ export type AdminEventListParams = EventListParams & {
 export type PostListParams = { limit?: number; offset?: number };
 export type AdminPostListParams = PostListParams & {
 	status?: PostStatus;
+	q?: string;
+};
+export type AdminOpportunityListParams = PostListParams & {
+	status?: OpportunityStatus;
 	q?: string;
 };
 export type ReportListParams = PostListParams & {
@@ -821,6 +858,73 @@ export const postsApi = {
 		api<{ outcome: "POST_REMOVED" | "COMMENT_REMOVED" }>(
 			`/admin/posts/reports/${reportId}/remove-content`,
 			{ method: "POST" },
+		),
+};
+export const opportunitiesApi = {
+	list: (params: PostListParams = {}) =>
+		api<OpportunityPage>(`/opportunities?${queryString(params)}`),
+	mine: (params: PostListParams = {}) =>
+		api<OpportunityPage>(`/opportunities/mine?${queryString(params)}`),
+	get: (opportunityId: string) =>
+		api<Opportunity>(`/opportunities/${opportunityId}`),
+	create: (
+		input: Omit<
+			Opportunity,
+			| "id"
+			| "status"
+			| "createdAt"
+			| "updatedAt"
+			| "moderationNote"
+			| "rejectionReason"
+			| "author"
+			| "reviewer"
+		>,
+	) =>
+		api<Opportunity>("/opportunities", {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify(input),
+		}),
+	update: (
+		opportunityId: string,
+		input: Partial<
+			Pick<
+				Opportunity,
+				| "roleTitle"
+				| "organization"
+				| "description"
+				| "type"
+				| "workMode"
+				| "location"
+				| "deadline"
+				| "applicationUrl"
+			>
+		>,
+	) =>
+		api<Opportunity>(`/opportunities/${opportunityId}`, {
+			method: "PATCH",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify(input),
+		}),
+	adminList: (params: AdminOpportunityListParams = {}) =>
+		api<OpportunityPage>(`/admin/opportunities?${queryString(params)}`),
+	approve: (opportunityId: string, note?: string) =>
+		api<{ opportunityId: string; status: "PUBLISHED" }>(
+			`/admin/opportunities/${opportunityId}/approve`,
+			{
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ note: note || undefined }),
+			},
+		),
+	reject: (opportunityId: string, reason: string) =>
+		api<{ opportunityId: string; status: "REJECTED" }>(
+			`/admin/opportunities/${opportunityId}/reject`,
+			{
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ reason }),
+			},
 		),
 };
 export const usersApi = (

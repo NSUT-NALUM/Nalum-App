@@ -1,7 +1,7 @@
 import { Tabs } from "expo-router";
 import {
+	BriefcaseBusiness,
 	CalendarDays,
-	Compass,
 	MessageCircle,
 	MessageSquare,
 	UserRound,
@@ -10,10 +10,12 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { ChatEventBridge, ChatSocketProvider } from "@/hooks/use-chat-socket";
 import { useTheme } from "@/hooks/use-theme";
+import { useAuthStore } from "@/stores/auth-store";
 
 export default function MemberTabs() {
 	const theme = useTheme();
 	const insets = useSafeAreaInsets();
+	const user = useAuthStore((state) => state.user);
 
 	return (
 		<ChatSocketProvider>
@@ -73,16 +75,18 @@ export default function MemberTabs() {
 						),
 					}}
 				/>
-				<Tabs.Screen
-					name="explore"
-					options={{
-						title: "Discover",
-						tabBarAccessibilityLabel: "Discover tab",
-						tabBarIcon: ({ color, size }) => (
-							<Compass color={color} size={size} />
-						),
-					}}
-				/>
+				<Tabs.Protected guard={user?.role !== "PROFESSOR"}>
+					<Tabs.Screen
+						name="explore"
+						options={{
+							title: "Opportunities",
+							tabBarAccessibilityLabel: "Opportunities tab",
+							tabBarIcon: ({ color, size }) => (
+								<BriefcaseBusiness color={color} size={size} />
+							),
+						}}
+					/>
+				</Tabs.Protected>
 				<Tabs.Screen name="chat/[conversationId]" options={{ href: null }} />
 				<Tabs.Screen
 					name="account"

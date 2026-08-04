@@ -41,8 +41,8 @@ export type EmailJobPayload =
 				reason: string;
 				signInUrl: string;
 			};
-		  }
-		| {
+	  }
+	| {
 			template: "event-notification";
 			payload: {
 				eventId: string;
@@ -53,7 +53,28 @@ export type EmailJobPayload =
 				startsAt: string;
 				endsAt: string;
 				status: "PENDING" | "PUBLISHED";
-		  };
+			};
+	  }
+	| {
+			template: "content-notification";
+			payload: {
+				to: string;
+				contentType: "Post" | "Event" | "Opportunity";
+				title: string;
+				authorName: string;
+				authorEmail: string;
+				status: "PENDING" | "PUBLISHED";
+			};
+	  }
+	| {
+			template: "opportunity-decision";
+			payload: {
+				to: string;
+				firstName: string;
+				title: string;
+				status: "PUBLISHED" | "REJECTED";
+				reason: string | null;
+			};
 	  };
 
 export const EMAIL_QUEUE_NAME = env.EMAIL_QUEUE_NAME;

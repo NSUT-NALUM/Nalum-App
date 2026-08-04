@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { Button, Card, Field, Screen } from "@/components/ui/nalum";
 import { authApi } from "@/lib/api";
+import { getAuthRoute } from "@/lib/auth-navigation";
 import { useAuthStore } from "@/stores/auth-store";
 
 export default function Verify() {
@@ -41,9 +42,10 @@ export default function Verify() {
 			await authApi.verifyOtp(otp);
 			const current = useAuthStore.getState().user;
 			if (current) {
-				useAuthStore.getState().setUser({ ...current, emailVerified: true });
+				const verifiedUser = { ...current, emailVerified: true };
+				useAuthStore.getState().setUser(verifiedUser);
+				router.replace(getAuthRoute(verifiedUser));
 			}
-			router.replace("/profile");
 		} catch (reason) {
 			setError(reason instanceof Error ? reason.message : "Try again.");
 		} finally {

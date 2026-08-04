@@ -19,6 +19,7 @@ import {
 	EmailAlreadyExistsError,
 	EmailAlreadyVerifiedError,
 	EmailOtpRateLimitedError,
+	GoogleAccountNotRegisteredError,
 	InvalidCredentialsError,
 	InvalidEmailError,
 	InvalidEmailOtpError,
@@ -64,6 +65,7 @@ export class AuthService {
 			email: input.email,
 			passwordHash,
 			role: input.role,
+			profileCompleted: input.role === "VISITOR",
 		});
 
 		await this.trySendInitialEmailVerificationOtp(user);
@@ -101,6 +103,7 @@ export class AuthService {
 	async loginWithGoogle(
 		profile: GoogleUserInfo,
 		device: AuthDevice = DEFAULT_AUTH_DEVICE,
+		signupRole?: RegisterBody["role"],
 	): Promise<AuthSession> {
 		if (profile.email_verified === false) {
 			throw new InvalidEmailError();
@@ -125,16 +128,23 @@ export class AuthService {
 			await this.assertNotBanned(linkedUser.id);
 			return this.createSession(linkedUser, device);
 		}
-		const Role = profile.email.endsWith("@nsut.ac.in") ? "STUDENT" : "ALUMNI";
+		if (!signupRole) {
+			throw new GoogleAccountNotRegisteredError();
+		}
+		if (!profile.email.endsWith("@nsut.ac.in") && signupRole === "STUDENT") {
+			throw new InvalidEmailError();
+		}
+		const role = signupRole;
 		const user = await this.repository.createUser({
 			firstName: this.getGoogleFirstName(profile),
 			lastName: this.getGoogleLastName(profile),
 			email: profile.email,
 			passwordHash: null,
 			googleId: profile.sub,
-			role: Role,
+			role,
 			emailVerified: true,
 			emailVerifiedAt: new Date(),
+			profileCompleted: role === "VISITOR",
 		});
 
 		return this.createSession(user, device);
@@ -395,6 +405,7 @@ export interface AuthRepositoryContract {
 		role: RegisterBody["role"];
 		emailVerified?: boolean;
 		emailVerifiedAt?: Date | null;
+		profileCompleted?: boolean;
 	}): Promise<UserWithPassword>;
 	updateUserGoogleId(
 		userId: string,

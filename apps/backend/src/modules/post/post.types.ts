@@ -8,6 +8,9 @@ import type { PostFields, PostUpdateFields } from "./post.schema";
 export type PostActor = {
 	id: string;
 	role: UserRole;
+	firstName?: string;
+	lastName?: string;
+	email?: string;
 };
 
 export type PostCreateInput = PostFields & {

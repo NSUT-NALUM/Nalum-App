@@ -24,7 +24,9 @@ export const alumniReviewQuerySchema = z.object({
 
 export const adminUsersQuerySchema = z.object({
 	q: z.string().trim().min(1).optional(),
-	role: z.enum(["STUDENT", "ALUMNI", "ADMIN", "PROFESSOR"]).optional(),
+	role: z
+		.enum(["STUDENT", "ALUMNI", "ADMIN", "PROFESSOR", "VISITOR"])
+		.optional(),
 	verificationStatus: z.enum(["PENDING", "VERIFIED", "REJECTED"]).optional(),
 	banStatus: z.enum(["ACTIVE", "NONE"]).optional(),
 	registeredFrom: z.coerce.date().optional(),

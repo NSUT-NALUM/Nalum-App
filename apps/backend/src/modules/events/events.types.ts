@@ -1,4 +1,7 @@
-import type { EventStatus, UserRole } from "../../database/prisma/generated/client";
+import type {
+	EventStatus,
+	UserRole,
+} from "../../database/prisma/generated/client";
 import type { EventFields, EventUpdateFields } from "./events.schema";
 
 export type EventCreateInput = EventFields & {
@@ -14,4 +17,7 @@ export type EventActor = {
 	id: string;
 	role: UserRole;
 	verificationStatus: "PENDING" | "VERIFIED" | "REJECTED" | null;
+	firstName?: string;
+	lastName?: string;
+	email?: string;
 };

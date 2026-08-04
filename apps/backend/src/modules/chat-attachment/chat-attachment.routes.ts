@@ -2,7 +2,10 @@ import type { FastifyPluginAsync } from "fastify";
 import { z } from "zod/v4";
 import BadRequestError from "../../errors/bad-request.error";
 import ForbiddenError from "../../errors/forbidden.error";
-import { getCurrentUser, protect } from "../../middlewares/auth.middleware";
+import {
+	getCurrentUser,
+	requirePlatformAccess,
+} from "../../middlewares/auth.middleware";
 import {
 	CHAT_IMAGE_UPLOAD_PREFIX,
 	toStorageObjectUrl,
@@ -14,7 +17,7 @@ const querySchema = z.object({ conversationId: z.uuid() });
 const chatAttachmentRoutes: FastifyPluginAsync = async (fastify) => {
 	fastify.post(
 		"/attachments",
-		{ preHandler: protect },
+		{ preHandler: requirePlatformAccess },
 		async (request, reply) => {
 			if (!request.isMultipart())
 				throw new BadRequestError(

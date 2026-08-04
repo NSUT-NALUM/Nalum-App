@@ -52,6 +52,21 @@ describe("platform access guard", () => {
 		expect(error.error).toMatchObject({ statusCode: 403, code });
 	});
 
+	it("rejects visitors from member APIs", async () => {
+		const error = await requirePlatformAccess(
+			requestFor({
+				...baseUser,
+				role: "VISITOR",
+				verificationStatus: null,
+			}),
+			{} as never,
+		).catch((caught) => caught);
+		expect(error.error).toMatchObject({
+			statusCode: 403,
+			code: "MEMBER_ACCESS_REQUIRED",
+		});
+	});
+
 	it("returns active ban details", async () => {
 		const error = await requirePlatformAccess(
 			requestFor({

@@ -6,6 +6,10 @@ vi.mock("../../queues/email.queue", () => ({
 	enqueueEmail: vi.fn(),
 }));
 
+vi.mock("../../config/env.config", () => ({
+	env: { WEB_APP_URL: "http://localhost:8081" },
+}));
+
 describe("EmailService", () => {
 	let emailService: EmailService;
 

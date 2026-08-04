@@ -2,6 +2,7 @@ import { Link, router } from "expo-router";
 import { useState } from "react";
 import {
 	KeyboardAvoidingView,
+	Linking,
 	Platform,
 	ScrollView,
 	Text,
@@ -16,7 +17,7 @@ export default function SignUp() {
 	const [lastName, setLast] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
-	const [role, setRole] = useState<Role>("STUDENT");
+	const [role, setRole] = useState<Exclude<Role, "ADMIN">>("STUDENT");
 	const [busy, setBusy] = useState(false);
 	const [error, setError] = useState("");
 	const emailError =
@@ -114,7 +115,10 @@ export default function SignUp() {
 								<Text className="text-sm font-medium text-foreground">
 									I am an
 								</Text>
-								<View accessibilityRole="radiogroup" className="flex-row gap-2">
+								<View
+									accessibilityRole="radiogroup"
+									className="flex-row flex-wrap gap-2"
+								>
 									<Button
 										selected={role === "STUDENT"}
 										variant={role === "STUDENT" ? "primary" : "secondary"}
@@ -129,6 +133,20 @@ export default function SignUp() {
 									>
 										Alumni
 									</Button>
+									<Button
+										selected={role === "PROFESSOR"}
+										variant={role === "PROFESSOR" ? "primary" : "secondary"}
+										onPress={() => setRole("PROFESSOR")}
+									>
+										Professor
+									</Button>
+									<Button
+										selected={role === "VISITOR"}
+										variant={role === "VISITOR" ? "primary" : "secondary"}
+										onPress={() => setRole("VISITOR")}
+									>
+										Visitor
+									</Button>
 								</View>
 							</View>
 							{error ? (
@@ -141,6 +159,13 @@ export default function SignUp() {
 							) : null}
 							<Button loading={busy} onPress={submit}>
 								Create account
+							</Button>
+							<Button
+								variant="secondary"
+								disabled={busy}
+								onPress={() => Linking.openURL(authApi.googleSignupUrl(role))}
+							>
+								Continue with Google
 							</Button>
 						</View>
 					</Card>

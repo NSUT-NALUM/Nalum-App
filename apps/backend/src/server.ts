@@ -5,7 +5,7 @@
  * Handle SIGTERM
  *
  * Usage:
- *  bun run server
+ *  bun run start
  *
  * Note: Ensure that you have made the necessary changes in app.ts
  */

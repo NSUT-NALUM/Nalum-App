@@ -5,7 +5,7 @@ import { renderTemplate } from "./render-template";
 const middleware = process.argv[2];
 
 if (!middleware) {
-	console.error("Usage: bun run middleware <name>");
+	console.error("Usage: bun run generate:middleware <name>");
 	process.exit(1);
 }
 

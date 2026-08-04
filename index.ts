@@ -10,7 +10,7 @@ const composeArgs = process.argv.slice(2);
 
 if (composeArgs.length === 0) {
 	throw new Error(
-		"Provide a Docker Compose command, for example: bun run infra -- up -d",
+		"Provide a Docker Compose command, for example: bun run docker:compose -- up -d",
 	);
 }
 

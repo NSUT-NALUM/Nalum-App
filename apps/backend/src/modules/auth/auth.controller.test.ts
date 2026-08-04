@@ -54,6 +54,7 @@ describe("AuthController Google callback", () => {
 			token: { access_token: "google-access-token" },
 		});
 		const setCookie = vi.fn();
+		const clearCookie = vi.fn();
 		const redirect = vi.fn();
 
 		vi.stubGlobal(
@@ -70,19 +71,24 @@ describe("AuthController Google callback", () => {
 			loginWithGoogle,
 		} as unknown as AuthService);
 		const request = {
-			cookies: {},
+			cookies: { googleSignupRole: "ADMIN" },
 			headers: { "user-agent": "Vitest" },
 			server: {
 				googleOAuth2: { getAccessTokenFromAuthorizationCodeFlow },
 			},
 		} as unknown as FastifyRequest;
-		const reply = { setCookie, redirect } as unknown as FastifyReply;
+		const reply = {
+			setCookie,
+			clearCookie,
+			redirect,
+		} as unknown as FastifyReply;
 
 		await controller.googleCallback(request, reply);
 
 		expect(loginWithGoogle).toHaveBeenCalledWith(
 			googleProfile,
 			expect.objectContaining({ name: "Vitest" }),
+			undefined,
 		);
 		const device = loginWithGoogle.mock.calls[0]?.[1];
 		expect(setCookie).toHaveBeenCalledWith(
@@ -104,6 +110,10 @@ describe("AuthController Google callback", () => {
 		expect(redirect).toHaveBeenCalledWith(
 			"http://localhost:8081/auth/callback",
 			302,
+		);
+		expect(clearCookie).toHaveBeenCalledWith(
+			"googleSignupRole",
+			expect.objectContaining({ path: "/api/auth" }),
 		);
 	});
 });

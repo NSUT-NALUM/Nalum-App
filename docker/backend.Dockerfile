@@ -21,4 +21,4 @@ WORKDIR /app/apps/backend
 
 EXPOSE 5000
 
-CMD ["bun", "src/scripts/start.ts", "--migrate=deploy"]
+CMD ["bun", "run", "start:db:deploy"]

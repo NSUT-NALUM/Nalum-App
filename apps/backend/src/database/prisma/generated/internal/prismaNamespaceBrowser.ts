@@ -70,6 +70,7 @@ export const ModelName = {
   Event: 'Event',
   EventRegistration: 'EventRegistration',
   Post: 'Post',
+  Opportunity: 'Opportunity',
   Comment: 'Comment',
   PostVote: 'PostVote',
   CommentVote: 'CommentVote',
@@ -371,6 +372,28 @@ export const PostScalarFieldEnum = {
 } as const
 
 export type PostScalarFieldEnum = (typeof PostScalarFieldEnum)[keyof typeof PostScalarFieldEnum]
+
+
+export const OpportunityScalarFieldEnum = {
+  id: 'id',
+  roleTitle: 'roleTitle',
+  organization: 'organization',
+  description: 'description',
+  type: 'type',
+  workMode: 'workMode',
+  location: 'location',
+  deadline: 'deadline',
+  applicationUrl: 'applicationUrl',
+  status: 'status',
+  authorId: 'authorId',
+  reviewerId: 'reviewerId',
+  moderationNote: 'moderationNote',
+  rejectionReason: 'rejectionReason',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OpportunityScalarFieldEnum = (typeof OpportunityScalarFieldEnum)[keyof typeof OpportunityScalarFieldEnum]
 
 
 export const CommentScalarFieldEnum = {

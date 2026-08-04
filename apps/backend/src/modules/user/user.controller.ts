@@ -7,9 +7,20 @@ export class UserController {
 	constructor(private readonly userService: UserService) {}
 
 	getCurrentUser = async (request: FastifyRequest, reply: FastifyReply) => {
-		const user = await this.userService.getUserDetails(
-			getCurrentUser(request).id,
-		);
+		const currentUser = getCurrentUser(request);
+		const user = await this.userService.getUserDetails(currentUser.id);
+		if (currentUser.role === "VISITOR") {
+			return reply.success(
+				{
+					...user,
+					profile: null,
+					socialMedia: null,
+					experiences: [],
+					latestReviewReason: null,
+				},
+				"User profile retrieved successfully",
+			);
+		}
 		return reply.success(user, "User profile retrieved successfully");
 	};
 

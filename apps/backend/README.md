@@ -17,6 +17,16 @@ pending or rejected. Platform guards return stable 403 codes:
 Changing an alumnus's roll number, batch, branch, or campus creates a new
 verification event and immediately returns the application to `PENDING`.
 
+## Database migrations
+
+From `apps/backend`, use `bun run db:migrate:deploy` to apply pending
+migrations or `bun run db:migrate:reset` to reset the database and reapply
+them. Reset deletes database data.
+
+Use `bun run start:db:deploy` or `bun run start:db:reset` to run the selected
+migration action before starting the server. `bun run start` starts the server
+without running migrations.
+
 ## Administration
 
 Admin endpoints are under `/api/admin` and require an `ADMIN` access token.

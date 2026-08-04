@@ -9,7 +9,7 @@ import { z } from "zod/v4";
 const registerSchemaRequest = z
 	.object({
 		role: z
-			.enum(["STUDENT", "ALUMNI"])
+			.enum(["STUDENT", "ALUMNI", "PROFESSOR", "VISITOR"])
 			.describe("Account role to create.")
 			.meta({ examples: ["STUDENT"] }),
 		firstName: z
@@ -61,7 +61,7 @@ const userResponseSchema = z
 		lastName: z.string().describe("Last name."),
 		email: z.email().describe("Email address."),
 		role: z
-			.enum(["STUDENT", "ALUMNI", "ADMIN", "PROFESSOR"])
+			.enum(["STUDENT", "ALUMNI", "ADMIN", "PROFESSOR", "VISITOR"])
 			.describe("User role."),
 		emailVerified: z.boolean().describe("Whether the email has been verified."),
 		verificationStatus: z
@@ -186,9 +186,14 @@ const sessionParamsSchema = z.object({
 	sessionId: z.uuid(),
 });
 
+const googleSignupQuerySchema = z.object({
+	role: z.enum(["STUDENT", "ALUMNI", "PROFESSOR", "VISITOR"]),
+});
+
 export {
 	authDataSchema,
 	authResponseSchema,
+	googleSignupQuerySchema,
 	loginSchemaRequest,
 	logoutResponseSchema,
 	messageResponseSchema,
@@ -205,3 +210,4 @@ export type AuthData = z.infer<typeof authDataSchema>;
 export type AuthResponseSchema = z.infer<typeof authResponseSchema>;
 export type SessionParams = z.infer<typeof sessionParamsSchema>;
 export type VerifyEmailOtpBody = z.infer<typeof verifyEmailOtpSchemaRequest>;
+export type GoogleSignupQuery = z.infer<typeof googleSignupQuerySchema>;

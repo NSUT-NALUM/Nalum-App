@@ -1,4 +1,6 @@
+import { env } from "../../config/env.config";
 import type { VoteDirection } from "../../database/prisma/generated/client";
+import { enqueueEmail } from "../../queues/email.queue";
 import { toStorageObjectUrl } from "../storage/storage.keys";
 import {
 	CommentNotFoundError,
@@ -22,9 +24,17 @@ import type { PostActor, PostCreateInput, PostVoteSummary } from "./post.types";
 type Person = { id: string; firstName: string; lastName: string };
 type PostView = {
 	id: string;
+	title: string;
+	body: string;
 	authorId: string;
+	reviewerId: string | null;
 	status: "PENDING" | "PUBLISHED" | "REJECTED" | "REMOVED";
 	imageKeys: string[];
+	moderationNote: string | null;
+	rejectionReason: string | null;
+	removedAt: Date | null;
+	createdAt: Date;
+	updatedAt: Date;
 	author: Person;
 	reviewer: Person | null;
 	votes: Array<{ direction: VoteDirection }>;
@@ -58,9 +68,14 @@ export class PostService {
 	constructor(private readonly repository: PostRepository) {}
 
 	async createPost(input: PostCreateInput, actor: PostActor) {
-		return this.toPost(
-			await this.repository.createPost(input, actor.id),
-			await this.repository.postVoteSummaries([input.id]),
+		const post = await this.repository.createPost(input, actor.id);
+		this.notifyModerators(post, actor);
+		return this.toPostForActor(
+			post,
+			actor.role === "VISITOR"
+				? new Map()
+				: await this.repository.postVoteSummaries([input.id]),
+			actor,
 		);
 	}
 
@@ -80,15 +95,18 @@ export class PostService {
 		);
 		return {
 			...result,
-			posts: await this.toPosts(result.posts),
+			posts: await this.toPosts(result.posts, actor),
 		};
 	}
 
 	async getPost(postId: string, actor: PostActor) {
 		const post = await this.requireVisiblePost(postId, actor);
-		return this.toPost(
+		return this.toPostForActor(
 			post,
-			await this.repository.postVoteSummaries([post.id]),
+			actor.role === "VISITOR"
+				? new Map()
+				: await this.repository.postVoteSummaries([post.id]),
+			actor,
 		);
 	}
 
@@ -112,9 +130,13 @@ export class PostService {
 			},
 			actor.id,
 		);
-		return this.toPost(
+		this.notifyModerators(updated, actor);
+		return this.toPostForActor(
 			updated,
-			await this.repository.postVoteSummaries([updated.id]),
+			actor.role === "VISITOR"
+				? new Map()
+				: await this.repository.postVoteSummaries([updated.id]),
+			actor,
 		);
 	}
 
@@ -317,6 +339,10 @@ export class PostService {
 	private async requireVisiblePost(postId: string, actor: PostActor) {
 		const post = await this.repository.findPostById(postId, actor.id);
 		if (!post) throw new PostNotFoundError();
+		if (actor.role === "VISITOR") {
+			if (post.authorId === actor.id && post.status !== "REMOVED") return post;
+			throw new PostNotFoundError();
+		}
 		if (
 			post.status === "PUBLISHED" ||
 			actor.role === "ADMIN" ||
@@ -331,11 +357,24 @@ export class PostService {
 		if (actor.role !== "ADMIN") throw new PostForbiddenError();
 	}
 
-	private async toPosts(posts: PostView[]) {
+	private async toPosts(posts: PostView[], actor?: PostActor) {
+		if (actor?.role === "VISITOR") {
+			return posts.map((post) => this.toVisitorPost(post));
+		}
 		const summaries = await this.repository.postVoteSummaries(
 			posts.map((post) => post.id),
 		);
 		return posts.map((post) => this.toPost(post, summaries));
+	}
+
+	private toPostForActor(
+		post: PostView,
+		summaries: Map<string, PostVoteSummary>,
+		actor: PostActor,
+	) {
+		return actor.role === "VISITOR"
+			? this.toVisitorPost(post)
+			: this.toPost(post, summaries);
 	}
 
 	private toPost(post: PostView, summaries: Map<string, PostVoteSummary>) {
@@ -350,6 +389,40 @@ export class PostService {
 			score: summary.upvotes - summary.downvotes,
 			myVote: votes[0]?.direction ?? null,
 		};
+	}
+
+	private toVisitorPost(post: PostView) {
+		const {
+			authorId: _authorId,
+			reviewerId: _reviewerId,
+			author: _author,
+			reviewer: _reviewer,
+			votes: _votes,
+			_count,
+			imageKeys,
+			...data
+		} = post;
+		return { ...data, images: imageKeys.map(toStorageObjectUrl) };
+	}
+
+	private notifyModerators(
+		post: Pick<PostView, "id" | "title" | "status">,
+		actor: PostActor,
+	) {
+		if (!env.EVENTS_NOTIFICATION_EMAIL || !actor.email) return;
+		void enqueueEmail(
+			"content-notification",
+			{
+				to: env.EVENTS_NOTIFICATION_EMAIL,
+				contentType: "Post",
+				title: post.title,
+				authorName:
+					`${actor.firstName ?? "Publisher"} ${actor.lastName ?? ""}`.trim(),
+				authorEmail: actor.email,
+				status: post.status === "PUBLISHED" ? "PUBLISHED" : "PENDING",
+			},
+			`post-submitted-${post.id}-${Date.now()}`,
+		).catch(() => undefined);
 	}
 
 	private toComment(

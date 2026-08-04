@@ -10,9 +10,11 @@
 import type { FastifyPluginAsync } from "fastify";
 import type { ZodTypeProvider } from "fastify-type-provider-zod";
 import { z } from "zod/v4";
+import { env } from "../../config/env.config";
 import { authenticateUser } from "../../middlewares/auth.middleware";
 import oauthPlugin from "../../plugins/oauth.plugin";
 import { EmailService } from "../email";
+import { GOOGLE_SIGNUP_ROLE_COOKIE_NAME } from "./auth.constants";
 import { AuthController } from "./auth.controller";
 import AuthRepository from "./auth.repository";
 import * as schema from "./auth.schema";
@@ -26,6 +28,40 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
 	const app = fastify.withTypeProvider<ZodTypeProvider>();
 
 	await fastify.register(oauthPlugin);
+
+	app.get(
+		"/google/signin",
+		{ schema: { tags: ["Auth", "Google"] } },
+		async (_request, reply) => {
+			reply.clearCookie(GOOGLE_SIGNUP_ROLE_COOKIE_NAME, {
+				path: "/api/auth",
+				secure: env.NODE_ENV === "production",
+				sameSite: "lax",
+			});
+			return reply.redirect(`${fastify.prefix}/login/google`);
+		},
+	);
+
+	app.get(
+		"/google/signup",
+		{
+			schema: {
+				tags: ["Auth", "Google"],
+				querystring: schema.googleSignupQuerySchema,
+			},
+		},
+		async (request, reply) => {
+			const { role } = request.query;
+			reply.setCookie(GOOGLE_SIGNUP_ROLE_COOKIE_NAME, role, {
+				httpOnly: true,
+				path: "/api/auth",
+				sameSite: "lax",
+				secure: env.NODE_ENV === "production",
+				maxAge: 10 * 60,
+			});
+			return reply.redirect(`${fastify.prefix}/login/google`);
+		},
+	);
 
 	app.post(
 		"/register",

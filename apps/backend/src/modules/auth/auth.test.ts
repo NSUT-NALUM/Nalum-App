@@ -4,6 +4,7 @@ import type { IEmailService } from "../email";
 import {
 	EmailAlreadyExistsError,
 	EmailOtpRateLimitedError,
+	GoogleAccountNotRegisteredError,
 	InvalidCredentialsError,
 	InvalidRefreshTokenError,
 	UserBannedError,
@@ -165,12 +166,16 @@ describe("AuthService", () => {
 			googleId: "google-subject",
 		});
 
-		const session = await service.loginWithGoogle({
-			sub: "google-subject",
-			email: "google@nsut.ac.in",
-			given_name: "Google",
-			family_name: "User",
-		});
+		const session = await service.loginWithGoogle(
+			{
+				sub: "google-subject",
+				email: "google@nsut.ac.in",
+				given_name: "Google",
+				family_name: "User",
+			},
+			undefined,
+			"STUDENT",
+		);
 
 		expect(repository.createUser).toHaveBeenCalledWith(
 			expect.objectContaining({
@@ -184,6 +189,31 @@ describe("AuthService", () => {
 		expect(session.accessTokenPayload.sub).toBe(user.id);
 	});
 
+	it("honors the selected Google sign-up role", async () => {
+		repository.findUserByGoogleId.mockResolvedValue(null);
+		repository.findUserByEmail.mockResolvedValue(null);
+		repository.createUser.mockResolvedValue({
+			...user,
+			email: "visitor@nsut.ac.in",
+			googleId: "visitor-subject",
+			role: "VISITOR",
+			profileCompleted: true,
+		});
+
+		await service.loginWithGoogle(
+			{
+				sub: "visitor-subject",
+				email: "visitor@nsut.ac.in",
+			},
+			undefined,
+			"VISITOR",
+		);
+
+		expect(repository.createUser).toHaveBeenCalledWith(
+			expect.objectContaining({ role: "VISITOR", profileCompleted: true }),
+		);
+	});
+
 	it("revokes refresh token hashes on logout", async () => {
 		await service.logout("raw-refresh-token");
 
@@ -192,7 +222,7 @@ describe("AuthService", () => {
 		);
 	});
 
-	it("accepts only public student and alumni roles", () => {
+	it("accepts the public sign-up roles but not administrators", () => {
 		expect(
 			registerSchemaRequest.safeParse({
 				firstName: "Admin",
@@ -211,6 +241,29 @@ describe("AuthService", () => {
 				role: "ALUMNI",
 			}).success,
 		).toBe(true);
+		for (const role of ["PROFESSOR", "VISITOR"] as const) {
+			expect(
+				registerSchemaRequest.safeParse({
+					firstName: "Public",
+					lastName: "User",
+					email: "public@example.com",
+					password: "password123",
+					role,
+				}).success,
+			).toBe(true);
+		}
+	});
+
+	it("keeps Google sign-in for existing accounts", async () => {
+		repository.findUserByGoogleId.mockResolvedValue(null);
+		repository.findUserByEmail.mockResolvedValue(null);
+
+		await expect(
+			service.loginWithGoogle({
+				sub: "google-subject",
+				email: "external@example.com",
+			}),
+		).rejects.toBeInstanceOf(GoogleAccountNotRegisteredError);
 	});
 
 	it("rate limits OTP resends while the latest code is active", async () => {

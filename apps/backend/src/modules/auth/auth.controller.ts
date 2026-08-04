@@ -18,14 +18,16 @@ import {
 	ACCESS_TOKEN_EXPIRY,
 	DEVICE_ID_COOKIE_NAME,
 	DEVICE_ID_COOKIE_PATH,
+	GOOGLE_SIGNUP_ROLE_COOKIE_NAME,
 	REFRESH_TOKEN_COOKIE_NAME,
 	REFRESH_TOKEN_COOKIE_PATH,
 } from "./auth.constants";
-import type {
-	LoginBody,
-	RegisterBody,
-	SessionParams,
-	VerifyEmailOtpBody,
+import {
+	googleSignupQuerySchema,
+	type LoginBody,
+	type RegisterBody,
+	type SessionParams,
+	type VerifyEmailOtpBody,
 } from "./auth.schema";
 import type { AuthService } from "./auth.service";
 import type {
@@ -132,7 +134,15 @@ export class AuthController {
 
 		const profile = (await response.json()) as GoogleUserInfo;
 		const device = this.getDevice(request);
-		const session = await this.authService.loginWithGoogle(profile, device);
+		const signupRole = googleSignupQuerySchema.safeParse({
+			role: request.cookies[GOOGLE_SIGNUP_ROLE_COOKIE_NAME],
+		}).data?.role;
+		this.clearGoogleSignupRoleCookie(reply);
+		const session = await this.authService.loginWithGoogle(
+			profile,
+			device,
+			signupRole,
+		);
 		this.setDeviceCookie(reply, device.id);
 		this.setRefreshCookie(
 			reply,
@@ -218,6 +228,14 @@ export class AuthController {
 			sameSite: "lax",
 			secure: env.NODE_ENV === "production",
 			signed: false,
+		});
+	}
+
+	private clearGoogleSignupRoleCookie(reply: FastifyReply) {
+		reply.clearCookie(GOOGLE_SIGNUP_ROLE_COOKIE_NAME, {
+			path: "/api/auth",
+			secure: env.NODE_ENV === "production",
+			sameSite: "lax",
 		});
 	}
 }

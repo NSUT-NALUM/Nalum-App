@@ -29,4 +29,6 @@ export const DEVICE_ID_COOKIE_NAME = "deviceId";
 
 export const DEVICE_ID_COOKIE_PATH = "/";
 
+export const GOOGLE_SIGNUP_ROLE_COOKIE_NAME = "googleSignupRole";
+
 export const REFRESH_TOKEN_TTL_DAYS = 30;

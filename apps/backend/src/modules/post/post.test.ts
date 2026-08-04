@@ -3,6 +3,13 @@ import { ContentReportConflictError, PostReplyDepthError } from "./post.errors";
 import { PostService } from "./post.service";
 import type { PostActor } from "./post.types";
 
+const { enqueueEmail } = vi.hoisted(() => ({ enqueueEmail: vi.fn() }));
+
+vi.mock("../../config/env.config", () => ({
+	env: { EVENTS_NOTIFICATION_EMAIL: "events@example.test" },
+}));
+vi.mock("../../queues/email.queue", () => ({ enqueueEmail }));
+
 const actor = (overrides: Partial<PostActor> = {}): PostActor => ({
 	id: crypto.randomUUID(),
 	role: "STUDENT",
@@ -84,6 +91,19 @@ describe("PostService", () => {
 			}),
 			user.id,
 		);
+	});
+
+	it("does not expose member identity or engagement to a visitor", async () => {
+		const visitor = actor({ role: "VISITOR" });
+		const current = post({ authorId: visitor.id, status: "PENDING" });
+		repo.findPostById.mockResolvedValue(current);
+
+		const result = await service.getPost(current.id, visitor);
+
+		expect(result).toMatchObject({ id: current.id, title: current.title });
+		expect(result).not.toHaveProperty("author");
+		expect(result).not.toHaveProperty("commentCount");
+		expect(result).not.toHaveProperty("score");
 	});
 
 	it("does not allow replies to a reply", async () => {

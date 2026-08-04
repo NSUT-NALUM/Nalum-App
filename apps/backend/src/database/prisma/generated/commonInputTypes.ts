@@ -494,6 +494,57 @@ export type EnumPostStatusWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumPostStatusFilter<$PrismaModel>
 }
 
+export type EnumOpportunityTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.OpportunityType | Prisma.EnumOpportunityTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.OpportunityType[] | Prisma.ListEnumOpportunityTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OpportunityType[] | Prisma.ListEnumOpportunityTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOpportunityTypeFilter<$PrismaModel> | $Enums.OpportunityType
+}
+
+export type EnumOpportunityWorkModeFilter<$PrismaModel = never> = {
+  equals?: $Enums.OpportunityWorkMode | Prisma.EnumOpportunityWorkModeFieldRefInput<$PrismaModel>
+  in?: $Enums.OpportunityWorkMode[] | Prisma.ListEnumOpportunityWorkModeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OpportunityWorkMode[] | Prisma.ListEnumOpportunityWorkModeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOpportunityWorkModeFilter<$PrismaModel> | $Enums.OpportunityWorkMode
+}
+
+export type EnumOpportunityStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.OpportunityStatus | Prisma.EnumOpportunityStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.OpportunityStatus[] | Prisma.ListEnumOpportunityStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OpportunityStatus[] | Prisma.ListEnumOpportunityStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOpportunityStatusFilter<$PrismaModel> | $Enums.OpportunityStatus
+}
+
+export type EnumOpportunityTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.OpportunityType | Prisma.EnumOpportunityTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.OpportunityType[] | Prisma.ListEnumOpportunityTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OpportunityType[] | Prisma.ListEnumOpportunityTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOpportunityTypeWithAggregatesFilter<$PrismaModel> | $Enums.OpportunityType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumOpportunityTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumOpportunityTypeFilter<$PrismaModel>
+}
+
+export type EnumOpportunityWorkModeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.OpportunityWorkMode | Prisma.EnumOpportunityWorkModeFieldRefInput<$PrismaModel>
+  in?: $Enums.OpportunityWorkMode[] | Prisma.ListEnumOpportunityWorkModeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OpportunityWorkMode[] | Prisma.ListEnumOpportunityWorkModeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOpportunityWorkModeWithAggregatesFilter<$PrismaModel> | $Enums.OpportunityWorkMode
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumOpportunityWorkModeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumOpportunityWorkModeFilter<$PrismaModel>
+}
+
+export type EnumOpportunityStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.OpportunityStatus | Prisma.EnumOpportunityStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.OpportunityStatus[] | Prisma.ListEnumOpportunityStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OpportunityStatus[] | Prisma.ListEnumOpportunityStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOpportunityStatusWithAggregatesFilter<$PrismaModel> | $Enums.OpportunityStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumOpportunityStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumOpportunityStatusFilter<$PrismaModel>
+}
+
 export type EnumVoteDirectionFilter<$PrismaModel = never> = {
   equals?: $Enums.VoteDirection | Prisma.EnumVoteDirectionFieldRefInput<$PrismaModel>
   in?: $Enums.VoteDirection[] | Prisma.ListEnumVoteDirectionFieldRefInput<$PrismaModel>
@@ -1015,6 +1066,57 @@ export type NestedEnumPostStatusWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumPostStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumPostStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumOpportunityTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.OpportunityType | Prisma.EnumOpportunityTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.OpportunityType[] | Prisma.ListEnumOpportunityTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OpportunityType[] | Prisma.ListEnumOpportunityTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOpportunityTypeFilter<$PrismaModel> | $Enums.OpportunityType
+}
+
+export type NestedEnumOpportunityWorkModeFilter<$PrismaModel = never> = {
+  equals?: $Enums.OpportunityWorkMode | Prisma.EnumOpportunityWorkModeFieldRefInput<$PrismaModel>
+  in?: $Enums.OpportunityWorkMode[] | Prisma.ListEnumOpportunityWorkModeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OpportunityWorkMode[] | Prisma.ListEnumOpportunityWorkModeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOpportunityWorkModeFilter<$PrismaModel> | $Enums.OpportunityWorkMode
+}
+
+export type NestedEnumOpportunityStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.OpportunityStatus | Prisma.EnumOpportunityStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.OpportunityStatus[] | Prisma.ListEnumOpportunityStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OpportunityStatus[] | Prisma.ListEnumOpportunityStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOpportunityStatusFilter<$PrismaModel> | $Enums.OpportunityStatus
+}
+
+export type NestedEnumOpportunityTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.OpportunityType | Prisma.EnumOpportunityTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.OpportunityType[] | Prisma.ListEnumOpportunityTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OpportunityType[] | Prisma.ListEnumOpportunityTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOpportunityTypeWithAggregatesFilter<$PrismaModel> | $Enums.OpportunityType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumOpportunityTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumOpportunityTypeFilter<$PrismaModel>
+}
+
+export type NestedEnumOpportunityWorkModeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.OpportunityWorkMode | Prisma.EnumOpportunityWorkModeFieldRefInput<$PrismaModel>
+  in?: $Enums.OpportunityWorkMode[] | Prisma.ListEnumOpportunityWorkModeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OpportunityWorkMode[] | Prisma.ListEnumOpportunityWorkModeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOpportunityWorkModeWithAggregatesFilter<$PrismaModel> | $Enums.OpportunityWorkMode
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumOpportunityWorkModeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumOpportunityWorkModeFilter<$PrismaModel>
+}
+
+export type NestedEnumOpportunityStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.OpportunityStatus | Prisma.EnumOpportunityStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.OpportunityStatus[] | Prisma.ListEnumOpportunityStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OpportunityStatus[] | Prisma.ListEnumOpportunityStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOpportunityStatusWithAggregatesFilter<$PrismaModel> | $Enums.OpportunityStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumOpportunityStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumOpportunityStatusFilter<$PrismaModel>
 }
 
 export type NestedEnumVoteDirectionFilter<$PrismaModel = never> = {

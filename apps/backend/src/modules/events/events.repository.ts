@@ -21,7 +21,9 @@ export class EventsRepository {
 		return this.prisma.event.create({
 			data: input,
 			include: {
-				author: { select: { id: true, firstName: true, lastName: true, email: true } },
+				author: {
+					select: { id: true, firstName: true, lastName: true, email: true },
+				},
 			},
 		});
 	}
@@ -39,7 +41,8 @@ export class EventsRepository {
 			filters.when === "upcoming" ? now : undefined,
 			filters.startsFrom,
 		].reduce<Date | undefined>(
-			(latest, value) => (!latest || (value && value > latest) ? value : latest),
+			(latest, value) =>
+				!latest || (value && value > latest) ? value : latest,
 			undefined,
 		);
 		const where: Prisma.EventWhereInput = {
@@ -54,7 +57,10 @@ export class EventsRepository {
 			this.prisma.event.findMany({
 				where,
 				include: eventInclude(viewerId),
-				orderBy: [{ startsAt: filters.when === "upcoming" ? "asc" : "desc" }, { id: "asc" }],
+				orderBy: [
+					{ startsAt: filters.when === "upcoming" ? "asc" : "desc" },
+					{ id: "asc" },
+				],
 				take: filters.limit,
 				skip: filters.offset,
 			}),
@@ -78,7 +84,16 @@ export class EventsRepository {
 		return { events, total, limit: filters.limit, offset: filters.offset };
 	}
 
-	update(eventId: string, data: EventPatchInput, viewerId: string) {
+	update(
+		eventId: string,
+		data: EventPatchInput & {
+			status?: EventStatus;
+			reviewerId?: string | null;
+			moderationNote?: string | null;
+			rejectionReason?: string | null;
+		},
+		viewerId: string,
+	) {
 		return this.prisma.event.update({
 			where: { id: eventId },
 			data,
@@ -102,7 +117,9 @@ export class EventsRepository {
 	}
 
 	leave(eventId: string, userId: string) {
-		return this.prisma.eventRegistration.deleteMany({ where: { eventId, userId } });
+		return this.prisma.eventRegistration.deleteMany({
+			where: { eventId, userId },
+		});
 	}
 
 	async listAttendees(eventId: string, limit: number, offset: number) {
@@ -127,7 +144,15 @@ export class EventsRepository {
 			}),
 			this.prisma.eventRegistration.count({ where }),
 		]);
-		return { attendees: registrations.map(({ user, createdAt }) => ({ ...user, joinedAt: createdAt })), total, limit, offset };
+		return {
+			attendees: registrations.map(({ user, createdAt }) => ({
+				...user,
+				joinedAt: createdAt,
+			})),
+			total,
+			limit,
+			offset,
+		};
 	}
 
 	async listForModeration(filters: ModerationEventsQuery, viewerId: string) {
@@ -135,25 +160,48 @@ export class EventsRepository {
 			status: filters.status as EventStatus,
 			...(filters.authorId ? { authorId: filters.authorId } : {}),
 			...(filters.startsFrom || filters.startsTo
-				? { startsAt: { ...(filters.startsFrom ? { gte: filters.startsFrom } : {}), ...(filters.startsTo ? { lte: filters.startsTo } : {}) } }
+				? {
+						startsAt: {
+							...(filters.startsFrom ? { gte: filters.startsFrom } : {}),
+							...(filters.startsTo ? { lte: filters.startsTo } : {}),
+						},
+					}
 				: {}),
 			...(filters.q
-				? { OR: [{ title: { contains: filters.q, mode: "insensitive" } }, { description: { contains: filters.q, mode: "insensitive" } }, { venue: { contains: filters.q, mode: "insensitive" } }] }
+				? {
+						OR: [
+							{ title: { contains: filters.q, mode: "insensitive" } },
+							{ description: { contains: filters.q, mode: "insensitive" } },
+							{ venue: { contains: filters.q, mode: "insensitive" } },
+						],
+					}
 				: {}),
 		};
 		const [events, total] = await this.prisma.$transaction([
-			this.prisma.event.findMany({ where, include: eventInclude(viewerId), orderBy: [{ createdAt: "asc" }, { id: "asc" }], take: filters.limit, skip: filters.offset }),
+			this.prisma.event.findMany({
+				where,
+				include: eventInclude(viewerId),
+				orderBy: [{ createdAt: "asc" }, { id: "asc" }],
+				take: filters.limit,
+				skip: filters.offset,
+			}),
 			this.prisma.event.count({ where }),
 		]);
 		return { events, total, limit: filters.limit, offset: filters.offset };
 	}
 
-	moderate(eventId: string, reviewerId: string, status: "PUBLISHED" | "REJECTED", note: string | null) {
+	moderate(
+		eventId: string,
+		reviewerId: string,
+		status: "PUBLISHED" | "REJECTED",
+		note: string | null,
+	) {
 		return this.prisma.event.updateMany({
 			where: { id: eventId, status: "PENDING" },
-			data: status === "PUBLISHED"
-				? { status, reviewerId, moderationNote: note, rejectionReason: null }
-				: { status, reviewerId, rejectionReason: note, moderationNote: null },
+			data:
+				status === "PUBLISHED"
+					? { status, reviewerId, moderationNote: note, rejectionReason: null }
+					: { status, reviewerId, rejectionReason: note, moderationNote: null },
 		});
 	}
 }

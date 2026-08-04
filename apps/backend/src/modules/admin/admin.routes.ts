@@ -8,6 +8,10 @@ import { EventsController } from "../events/events.controller";
 import { EventsRepository } from "../events/events.repository";
 import * as eventsSchema from "../events/events.schema";
 import { EventsService } from "../events/events.service";
+import { OpportunityController } from "../opportunity/opportunity.controller";
+import { OpportunityRepository } from "../opportunity/opportunity.repository";
+import * as opportunitySchema from "../opportunity/opportunity.schema";
+import { OpportunityService } from "../opportunity/opportunity.service";
 import { PostController } from "../post/post.controller";
 import { PostRepository } from "../post/post.repository";
 import * as postSchema from "../post/post.schema";
@@ -27,6 +31,9 @@ const adminRoutes: FastifyPluginAsync = async (fastify) => {
 	);
 	const postController = new PostController(
 		new PostService(new PostRepository(fastify.prisma)),
+	);
+	const opportunityController = new OpportunityController(
+		new OpportunityService(new OpportunityRepository(fastify.prisma)),
 	);
 	const app = fastify.withTypeProvider<ZodTypeProvider>();
 	const secured = {
@@ -200,6 +207,41 @@ const adminRoutes: FastifyPluginAsync = async (fastify) => {
 			},
 		},
 		postController.reject,
+	);
+	app.get(
+		"/opportunities",
+		{
+			...secured,
+			schema: {
+				...secured.schema,
+				querystring: opportunitySchema.moderationOpportunitiesQuerySchema,
+			},
+		},
+		opportunityController.moderationList,
+	);
+	app.post(
+		"/opportunities/:opportunityId/approve",
+		{
+			...secured,
+			schema: {
+				...secured.schema,
+				params: opportunitySchema.opportunityIdParamsSchema,
+				body: opportunitySchema.moderationNoteSchema,
+			},
+		},
+		opportunityController.approve,
+	);
+	app.post(
+		"/opportunities/:opportunityId/reject",
+		{
+			...secured,
+			schema: {
+				...secured.schema,
+				params: opportunitySchema.opportunityIdParamsSchema,
+				body: opportunitySchema.rejectionSchema,
+			},
+		},
+		opportunityController.reject,
 	);
 	app.get(
 		"/posts/reports",

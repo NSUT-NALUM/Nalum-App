@@ -286,6 +286,8 @@ export type UserWhereInput = {
   eventRegistrations?: Prisma.EventRegistrationListRelationFilter
   authoredPosts?: Prisma.PostListRelationFilter
   reviewedPosts?: Prisma.PostListRelationFilter
+  authoredOpportunities?: Prisma.OpportunityListRelationFilter
+  reviewedOpportunities?: Prisma.OpportunityListRelationFilter
   authoredComments?: Prisma.CommentListRelationFilter
   removedComments?: Prisma.CommentListRelationFilter
   postVotes?: Prisma.PostVoteListRelationFilter
@@ -334,6 +336,8 @@ export type UserOrderByWithRelationInput = {
   eventRegistrations?: Prisma.EventRegistrationOrderByRelationAggregateInput
   authoredPosts?: Prisma.PostOrderByRelationAggregateInput
   reviewedPosts?: Prisma.PostOrderByRelationAggregateInput
+  authoredOpportunities?: Prisma.OpportunityOrderByRelationAggregateInput
+  reviewedOpportunities?: Prisma.OpportunityOrderByRelationAggregateInput
   authoredComments?: Prisma.CommentOrderByRelationAggregateInput
   removedComments?: Prisma.CommentOrderByRelationAggregateInput
   postVotes?: Prisma.PostVoteOrderByRelationAggregateInput
@@ -385,6 +389,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   eventRegistrations?: Prisma.EventRegistrationListRelationFilter
   authoredPosts?: Prisma.PostListRelationFilter
   reviewedPosts?: Prisma.PostListRelationFilter
+  authoredOpportunities?: Prisma.OpportunityListRelationFilter
+  reviewedOpportunities?: Prisma.OpportunityListRelationFilter
   authoredComments?: Prisma.CommentListRelationFilter
   removedComments?: Prisma.CommentListRelationFilter
   postVotes?: Prisma.PostVoteListRelationFilter
@@ -475,6 +481,8 @@ export type UserCreateInput = {
   eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteCreateNestedManyWithoutUserInput
@@ -523,6 +531,8 @@ export type UserUncheckedCreateInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostUncheckedCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteUncheckedCreateNestedManyWithoutUserInput
@@ -571,6 +581,8 @@ export type UserUpdateInput = {
   eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUpdateManyWithoutUserNestedInput
@@ -619,6 +631,8 @@ export type UserUncheckedUpdateInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUncheckedUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUncheckedUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUncheckedUpdateManyWithoutUserNestedInput
@@ -1119,6 +1133,36 @@ export type UserUpdateOneWithoutReviewedPostsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutReviewedPostsInput, Prisma.UserUpdateWithoutReviewedPostsInput>, Prisma.UserUncheckedUpdateWithoutReviewedPostsInput>
 }
 
+export type UserCreateNestedOneWithoutAuthoredOpportunitiesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAuthoredOpportunitiesInput, Prisma.UserUncheckedCreateWithoutAuthoredOpportunitiesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAuthoredOpportunitiesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutReviewedOpportunitiesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutReviewedOpportunitiesInput, Prisma.UserUncheckedCreateWithoutReviewedOpportunitiesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReviewedOpportunitiesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutAuthoredOpportunitiesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAuthoredOpportunitiesInput, Prisma.UserUncheckedCreateWithoutAuthoredOpportunitiesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAuthoredOpportunitiesInput
+  upsert?: Prisma.UserUpsertWithoutAuthoredOpportunitiesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAuthoredOpportunitiesInput, Prisma.UserUpdateWithoutAuthoredOpportunitiesInput>, Prisma.UserUncheckedUpdateWithoutAuthoredOpportunitiesInput>
+}
+
+export type UserUpdateOneWithoutReviewedOpportunitiesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutReviewedOpportunitiesInput, Prisma.UserUncheckedCreateWithoutReviewedOpportunitiesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReviewedOpportunitiesInput
+  upsert?: Prisma.UserUpsertWithoutReviewedOpportunitiesInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutReviewedOpportunitiesInput, Prisma.UserUpdateWithoutReviewedOpportunitiesInput>, Prisma.UserUncheckedUpdateWithoutReviewedOpportunitiesInput>
+}
+
 export type UserCreateNestedOneWithoutAuthoredCommentsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutAuthoredCommentsInput, Prisma.UserUncheckedCreateWithoutAuthoredCommentsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutAuthoredCommentsInput
@@ -1246,6 +1290,8 @@ export type UserCreateWithoutSentConnectionRequestsInput = {
   eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteCreateNestedManyWithoutUserInput
@@ -1293,6 +1339,8 @@ export type UserUncheckedCreateWithoutSentConnectionRequestsInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostUncheckedCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteUncheckedCreateNestedManyWithoutUserInput
@@ -1345,6 +1393,8 @@ export type UserCreateWithoutReceivedConnectionRequestsInput = {
   eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteCreateNestedManyWithoutUserInput
@@ -1392,6 +1442,8 @@ export type UserUncheckedCreateWithoutReceivedConnectionRequestsInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostUncheckedCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteUncheckedCreateNestedManyWithoutUserInput
@@ -1455,6 +1507,8 @@ export type UserUpdateWithoutSentConnectionRequestsInput = {
   eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUpdateManyWithoutUserNestedInput
@@ -1502,6 +1556,8 @@ export type UserUncheckedUpdateWithoutSentConnectionRequestsInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUncheckedUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUncheckedUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUncheckedUpdateManyWithoutUserNestedInput
@@ -1560,6 +1616,8 @@ export type UserUpdateWithoutReceivedConnectionRequestsInput = {
   eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUpdateManyWithoutUserNestedInput
@@ -1607,6 +1665,8 @@ export type UserUncheckedUpdateWithoutReceivedConnectionRequestsInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUncheckedUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUncheckedUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUncheckedUpdateManyWithoutUserNestedInput
@@ -1654,6 +1714,8 @@ export type UserCreateWithoutConversationParticipantsInput = {
   eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteCreateNestedManyWithoutUserInput
@@ -1701,6 +1763,8 @@ export type UserUncheckedCreateWithoutConversationParticipantsInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostUncheckedCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteUncheckedCreateNestedManyWithoutUserInput
@@ -1764,6 +1828,8 @@ export type UserUpdateWithoutConversationParticipantsInput = {
   eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUpdateManyWithoutUserNestedInput
@@ -1811,6 +1877,8 @@ export type UserUncheckedUpdateWithoutConversationParticipantsInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUncheckedUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUncheckedUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUncheckedUpdateManyWithoutUserNestedInput
@@ -1858,6 +1926,8 @@ export type UserCreateWithoutGroupInvitationsSentInput = {
   eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteCreateNestedManyWithoutUserInput
@@ -1905,6 +1975,8 @@ export type UserUncheckedCreateWithoutGroupInvitationsSentInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostUncheckedCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteUncheckedCreateNestedManyWithoutUserInput
@@ -1957,6 +2029,8 @@ export type UserCreateWithoutGroupInvitationsReceivedInput = {
   eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteCreateNestedManyWithoutUserInput
@@ -2004,6 +2078,8 @@ export type UserUncheckedCreateWithoutGroupInvitationsReceivedInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostUncheckedCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteUncheckedCreateNestedManyWithoutUserInput
@@ -2067,6 +2143,8 @@ export type UserUpdateWithoutGroupInvitationsSentInput = {
   eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUpdateManyWithoutUserNestedInput
@@ -2114,6 +2192,8 @@ export type UserUncheckedUpdateWithoutGroupInvitationsSentInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUncheckedUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUncheckedUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUncheckedUpdateManyWithoutUserNestedInput
@@ -2172,6 +2252,8 @@ export type UserUpdateWithoutGroupInvitationsReceivedInput = {
   eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUpdateManyWithoutUserNestedInput
@@ -2219,6 +2301,8 @@ export type UserUncheckedUpdateWithoutGroupInvitationsReceivedInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUncheckedUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUncheckedUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUncheckedUpdateManyWithoutUserNestedInput
@@ -2266,6 +2350,8 @@ export type UserCreateWithoutSentMessagesInput = {
   eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteCreateNestedManyWithoutUserInput
@@ -2313,6 +2399,8 @@ export type UserUncheckedCreateWithoutSentMessagesInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostUncheckedCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteUncheckedCreateNestedManyWithoutUserInput
@@ -2376,6 +2464,8 @@ export type UserUpdateWithoutSentMessagesInput = {
   eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUpdateManyWithoutUserNestedInput
@@ -2423,6 +2513,8 @@ export type UserUncheckedUpdateWithoutSentMessagesInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUncheckedUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUncheckedUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUncheckedUpdateManyWithoutUserNestedInput
@@ -2470,6 +2562,8 @@ export type UserCreateWithoutUploadedMessageAttachmentsInput = {
   eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteCreateNestedManyWithoutUserInput
@@ -2517,6 +2611,8 @@ export type UserUncheckedCreateWithoutUploadedMessageAttachmentsInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostUncheckedCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteUncheckedCreateNestedManyWithoutUserInput
@@ -2580,6 +2676,8 @@ export type UserUpdateWithoutUploadedMessageAttachmentsInput = {
   eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUpdateManyWithoutUserNestedInput
@@ -2627,6 +2725,8 @@ export type UserUncheckedUpdateWithoutUploadedMessageAttachmentsInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUncheckedUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUncheckedUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUncheckedUpdateManyWithoutUserNestedInput
@@ -2674,6 +2774,8 @@ export type UserCreateWithoutMessageReactionsInput = {
   eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteCreateNestedManyWithoutUserInput
@@ -2721,6 +2823,8 @@ export type UserUncheckedCreateWithoutMessageReactionsInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostUncheckedCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteUncheckedCreateNestedManyWithoutUserInput
@@ -2784,6 +2888,8 @@ export type UserUpdateWithoutMessageReactionsInput = {
   eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUpdateManyWithoutUserNestedInput
@@ -2831,6 +2937,8 @@ export type UserUncheckedUpdateWithoutMessageReactionsInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUncheckedUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUncheckedUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUncheckedUpdateManyWithoutUserNestedInput
@@ -2878,6 +2986,8 @@ export type UserCreateWithoutMessageMentionsInput = {
   eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteCreateNestedManyWithoutUserInput
@@ -2925,6 +3035,8 @@ export type UserUncheckedCreateWithoutMessageMentionsInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostUncheckedCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteUncheckedCreateNestedManyWithoutUserInput
@@ -2988,6 +3100,8 @@ export type UserUpdateWithoutMessageMentionsInput = {
   eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUpdateManyWithoutUserNestedInput
@@ -3035,6 +3149,8 @@ export type UserUncheckedUpdateWithoutMessageMentionsInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUncheckedUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUncheckedUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUncheckedUpdateManyWithoutUserNestedInput
@@ -3082,6 +3198,8 @@ export type UserCreateWithoutRefreshTokensInput = {
   eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteCreateNestedManyWithoutUserInput
@@ -3129,6 +3247,8 @@ export type UserUncheckedCreateWithoutRefreshTokensInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostUncheckedCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteUncheckedCreateNestedManyWithoutUserInput
@@ -3192,6 +3312,8 @@ export type UserUpdateWithoutRefreshTokensInput = {
   eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUpdateManyWithoutUserNestedInput
@@ -3239,6 +3361,8 @@ export type UserUncheckedUpdateWithoutRefreshTokensInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUncheckedUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUncheckedUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUncheckedUpdateManyWithoutUserNestedInput
@@ -3286,6 +3410,8 @@ export type UserCreateWithoutEmailOtpsInput = {
   eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteCreateNestedManyWithoutUserInput
@@ -3333,6 +3459,8 @@ export type UserUncheckedCreateWithoutEmailOtpsInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostUncheckedCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteUncheckedCreateNestedManyWithoutUserInput
@@ -3396,6 +3524,8 @@ export type UserUpdateWithoutEmailOtpsInput = {
   eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUpdateManyWithoutUserNestedInput
@@ -3443,6 +3573,8 @@ export type UserUncheckedUpdateWithoutEmailOtpsInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUncheckedUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUncheckedUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUncheckedUpdateManyWithoutUserNestedInput
@@ -3490,6 +3622,8 @@ export type UserCreateWithoutProfileInput = {
   eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteCreateNestedManyWithoutUserInput
@@ -3537,6 +3671,8 @@ export type UserUncheckedCreateWithoutProfileInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostUncheckedCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteUncheckedCreateNestedManyWithoutUserInput
@@ -3600,6 +3736,8 @@ export type UserUpdateWithoutProfileInput = {
   eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUpdateManyWithoutUserNestedInput
@@ -3647,6 +3785,8 @@ export type UserUncheckedUpdateWithoutProfileInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUncheckedUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUncheckedUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUncheckedUpdateManyWithoutUserNestedInput
@@ -3694,6 +3834,8 @@ export type UserCreateWithoutVerificationEventsInput = {
   eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteCreateNestedManyWithoutUserInput
@@ -3741,6 +3883,8 @@ export type UserUncheckedCreateWithoutVerificationEventsInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostUncheckedCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteUncheckedCreateNestedManyWithoutUserInput
@@ -3793,6 +3937,8 @@ export type UserCreateWithoutVerificationActionsInput = {
   eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteCreateNestedManyWithoutUserInput
@@ -3840,6 +3986,8 @@ export type UserUncheckedCreateWithoutVerificationActionsInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostUncheckedCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteUncheckedCreateNestedManyWithoutUserInput
@@ -3903,6 +4051,8 @@ export type UserUpdateWithoutVerificationEventsInput = {
   eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUpdateManyWithoutUserNestedInput
@@ -3950,6 +4100,8 @@ export type UserUncheckedUpdateWithoutVerificationEventsInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUncheckedUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUncheckedUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUncheckedUpdateManyWithoutUserNestedInput
@@ -4008,6 +4160,8 @@ export type UserUpdateWithoutVerificationActionsInput = {
   eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUpdateManyWithoutUserNestedInput
@@ -4055,6 +4209,8 @@ export type UserUncheckedUpdateWithoutVerificationActionsInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUncheckedUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUncheckedUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUncheckedUpdateManyWithoutUserNestedInput
@@ -4102,6 +4258,8 @@ export type UserCreateWithoutSocialMediaInput = {
   eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteCreateNestedManyWithoutUserInput
@@ -4149,6 +4307,8 @@ export type UserUncheckedCreateWithoutSocialMediaInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostUncheckedCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteUncheckedCreateNestedManyWithoutUserInput
@@ -4212,6 +4372,8 @@ export type UserUpdateWithoutSocialMediaInput = {
   eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUpdateManyWithoutUserNestedInput
@@ -4259,6 +4421,8 @@ export type UserUncheckedUpdateWithoutSocialMediaInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUncheckedUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUncheckedUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUncheckedUpdateManyWithoutUserNestedInput
@@ -4306,6 +4470,8 @@ export type UserCreateWithoutExperiencesInput = {
   eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteCreateNestedManyWithoutUserInput
@@ -4353,6 +4519,8 @@ export type UserUncheckedCreateWithoutExperiencesInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostUncheckedCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteUncheckedCreateNestedManyWithoutUserInput
@@ -4416,6 +4584,8 @@ export type UserUpdateWithoutExperiencesInput = {
   eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUpdateManyWithoutUserNestedInput
@@ -4463,6 +4633,8 @@ export type UserUncheckedUpdateWithoutExperiencesInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUncheckedUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUncheckedUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUncheckedUpdateManyWithoutUserNestedInput
@@ -4510,6 +4682,8 @@ export type UserCreateWithoutBansInput = {
   eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteCreateNestedManyWithoutUserInput
@@ -4557,6 +4731,8 @@ export type UserUncheckedCreateWithoutBansInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostUncheckedCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteUncheckedCreateNestedManyWithoutUserInput
@@ -4609,6 +4785,8 @@ export type UserCreateWithoutBansIssuedInput = {
   eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteCreateNestedManyWithoutUserInput
@@ -4656,6 +4834,8 @@ export type UserUncheckedCreateWithoutBansIssuedInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostUncheckedCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteUncheckedCreateNestedManyWithoutUserInput
@@ -4708,6 +4888,8 @@ export type UserCreateWithoutBansRevokedInput = {
   eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteCreateNestedManyWithoutUserInput
@@ -4755,6 +4937,8 @@ export type UserUncheckedCreateWithoutBansRevokedInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostUncheckedCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteUncheckedCreateNestedManyWithoutUserInput
@@ -4818,6 +5002,8 @@ export type UserUpdateWithoutBansInput = {
   eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUpdateManyWithoutUserNestedInput
@@ -4865,6 +5051,8 @@ export type UserUncheckedUpdateWithoutBansInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUncheckedUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUncheckedUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUncheckedUpdateManyWithoutUserNestedInput
@@ -4923,6 +5111,8 @@ export type UserUpdateWithoutBansIssuedInput = {
   eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUpdateManyWithoutUserNestedInput
@@ -4970,6 +5160,8 @@ export type UserUncheckedUpdateWithoutBansIssuedInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUncheckedUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUncheckedUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUncheckedUpdateManyWithoutUserNestedInput
@@ -5028,6 +5220,8 @@ export type UserUpdateWithoutBansRevokedInput = {
   eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUpdateManyWithoutUserNestedInput
@@ -5075,6 +5269,8 @@ export type UserUncheckedUpdateWithoutBansRevokedInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUncheckedUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUncheckedUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUncheckedUpdateManyWithoutUserNestedInput
@@ -5122,6 +5318,8 @@ export type UserCreateWithoutAuthoredEventsInput = {
   eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteCreateNestedManyWithoutUserInput
@@ -5169,6 +5367,8 @@ export type UserUncheckedCreateWithoutAuthoredEventsInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostUncheckedCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteUncheckedCreateNestedManyWithoutUserInput
@@ -5221,6 +5421,8 @@ export type UserCreateWithoutReviewedEventsInput = {
   eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteCreateNestedManyWithoutUserInput
@@ -5268,6 +5470,8 @@ export type UserUncheckedCreateWithoutReviewedEventsInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostUncheckedCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteUncheckedCreateNestedManyWithoutUserInput
@@ -5331,6 +5535,8 @@ export type UserUpdateWithoutAuthoredEventsInput = {
   eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUpdateManyWithoutUserNestedInput
@@ -5378,6 +5584,8 @@ export type UserUncheckedUpdateWithoutAuthoredEventsInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUncheckedUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUncheckedUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUncheckedUpdateManyWithoutUserNestedInput
@@ -5436,6 +5644,8 @@ export type UserUpdateWithoutReviewedEventsInput = {
   eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUpdateManyWithoutUserNestedInput
@@ -5483,6 +5693,8 @@ export type UserUncheckedUpdateWithoutReviewedEventsInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUncheckedUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUncheckedUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUncheckedUpdateManyWithoutUserNestedInput
@@ -5530,6 +5742,8 @@ export type UserCreateWithoutEventRegistrationsInput = {
   reviewedEvents?: Prisma.EventCreateNestedManyWithoutReviewerInput
   authoredPosts?: Prisma.PostCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteCreateNestedManyWithoutUserInput
@@ -5577,6 +5791,8 @@ export type UserUncheckedCreateWithoutEventRegistrationsInput = {
   reviewedEvents?: Prisma.EventUncheckedCreateNestedManyWithoutReviewerInput
   authoredPosts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostUncheckedCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteUncheckedCreateNestedManyWithoutUserInput
@@ -5640,6 +5856,8 @@ export type UserUpdateWithoutEventRegistrationsInput = {
   reviewedEvents?: Prisma.EventUpdateManyWithoutReviewerNestedInput
   authoredPosts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUpdateManyWithoutUserNestedInput
@@ -5687,6 +5905,8 @@ export type UserUncheckedUpdateWithoutEventRegistrationsInput = {
   reviewedEvents?: Prisma.EventUncheckedUpdateManyWithoutReviewerNestedInput
   authoredPosts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUncheckedUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUncheckedUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUncheckedUpdateManyWithoutUserNestedInput
@@ -5734,6 +5954,8 @@ export type UserCreateWithoutAuthoredPostsInput = {
   reviewedEvents?: Prisma.EventCreateNestedManyWithoutReviewerInput
   eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
   reviewedPosts?: Prisma.PostCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteCreateNestedManyWithoutUserInput
@@ -5781,6 +6003,8 @@ export type UserUncheckedCreateWithoutAuthoredPostsInput = {
   reviewedEvents?: Prisma.EventUncheckedCreateNestedManyWithoutReviewerInput
   eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
   reviewedPosts?: Prisma.PostUncheckedCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteUncheckedCreateNestedManyWithoutUserInput
@@ -5833,6 +6057,8 @@ export type UserCreateWithoutReviewedPostsInput = {
   reviewedEvents?: Prisma.EventCreateNestedManyWithoutReviewerInput
   eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostCreateNestedManyWithoutAuthorInput
+  authoredOpportunities?: Prisma.OpportunityCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteCreateNestedManyWithoutUserInput
@@ -5880,6 +6106,8 @@ export type UserUncheckedCreateWithoutReviewedPostsInput = {
   reviewedEvents?: Prisma.EventUncheckedCreateNestedManyWithoutReviewerInput
   eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteUncheckedCreateNestedManyWithoutUserInput
@@ -5943,6 +6171,8 @@ export type UserUpdateWithoutAuthoredPostsInput = {
   reviewedEvents?: Prisma.EventUpdateManyWithoutReviewerNestedInput
   eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
   reviewedPosts?: Prisma.PostUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUpdateManyWithoutUserNestedInput
@@ -5990,6 +6220,8 @@ export type UserUncheckedUpdateWithoutAuthoredPostsInput = {
   reviewedEvents?: Prisma.EventUncheckedUpdateManyWithoutReviewerNestedInput
   eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
   reviewedPosts?: Prisma.PostUncheckedUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUncheckedUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUncheckedUpdateManyWithoutUserNestedInput
@@ -6048,6 +6280,8 @@ export type UserUpdateWithoutReviewedPostsInput = {
   reviewedEvents?: Prisma.EventUpdateManyWithoutReviewerNestedInput
   eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
+  authoredOpportunities?: Prisma.OpportunityUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUpdateManyWithoutUserNestedInput
@@ -6095,6 +6329,432 @@ export type UserUncheckedUpdateWithoutReviewedPostsInput = {
   reviewedEvents?: Prisma.EventUncheckedUpdateManyWithoutReviewerNestedInput
   eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutReviewerNestedInput
+  authoredComments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
+  removedComments?: Prisma.CommentUncheckedUpdateManyWithoutRemovedByNestedInput
+  postVotes?: Prisma.PostVoteUncheckedUpdateManyWithoutUserNestedInput
+  commentVotes?: Prisma.CommentVoteUncheckedUpdateManyWithoutUserNestedInput
+  contentReports?: Prisma.ContentReportUncheckedUpdateManyWithoutReporterNestedInput
+  reviewedContentReports?: Prisma.ContentReportUncheckedUpdateManyWithoutReviewerNestedInput
+}
+
+export type UserCreateWithoutAuthoredOpportunitiesInput = {
+  id?: string
+  firstName: string
+  lastName: string
+  email: string
+  passwordHash?: string | null
+  googleId?: string | null
+  role: $Enums.UserRole
+  emailVerified?: boolean
+  emailVerifiedAt?: Date | string | null
+  verificationStatus?: $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Date | string | null
+  profileCompleted?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lastSeenAt?: Date | string | null
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  socialMedia?: Prisma.SocialMediaCreateNestedOneWithoutUserInput
+  experiences?: Prisma.ExperienceCreateNestedManyWithoutUserInput
+  bans?: Prisma.UserBanCreateNestedManyWithoutUserInput
+  bansIssued?: Prisma.UserBanCreateNestedManyWithoutBannedByInput
+  bansRevoked?: Prisma.UserBanCreateNestedManyWithoutRevokedByInput
+  verificationEvents?: Prisma.AlumniVerificationEventCreateNestedManyWithoutUserInput
+  verificationActions?: Prisma.AlumniVerificationEventCreateNestedManyWithoutActorInput
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  emailOtps?: Prisma.EmailOtpCreateNestedManyWithoutUserInput
+  conversationParticipants?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
+  sentMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  uploadedMessageAttachments?: Prisma.MessageAttachmentCreateNestedManyWithoutOwnerInput
+  messageReactions?: Prisma.MessageReactionCreateNestedManyWithoutUserInput
+  messageMentions?: Prisma.MessageMentionCreateNestedManyWithoutUserInput
+  sentConnectionRequests?: Prisma.ConnectionRequestCreateNestedManyWithoutRequesterInput
+  receivedConnectionRequests?: Prisma.ConnectionRequestCreateNestedManyWithoutRecipientInput
+  groupInvitationsSent?: Prisma.GroupInvitationCreateNestedManyWithoutInviterInput
+  groupInvitationsReceived?: Prisma.GroupInvitationCreateNestedManyWithoutInviteeInput
+  authoredEvents?: Prisma.EventCreateNestedManyWithoutAuthorInput
+  reviewedEvents?: Prisma.EventCreateNestedManyWithoutReviewerInput
+  eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
+  authoredPosts?: Prisma.PostCreateNestedManyWithoutAuthorInput
+  reviewedPosts?: Prisma.PostCreateNestedManyWithoutReviewerInput
+  reviewedOpportunities?: Prisma.OpportunityCreateNestedManyWithoutReviewerInput
+  authoredComments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
+  removedComments?: Prisma.CommentCreateNestedManyWithoutRemovedByInput
+  postVotes?: Prisma.PostVoteCreateNestedManyWithoutUserInput
+  commentVotes?: Prisma.CommentVoteCreateNestedManyWithoutUserInput
+  contentReports?: Prisma.ContentReportCreateNestedManyWithoutReporterInput
+  reviewedContentReports?: Prisma.ContentReportCreateNestedManyWithoutReviewerInput
+}
+
+export type UserUncheckedCreateWithoutAuthoredOpportunitiesInput = {
+  id?: string
+  firstName: string
+  lastName: string
+  email: string
+  passwordHash?: string | null
+  googleId?: string | null
+  role: $Enums.UserRole
+  emailVerified?: boolean
+  emailVerifiedAt?: Date | string | null
+  verificationStatus?: $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Date | string | null
+  profileCompleted?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lastSeenAt?: Date | string | null
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  socialMedia?: Prisma.SocialMediaUncheckedCreateNestedOneWithoutUserInput
+  experiences?: Prisma.ExperienceUncheckedCreateNestedManyWithoutUserInput
+  bans?: Prisma.UserBanUncheckedCreateNestedManyWithoutUserInput
+  bansIssued?: Prisma.UserBanUncheckedCreateNestedManyWithoutBannedByInput
+  bansRevoked?: Prisma.UserBanUncheckedCreateNestedManyWithoutRevokedByInput
+  verificationEvents?: Prisma.AlumniVerificationEventUncheckedCreateNestedManyWithoutUserInput
+  verificationActions?: Prisma.AlumniVerificationEventUncheckedCreateNestedManyWithoutActorInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  emailOtps?: Prisma.EmailOtpUncheckedCreateNestedManyWithoutUserInput
+  conversationParticipants?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
+  sentMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  uploadedMessageAttachments?: Prisma.MessageAttachmentUncheckedCreateNestedManyWithoutOwnerInput
+  messageReactions?: Prisma.MessageReactionUncheckedCreateNestedManyWithoutUserInput
+  messageMentions?: Prisma.MessageMentionUncheckedCreateNestedManyWithoutUserInput
+  sentConnectionRequests?: Prisma.ConnectionRequestUncheckedCreateNestedManyWithoutRequesterInput
+  receivedConnectionRequests?: Prisma.ConnectionRequestUncheckedCreateNestedManyWithoutRecipientInput
+  groupInvitationsSent?: Prisma.GroupInvitationUncheckedCreateNestedManyWithoutInviterInput
+  groupInvitationsReceived?: Prisma.GroupInvitationUncheckedCreateNestedManyWithoutInviteeInput
+  authoredEvents?: Prisma.EventUncheckedCreateNestedManyWithoutAuthorInput
+  reviewedEvents?: Prisma.EventUncheckedCreateNestedManyWithoutReviewerInput
+  eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
+  authoredPosts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
+  reviewedPosts?: Prisma.PostUncheckedCreateNestedManyWithoutReviewerInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutReviewerInput
+  authoredComments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
+  removedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutRemovedByInput
+  postVotes?: Prisma.PostVoteUncheckedCreateNestedManyWithoutUserInput
+  commentVotes?: Prisma.CommentVoteUncheckedCreateNestedManyWithoutUserInput
+  contentReports?: Prisma.ContentReportUncheckedCreateNestedManyWithoutReporterInput
+  reviewedContentReports?: Prisma.ContentReportUncheckedCreateNestedManyWithoutReviewerInput
+}
+
+export type UserCreateOrConnectWithoutAuthoredOpportunitiesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutAuthoredOpportunitiesInput, Prisma.UserUncheckedCreateWithoutAuthoredOpportunitiesInput>
+}
+
+export type UserCreateWithoutReviewedOpportunitiesInput = {
+  id?: string
+  firstName: string
+  lastName: string
+  email: string
+  passwordHash?: string | null
+  googleId?: string | null
+  role: $Enums.UserRole
+  emailVerified?: boolean
+  emailVerifiedAt?: Date | string | null
+  verificationStatus?: $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Date | string | null
+  profileCompleted?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lastSeenAt?: Date | string | null
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  socialMedia?: Prisma.SocialMediaCreateNestedOneWithoutUserInput
+  experiences?: Prisma.ExperienceCreateNestedManyWithoutUserInput
+  bans?: Prisma.UserBanCreateNestedManyWithoutUserInput
+  bansIssued?: Prisma.UserBanCreateNestedManyWithoutBannedByInput
+  bansRevoked?: Prisma.UserBanCreateNestedManyWithoutRevokedByInput
+  verificationEvents?: Prisma.AlumniVerificationEventCreateNestedManyWithoutUserInput
+  verificationActions?: Prisma.AlumniVerificationEventCreateNestedManyWithoutActorInput
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  emailOtps?: Prisma.EmailOtpCreateNestedManyWithoutUserInput
+  conversationParticipants?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
+  sentMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  uploadedMessageAttachments?: Prisma.MessageAttachmentCreateNestedManyWithoutOwnerInput
+  messageReactions?: Prisma.MessageReactionCreateNestedManyWithoutUserInput
+  messageMentions?: Prisma.MessageMentionCreateNestedManyWithoutUserInput
+  sentConnectionRequests?: Prisma.ConnectionRequestCreateNestedManyWithoutRequesterInput
+  receivedConnectionRequests?: Prisma.ConnectionRequestCreateNestedManyWithoutRecipientInput
+  groupInvitationsSent?: Prisma.GroupInvitationCreateNestedManyWithoutInviterInput
+  groupInvitationsReceived?: Prisma.GroupInvitationCreateNestedManyWithoutInviteeInput
+  authoredEvents?: Prisma.EventCreateNestedManyWithoutAuthorInput
+  reviewedEvents?: Prisma.EventCreateNestedManyWithoutReviewerInput
+  eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
+  authoredPosts?: Prisma.PostCreateNestedManyWithoutAuthorInput
+  reviewedPosts?: Prisma.PostCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityCreateNestedManyWithoutAuthorInput
+  authoredComments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
+  removedComments?: Prisma.CommentCreateNestedManyWithoutRemovedByInput
+  postVotes?: Prisma.PostVoteCreateNestedManyWithoutUserInput
+  commentVotes?: Prisma.CommentVoteCreateNestedManyWithoutUserInput
+  contentReports?: Prisma.ContentReportCreateNestedManyWithoutReporterInput
+  reviewedContentReports?: Prisma.ContentReportCreateNestedManyWithoutReviewerInput
+}
+
+export type UserUncheckedCreateWithoutReviewedOpportunitiesInput = {
+  id?: string
+  firstName: string
+  lastName: string
+  email: string
+  passwordHash?: string | null
+  googleId?: string | null
+  role: $Enums.UserRole
+  emailVerified?: boolean
+  emailVerifiedAt?: Date | string | null
+  verificationStatus?: $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Date | string | null
+  profileCompleted?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lastSeenAt?: Date | string | null
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  socialMedia?: Prisma.SocialMediaUncheckedCreateNestedOneWithoutUserInput
+  experiences?: Prisma.ExperienceUncheckedCreateNestedManyWithoutUserInput
+  bans?: Prisma.UserBanUncheckedCreateNestedManyWithoutUserInput
+  bansIssued?: Prisma.UserBanUncheckedCreateNestedManyWithoutBannedByInput
+  bansRevoked?: Prisma.UserBanUncheckedCreateNestedManyWithoutRevokedByInput
+  verificationEvents?: Prisma.AlumniVerificationEventUncheckedCreateNestedManyWithoutUserInput
+  verificationActions?: Prisma.AlumniVerificationEventUncheckedCreateNestedManyWithoutActorInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  emailOtps?: Prisma.EmailOtpUncheckedCreateNestedManyWithoutUserInput
+  conversationParticipants?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
+  sentMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  uploadedMessageAttachments?: Prisma.MessageAttachmentUncheckedCreateNestedManyWithoutOwnerInput
+  messageReactions?: Prisma.MessageReactionUncheckedCreateNestedManyWithoutUserInput
+  messageMentions?: Prisma.MessageMentionUncheckedCreateNestedManyWithoutUserInput
+  sentConnectionRequests?: Prisma.ConnectionRequestUncheckedCreateNestedManyWithoutRequesterInput
+  receivedConnectionRequests?: Prisma.ConnectionRequestUncheckedCreateNestedManyWithoutRecipientInput
+  groupInvitationsSent?: Prisma.GroupInvitationUncheckedCreateNestedManyWithoutInviterInput
+  groupInvitationsReceived?: Prisma.GroupInvitationUncheckedCreateNestedManyWithoutInviteeInput
+  authoredEvents?: Prisma.EventUncheckedCreateNestedManyWithoutAuthorInput
+  reviewedEvents?: Prisma.EventUncheckedCreateNestedManyWithoutReviewerInput
+  eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
+  authoredPosts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
+  reviewedPosts?: Prisma.PostUncheckedCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutAuthorInput
+  authoredComments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
+  removedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutRemovedByInput
+  postVotes?: Prisma.PostVoteUncheckedCreateNestedManyWithoutUserInput
+  commentVotes?: Prisma.CommentVoteUncheckedCreateNestedManyWithoutUserInput
+  contentReports?: Prisma.ContentReportUncheckedCreateNestedManyWithoutReporterInput
+  reviewedContentReports?: Prisma.ContentReportUncheckedCreateNestedManyWithoutReviewerInput
+}
+
+export type UserCreateOrConnectWithoutReviewedOpportunitiesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutReviewedOpportunitiesInput, Prisma.UserUncheckedCreateWithoutReviewedOpportunitiesInput>
+}
+
+export type UserUpsertWithoutAuthoredOpportunitiesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAuthoredOpportunitiesInput, Prisma.UserUncheckedUpdateWithoutAuthoredOpportunitiesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAuthoredOpportunitiesInput, Prisma.UserUncheckedCreateWithoutAuthoredOpportunitiesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutAuthoredOpportunitiesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAuthoredOpportunitiesInput, Prisma.UserUncheckedUpdateWithoutAuthoredOpportunitiesInput>
+}
+
+export type UserUpdateWithoutAuthoredOpportunitiesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationStatus?: Prisma.NullableEnumAlumniVerificationStatusFieldUpdateOperationsInput | $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  socialMedia?: Prisma.SocialMediaUpdateOneWithoutUserNestedInput
+  experiences?: Prisma.ExperienceUpdateManyWithoutUserNestedInput
+  bans?: Prisma.UserBanUpdateManyWithoutUserNestedInput
+  bansIssued?: Prisma.UserBanUpdateManyWithoutBannedByNestedInput
+  bansRevoked?: Prisma.UserBanUpdateManyWithoutRevokedByNestedInput
+  verificationEvents?: Prisma.AlumniVerificationEventUpdateManyWithoutUserNestedInput
+  verificationActions?: Prisma.AlumniVerificationEventUpdateManyWithoutActorNestedInput
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  emailOtps?: Prisma.EmailOtpUpdateManyWithoutUserNestedInput
+  conversationParticipants?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
+  sentMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  uploadedMessageAttachments?: Prisma.MessageAttachmentUpdateManyWithoutOwnerNestedInput
+  messageReactions?: Prisma.MessageReactionUpdateManyWithoutUserNestedInput
+  messageMentions?: Prisma.MessageMentionUpdateManyWithoutUserNestedInput
+  sentConnectionRequests?: Prisma.ConnectionRequestUpdateManyWithoutRequesterNestedInput
+  receivedConnectionRequests?: Prisma.ConnectionRequestUpdateManyWithoutRecipientNestedInput
+  groupInvitationsSent?: Prisma.GroupInvitationUpdateManyWithoutInviterNestedInput
+  groupInvitationsReceived?: Prisma.GroupInvitationUpdateManyWithoutInviteeNestedInput
+  authoredEvents?: Prisma.EventUpdateManyWithoutAuthorNestedInput
+  reviewedEvents?: Prisma.EventUpdateManyWithoutReviewerNestedInput
+  eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
+  authoredPosts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
+  reviewedPosts?: Prisma.PostUpdateManyWithoutReviewerNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUpdateManyWithoutReviewerNestedInput
+  authoredComments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
+  removedComments?: Prisma.CommentUpdateManyWithoutRemovedByNestedInput
+  postVotes?: Prisma.PostVoteUpdateManyWithoutUserNestedInput
+  commentVotes?: Prisma.CommentVoteUpdateManyWithoutUserNestedInput
+  contentReports?: Prisma.ContentReportUpdateManyWithoutReporterNestedInput
+  reviewedContentReports?: Prisma.ContentReportUpdateManyWithoutReviewerNestedInput
+}
+
+export type UserUncheckedUpdateWithoutAuthoredOpportunitiesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationStatus?: Prisma.NullableEnumAlumniVerificationStatusFieldUpdateOperationsInput | $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  socialMedia?: Prisma.SocialMediaUncheckedUpdateOneWithoutUserNestedInput
+  experiences?: Prisma.ExperienceUncheckedUpdateManyWithoutUserNestedInput
+  bans?: Prisma.UserBanUncheckedUpdateManyWithoutUserNestedInput
+  bansIssued?: Prisma.UserBanUncheckedUpdateManyWithoutBannedByNestedInput
+  bansRevoked?: Prisma.UserBanUncheckedUpdateManyWithoutRevokedByNestedInput
+  verificationEvents?: Prisma.AlumniVerificationEventUncheckedUpdateManyWithoutUserNestedInput
+  verificationActions?: Prisma.AlumniVerificationEventUncheckedUpdateManyWithoutActorNestedInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  emailOtps?: Prisma.EmailOtpUncheckedUpdateManyWithoutUserNestedInput
+  conversationParticipants?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
+  sentMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  uploadedMessageAttachments?: Prisma.MessageAttachmentUncheckedUpdateManyWithoutOwnerNestedInput
+  messageReactions?: Prisma.MessageReactionUncheckedUpdateManyWithoutUserNestedInput
+  messageMentions?: Prisma.MessageMentionUncheckedUpdateManyWithoutUserNestedInput
+  sentConnectionRequests?: Prisma.ConnectionRequestUncheckedUpdateManyWithoutRequesterNestedInput
+  receivedConnectionRequests?: Prisma.ConnectionRequestUncheckedUpdateManyWithoutRecipientNestedInput
+  groupInvitationsSent?: Prisma.GroupInvitationUncheckedUpdateManyWithoutInviterNestedInput
+  groupInvitationsReceived?: Prisma.GroupInvitationUncheckedUpdateManyWithoutInviteeNestedInput
+  authoredEvents?: Prisma.EventUncheckedUpdateManyWithoutAuthorNestedInput
+  reviewedEvents?: Prisma.EventUncheckedUpdateManyWithoutReviewerNestedInput
+  eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
+  authoredPosts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
+  reviewedPosts?: Prisma.PostUncheckedUpdateManyWithoutReviewerNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutReviewerNestedInput
+  authoredComments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
+  removedComments?: Prisma.CommentUncheckedUpdateManyWithoutRemovedByNestedInput
+  postVotes?: Prisma.PostVoteUncheckedUpdateManyWithoutUserNestedInput
+  commentVotes?: Prisma.CommentVoteUncheckedUpdateManyWithoutUserNestedInput
+  contentReports?: Prisma.ContentReportUncheckedUpdateManyWithoutReporterNestedInput
+  reviewedContentReports?: Prisma.ContentReportUncheckedUpdateManyWithoutReviewerNestedInput
+}
+
+export type UserUpsertWithoutReviewedOpportunitiesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutReviewedOpportunitiesInput, Prisma.UserUncheckedUpdateWithoutReviewedOpportunitiesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutReviewedOpportunitiesInput, Prisma.UserUncheckedCreateWithoutReviewedOpportunitiesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutReviewedOpportunitiesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutReviewedOpportunitiesInput, Prisma.UserUncheckedUpdateWithoutReviewedOpportunitiesInput>
+}
+
+export type UserUpdateWithoutReviewedOpportunitiesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationStatus?: Prisma.NullableEnumAlumniVerificationStatusFieldUpdateOperationsInput | $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  socialMedia?: Prisma.SocialMediaUpdateOneWithoutUserNestedInput
+  experiences?: Prisma.ExperienceUpdateManyWithoutUserNestedInput
+  bans?: Prisma.UserBanUpdateManyWithoutUserNestedInput
+  bansIssued?: Prisma.UserBanUpdateManyWithoutBannedByNestedInput
+  bansRevoked?: Prisma.UserBanUpdateManyWithoutRevokedByNestedInput
+  verificationEvents?: Prisma.AlumniVerificationEventUpdateManyWithoutUserNestedInput
+  verificationActions?: Prisma.AlumniVerificationEventUpdateManyWithoutActorNestedInput
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  emailOtps?: Prisma.EmailOtpUpdateManyWithoutUserNestedInput
+  conversationParticipants?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
+  sentMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  uploadedMessageAttachments?: Prisma.MessageAttachmentUpdateManyWithoutOwnerNestedInput
+  messageReactions?: Prisma.MessageReactionUpdateManyWithoutUserNestedInput
+  messageMentions?: Prisma.MessageMentionUpdateManyWithoutUserNestedInput
+  sentConnectionRequests?: Prisma.ConnectionRequestUpdateManyWithoutRequesterNestedInput
+  receivedConnectionRequests?: Prisma.ConnectionRequestUpdateManyWithoutRecipientNestedInput
+  groupInvitationsSent?: Prisma.GroupInvitationUpdateManyWithoutInviterNestedInput
+  groupInvitationsReceived?: Prisma.GroupInvitationUpdateManyWithoutInviteeNestedInput
+  authoredEvents?: Prisma.EventUpdateManyWithoutAuthorNestedInput
+  reviewedEvents?: Prisma.EventUpdateManyWithoutReviewerNestedInput
+  eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
+  authoredPosts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
+  reviewedPosts?: Prisma.PostUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUpdateManyWithoutAuthorNestedInput
+  authoredComments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
+  removedComments?: Prisma.CommentUpdateManyWithoutRemovedByNestedInput
+  postVotes?: Prisma.PostVoteUpdateManyWithoutUserNestedInput
+  commentVotes?: Prisma.CommentVoteUpdateManyWithoutUserNestedInput
+  contentReports?: Prisma.ContentReportUpdateManyWithoutReporterNestedInput
+  reviewedContentReports?: Prisma.ContentReportUpdateManyWithoutReviewerNestedInput
+}
+
+export type UserUncheckedUpdateWithoutReviewedOpportunitiesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationStatus?: Prisma.NullableEnumAlumniVerificationStatusFieldUpdateOperationsInput | $Enums.AlumniVerificationStatus | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  socialMedia?: Prisma.SocialMediaUncheckedUpdateOneWithoutUserNestedInput
+  experiences?: Prisma.ExperienceUncheckedUpdateManyWithoutUserNestedInput
+  bans?: Prisma.UserBanUncheckedUpdateManyWithoutUserNestedInput
+  bansIssued?: Prisma.UserBanUncheckedUpdateManyWithoutBannedByNestedInput
+  bansRevoked?: Prisma.UserBanUncheckedUpdateManyWithoutRevokedByNestedInput
+  verificationEvents?: Prisma.AlumniVerificationEventUncheckedUpdateManyWithoutUserNestedInput
+  verificationActions?: Prisma.AlumniVerificationEventUncheckedUpdateManyWithoutActorNestedInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  emailOtps?: Prisma.EmailOtpUncheckedUpdateManyWithoutUserNestedInput
+  conversationParticipants?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
+  sentMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  uploadedMessageAttachments?: Prisma.MessageAttachmentUncheckedUpdateManyWithoutOwnerNestedInput
+  messageReactions?: Prisma.MessageReactionUncheckedUpdateManyWithoutUserNestedInput
+  messageMentions?: Prisma.MessageMentionUncheckedUpdateManyWithoutUserNestedInput
+  sentConnectionRequests?: Prisma.ConnectionRequestUncheckedUpdateManyWithoutRequesterNestedInput
+  receivedConnectionRequests?: Prisma.ConnectionRequestUncheckedUpdateManyWithoutRecipientNestedInput
+  groupInvitationsSent?: Prisma.GroupInvitationUncheckedUpdateManyWithoutInviterNestedInput
+  groupInvitationsReceived?: Prisma.GroupInvitationUncheckedUpdateManyWithoutInviteeNestedInput
+  authoredEvents?: Prisma.EventUncheckedUpdateManyWithoutAuthorNestedInput
+  reviewedEvents?: Prisma.EventUncheckedUpdateManyWithoutReviewerNestedInput
+  eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
+  authoredPosts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
+  reviewedPosts?: Prisma.PostUncheckedUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutAuthorNestedInput
   authoredComments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUncheckedUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUncheckedUpdateManyWithoutUserNestedInput
@@ -6143,6 +6803,8 @@ export type UserCreateWithoutAuthoredCommentsInput = {
   eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityCreateNestedManyWithoutReviewerInput
   removedComments?: Prisma.CommentCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteCreateNestedManyWithoutUserInput
   commentVotes?: Prisma.CommentVoteCreateNestedManyWithoutUserInput
@@ -6190,6 +6852,8 @@ export type UserUncheckedCreateWithoutAuthoredCommentsInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostUncheckedCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutReviewerInput
   removedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteUncheckedCreateNestedManyWithoutUserInput
   commentVotes?: Prisma.CommentVoteUncheckedCreateNestedManyWithoutUserInput
@@ -6242,6 +6906,8 @@ export type UserCreateWithoutRemovedCommentsInput = {
   eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   postVotes?: Prisma.PostVoteCreateNestedManyWithoutUserInput
   commentVotes?: Prisma.CommentVoteCreateNestedManyWithoutUserInput
@@ -6289,6 +6955,8 @@ export type UserUncheckedCreateWithoutRemovedCommentsInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostUncheckedCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   postVotes?: Prisma.PostVoteUncheckedCreateNestedManyWithoutUserInput
   commentVotes?: Prisma.CommentVoteUncheckedCreateNestedManyWithoutUserInput
@@ -6352,6 +7020,8 @@ export type UserUpdateWithoutAuthoredCommentsInput = {
   eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUpdateManyWithoutReviewerNestedInput
   removedComments?: Prisma.CommentUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUpdateManyWithoutUserNestedInput
   commentVotes?: Prisma.CommentVoteUpdateManyWithoutUserNestedInput
@@ -6399,6 +7069,8 @@ export type UserUncheckedUpdateWithoutAuthoredCommentsInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUncheckedUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutReviewerNestedInput
   removedComments?: Prisma.CommentUncheckedUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUncheckedUpdateManyWithoutUserNestedInput
   commentVotes?: Prisma.CommentVoteUncheckedUpdateManyWithoutUserNestedInput
@@ -6457,6 +7129,8 @@ export type UserUpdateWithoutRemovedCommentsInput = {
   eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   postVotes?: Prisma.PostVoteUpdateManyWithoutUserNestedInput
   commentVotes?: Prisma.CommentVoteUpdateManyWithoutUserNestedInput
@@ -6504,6 +7178,8 @@ export type UserUncheckedUpdateWithoutRemovedCommentsInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUncheckedUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   postVotes?: Prisma.PostVoteUncheckedUpdateManyWithoutUserNestedInput
   commentVotes?: Prisma.CommentVoteUncheckedUpdateManyWithoutUserNestedInput
@@ -6551,6 +7227,8 @@ export type UserCreateWithoutPostVotesInput = {
   eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentCreateNestedManyWithoutRemovedByInput
   commentVotes?: Prisma.CommentVoteCreateNestedManyWithoutUserInput
@@ -6598,6 +7276,8 @@ export type UserUncheckedCreateWithoutPostVotesInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostUncheckedCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutRemovedByInput
   commentVotes?: Prisma.CommentVoteUncheckedCreateNestedManyWithoutUserInput
@@ -6661,6 +7341,8 @@ export type UserUpdateWithoutPostVotesInput = {
   eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUpdateManyWithoutRemovedByNestedInput
   commentVotes?: Prisma.CommentVoteUpdateManyWithoutUserNestedInput
@@ -6708,6 +7390,8 @@ export type UserUncheckedUpdateWithoutPostVotesInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUncheckedUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUncheckedUpdateManyWithoutRemovedByNestedInput
   commentVotes?: Prisma.CommentVoteUncheckedUpdateManyWithoutUserNestedInput
@@ -6755,6 +7439,8 @@ export type UserCreateWithoutCommentVotesInput = {
   eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteCreateNestedManyWithoutUserInput
@@ -6802,6 +7488,8 @@ export type UserUncheckedCreateWithoutCommentVotesInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostUncheckedCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteUncheckedCreateNestedManyWithoutUserInput
@@ -6865,6 +7553,8 @@ export type UserUpdateWithoutCommentVotesInput = {
   eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUpdateManyWithoutUserNestedInput
@@ -6912,6 +7602,8 @@ export type UserUncheckedUpdateWithoutCommentVotesInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUncheckedUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUncheckedUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUncheckedUpdateManyWithoutUserNestedInput
@@ -6959,6 +7651,8 @@ export type UserCreateWithoutContentReportsInput = {
   eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteCreateNestedManyWithoutUserInput
@@ -7006,6 +7700,8 @@ export type UserUncheckedCreateWithoutContentReportsInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostUncheckedCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteUncheckedCreateNestedManyWithoutUserInput
@@ -7058,6 +7754,8 @@ export type UserCreateWithoutReviewedContentReportsInput = {
   eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteCreateNestedManyWithoutUserInput
@@ -7105,6 +7803,8 @@ export type UserUncheckedCreateWithoutReviewedContentReportsInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
   authoredPosts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
   reviewedPosts?: Prisma.PostUncheckedCreateNestedManyWithoutReviewerInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutAuthorInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedCreateNestedManyWithoutReviewerInput
   authoredComments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   removedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutRemovedByInput
   postVotes?: Prisma.PostVoteUncheckedCreateNestedManyWithoutUserInput
@@ -7168,6 +7868,8 @@ export type UserUpdateWithoutContentReportsInput = {
   eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUpdateManyWithoutUserNestedInput
@@ -7215,6 +7917,8 @@ export type UserUncheckedUpdateWithoutContentReportsInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUncheckedUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUncheckedUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUncheckedUpdateManyWithoutUserNestedInput
@@ -7273,6 +7977,8 @@ export type UserUpdateWithoutReviewedContentReportsInput = {
   eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUpdateManyWithoutUserNestedInput
@@ -7320,6 +8026,8 @@ export type UserUncheckedUpdateWithoutReviewedContentReportsInput = {
   eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
   authoredPosts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
   reviewedPosts?: Prisma.PostUncheckedUpdateManyWithoutReviewerNestedInput
+  authoredOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutAuthorNestedInput
+  reviewedOpportunities?: Prisma.OpportunityUncheckedUpdateManyWithoutReviewerNestedInput
   authoredComments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   removedComments?: Prisma.CommentUncheckedUpdateManyWithoutRemovedByNestedInput
   postVotes?: Prisma.PostVoteUncheckedUpdateManyWithoutUserNestedInput
@@ -7355,6 +8063,8 @@ export type UserCountOutputType = {
   eventRegistrations: number
   authoredPosts: number
   reviewedPosts: number
+  authoredOpportunities: number
+  reviewedOpportunities: number
   authoredComments: number
   removedComments: number
   postVotes: number
@@ -7386,6 +8096,8 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   eventRegistrations?: boolean | UserCountOutputTypeCountEventRegistrationsArgs
   authoredPosts?: boolean | UserCountOutputTypeCountAuthoredPostsArgs
   reviewedPosts?: boolean | UserCountOutputTypeCountReviewedPostsArgs
+  authoredOpportunities?: boolean | UserCountOutputTypeCountAuthoredOpportunitiesArgs
+  reviewedOpportunities?: boolean | UserCountOutputTypeCountReviewedOpportunitiesArgs
   authoredComments?: boolean | UserCountOutputTypeCountAuthoredCommentsArgs
   removedComments?: boolean | UserCountOutputTypeCountRemovedCommentsArgs
   postVotes?: boolean | UserCountOutputTypeCountPostVotesArgs
@@ -7561,6 +8273,20 @@ export type UserCountOutputTypeCountReviewedPostsArgs<ExtArgs extends runtime.Ty
 /**
  * UserCountOutputType without action
  */
+export type UserCountOutputTypeCountAuthoredOpportunitiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OpportunityWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountReviewedOpportunitiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OpportunityWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
 export type UserCountOutputTypeCountAuthoredCommentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.CommentWhereInput
 }
@@ -7641,6 +8367,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   eventRegistrations?: boolean | Prisma.User$eventRegistrationsArgs<ExtArgs>
   authoredPosts?: boolean | Prisma.User$authoredPostsArgs<ExtArgs>
   reviewedPosts?: boolean | Prisma.User$reviewedPostsArgs<ExtArgs>
+  authoredOpportunities?: boolean | Prisma.User$authoredOpportunitiesArgs<ExtArgs>
+  reviewedOpportunities?: boolean | Prisma.User$reviewedOpportunitiesArgs<ExtArgs>
   authoredComments?: boolean | Prisma.User$authoredCommentsArgs<ExtArgs>
   removedComments?: boolean | Prisma.User$removedCommentsArgs<ExtArgs>
   postVotes?: boolean | Prisma.User$postVotesArgs<ExtArgs>
@@ -7730,6 +8458,8 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   eventRegistrations?: boolean | Prisma.User$eventRegistrationsArgs<ExtArgs>
   authoredPosts?: boolean | Prisma.User$authoredPostsArgs<ExtArgs>
   reviewedPosts?: boolean | Prisma.User$reviewedPostsArgs<ExtArgs>
+  authoredOpportunities?: boolean | Prisma.User$authoredOpportunitiesArgs<ExtArgs>
+  reviewedOpportunities?: boolean | Prisma.User$reviewedOpportunitiesArgs<ExtArgs>
   authoredComments?: boolean | Prisma.User$authoredCommentsArgs<ExtArgs>
   removedComments?: boolean | Prisma.User$removedCommentsArgs<ExtArgs>
   postVotes?: boolean | Prisma.User$postVotesArgs<ExtArgs>
@@ -7768,6 +8498,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     eventRegistrations: Prisma.$EventRegistrationPayload<ExtArgs>[]
     authoredPosts: Prisma.$PostPayload<ExtArgs>[]
     reviewedPosts: Prisma.$PostPayload<ExtArgs>[]
+    authoredOpportunities: Prisma.$OpportunityPayload<ExtArgs>[]
+    reviewedOpportunities: Prisma.$OpportunityPayload<ExtArgs>[]
     authoredComments: Prisma.$CommentPayload<ExtArgs>[]
     removedComments: Prisma.$CommentPayload<ExtArgs>[]
     postVotes: Prisma.$PostVotePayload<ExtArgs>[]
@@ -8209,6 +8941,8 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   eventRegistrations<T extends Prisma.User$eventRegistrationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$eventRegistrationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EventRegistrationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   authoredPosts<T extends Prisma.User$authoredPostsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$authoredPostsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   reviewedPosts<T extends Prisma.User$reviewedPostsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reviewedPostsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  authoredOpportunities<T extends Prisma.User$authoredOpportunitiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$authoredOpportunitiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OpportunityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  reviewedOpportunities<T extends Prisma.User$reviewedOpportunitiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reviewedOpportunitiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OpportunityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   authoredComments<T extends Prisma.User$authoredCommentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$authoredCommentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   removedComments<T extends Prisma.User$removedCommentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$removedCommentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   postVotes<T extends Prisma.User$postVotesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$postVotesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PostVotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -9215,6 +9949,54 @@ export type User$reviewedPostsArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   distinct?: Prisma.PostScalarFieldEnum | Prisma.PostScalarFieldEnum[]
+}
+
+/**
+ * User.authoredOpportunities
+ */
+export type User$authoredOpportunitiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Opportunity
+   */
+  select?: Prisma.OpportunitySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Opportunity
+   */
+  omit?: Prisma.OpportunityOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OpportunityInclude<ExtArgs> | null
+  where?: Prisma.OpportunityWhereInput
+  orderBy?: Prisma.OpportunityOrderByWithRelationInput | Prisma.OpportunityOrderByWithRelationInput[]
+  cursor?: Prisma.OpportunityWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OpportunityScalarFieldEnum | Prisma.OpportunityScalarFieldEnum[]
+}
+
+/**
+ * User.reviewedOpportunities
+ */
+export type User$reviewedOpportunitiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Opportunity
+   */
+  select?: Prisma.OpportunitySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Opportunity
+   */
+  omit?: Prisma.OpportunityOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OpportunityInclude<ExtArgs> | null
+  where?: Prisma.OpportunityWhereInput
+  orderBy?: Prisma.OpportunityOrderByWithRelationInput | Prisma.OpportunityOrderByWithRelationInput[]
+  cursor?: Prisma.OpportunityWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OpportunityScalarFieldEnum | Prisma.OpportunityScalarFieldEnum[]
 }
 
 /**

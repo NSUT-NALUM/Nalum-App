@@ -54,6 +54,7 @@ export default function EventDetail() {
 		);
 	const event = query.data;
 	const isAuthor = event.authorId === user?.id;
+	const isEditable = isAuthor && event.status !== "CANCELLED";
 	const canRsvp =
 		event.status === "PUBLISHED" &&
 		new Date(event.startsAt).getTime() > Date.now();
@@ -131,21 +132,25 @@ export default function EventDetail() {
 							{event.isJoined ? "Leave event" : "RSVP"}
 						</Button>
 					) : null}
-					{isAuthor && event.status === "PENDING" ? (
+					{isEditable ? (
 						<View className="gap-3">
 							<Button
 								variant="secondary"
 								onPress={() => router.push(`/events/${event.id}/edit` as never)}
 							>
-								Edit submission
+								{event.status === "PUBLISHED"
+									? "Edit & resubmit"
+									: "Edit submission"}
 							</Button>
-							<Button
-								variant="ghost"
-								loading={remove.isPending}
-								onPress={deleteEvent}
-							>
-								Delete submission
-							</Button>
+							{event.status === "PENDING" ? (
+								<Button
+									variant="ghost"
+									loading={remove.isPending}
+									onPress={deleteEvent}
+								>
+									Delete submission
+								</Button>
+							) : null}
 						</View>
 					) : null}
 					{isAuthor ? <Attendees eventId={event.id} /> : null}
