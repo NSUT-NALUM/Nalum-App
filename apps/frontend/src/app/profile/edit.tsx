@@ -17,6 +17,7 @@ import {
 	apiImageSource,
 	authApi,
 	type Branch,
+	branchLabel,
 	type Campus,
 	profileApi,
 } from "@/lib/api";
@@ -24,20 +25,7 @@ import { getAuthRoute } from "@/lib/auth-navigation";
 import { appendPickedImage } from "@/lib/image-upload";
 import { useAuthStore } from "@/stores/auth-store";
 
-const branches: Branch[] = [
-	"CSE",
-	"ECE",
-	"MECH",
-	"CIVIL",
-	"CHEMICAL",
-	"BIOTECH",
-	"ELECTRICAL",
-	"INSTRUMENTATION",
-	"AEROSPACE",
-	"MATERIALS",
-	"INDUSTRIAL",
-	"PRODUCTION",
-];
+const branches = Object.keys(branchLabel) as Branch[];
 
 export default function ProfileEditor() {
 	const user = useAuthStore((state) => state.user);
@@ -49,7 +37,9 @@ export default function ProfileEditor() {
 	const [role, setRole] = useState(profile?.currentRole ?? "");
 	const [rollNumber, setRollNumber] = useState(profile?.rollNumber ?? "");
 	const [batch, setBatch] = useState(String(profile?.batch ?? ""));
-	const [branch, setBranch] = useState<Branch>(profile?.branch ?? "CSE");
+	const [branch, setBranch] = useState<Branch>(
+		profile?.branch ?? "COMPUTER_SCIENCE_ENGINEERING",
+	);
 	const [campus, setCampus] = useState<Campus>(profile?.campus ?? "MAIN");
 	const [phoneNumber, setPhoneNumber] = useState(profile?.phoneNumber ?? "");
 	const [alternateEmail, setAlternateEmail] = useState(
@@ -75,7 +65,7 @@ export default function ProfileEditor() {
 			role !== (profile?.currentRole ?? "") ||
 			rollNumber !== (profile?.rollNumber ?? "") ||
 			batch !== String(profile?.batch ?? "") ||
-			branch !== (profile?.branch ?? "CSE") ||
+			branch !== (profile?.branch ?? "COMPUTER_SCIENCE_ENGINEERING") ||
 			campus !== (profile?.campus ?? "MAIN") ||
 			phoneNumber !== (profile?.phoneNumber ?? "") ||
 			alternateEmail !== (profile?.alternateEmail ?? "") ||
@@ -278,7 +268,7 @@ export default function ProfileEditor() {
 												variant={branch === value ? "primary" : "secondary"}
 												onPress={() => setBranch(value)}
 											>
-												{value}
+												{branchLabel[value]}
 											</Button>
 										))}
 									</View>

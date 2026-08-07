@@ -64,7 +64,7 @@ export const experienceSchema = z.object({
 export const userDetailsSchema = z.object({
 	id: z.uuid(),
 	firstName: z.string(),
-	lastName: z.string(),
+	lastName: z.string().nullable(),
 	email: z.email(),
 	role: UserRoleEnum,
 	emailVerified: z.boolean(),

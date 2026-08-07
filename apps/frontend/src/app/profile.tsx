@@ -8,27 +8,20 @@ import {
 	View,
 } from "react-native";
 import { Button, Card, Field, Screen } from "@/components/ui/nalum";
-import { authApi, type Branch, type Campus, profileApi } from "@/lib/api";
+import {
+	authApi,
+	type Branch,
+	branchLabel,
+	type Campus,
+	profileApi,
+} from "@/lib/api";
 import { getAuthRoute } from "@/lib/auth-navigation";
 import { useAuthStore } from "@/stores/auth-store";
 
-const branches: Branch[] = [
-	"CSE",
-	"ECE",
-	"MECH",
-	"CIVIL",
-	"CHEMICAL",
-	"BIOTECH",
-	"ELECTRICAL",
-	"INSTRUMENTATION",
-	"AEROSPACE",
-	"MATERIALS",
-	"INDUSTRIAL",
-	"PRODUCTION",
-];
+const branches = Object.keys(branchLabel) as Branch[];
 export default function RequiredProfile() {
 	const [batch, setBatch] = useState("2026");
-	const [branch, setBranch] = useState<Branch>("CSE");
+	const [branch, setBranch] = useState<Branch>("COMPUTER_SCIENCE_ENGINEERING");
 	const [campus, setCampus] = useState<Campus>("MAIN");
 	const user = useAuthStore((state) => state.user);
 	const [rollNumber, setRollNumber] = useState("");
@@ -108,7 +101,7 @@ export default function RequiredProfile() {
 										variant={branch === x ? "primary" : "secondary"}
 										onPress={() => setBranch(x)}
 									>
-										{x}
+										{branchLabel[x]}
 									</Button>
 								))}
 							</View>

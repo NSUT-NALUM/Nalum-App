@@ -2,18 +2,56 @@ import { Platform } from "react-native";
 
 export type Role = "STUDENT" | "ALUMNI" | "ADMIN" | "PROFESSOR" | "VISITOR";
 export type Branch =
-	| "CSE"
-	| "ECE"
-	| "MECH"
-	| "CIVIL"
-	| "CHEMICAL"
-	| "BIOTECH"
-	| "ELECTRICAL"
-	| "INSTRUMENTATION"
-	| "AEROSPACE"
-	| "MATERIALS"
-	| "INDUSTRIAL"
-	| "PRODUCTION";
+	| "BIOTECHNOLOGY"
+	| "COE_COMPUTER_ENGINEERING"
+	| "CIVIL_ENGINEERING"
+	| "COMPUTER_SCIENCE_ENGINEERING"
+	| "COMPUTER_SCIENCE_ENGINEERING_ARTIFICIAL_INTELLIGENCE"
+	| "COMPUTER_SCIENCE_ENGINEERING_BIG_DATA_ANALYTICS"
+	| "COMPUTER_SCIENCE_ENGINEERING_DATA_SCIENCE"
+	| "COMPUTER_SCIENCE_ENGINEERING_IOT"
+	| "ELECTRICAL_ENGINEERING"
+	| "ELECTRONICS_ENGINEERING_VLSI_DESGIN"
+	| "ELECTRONICS_AND_COMMUNICATION_ENGINEERING"
+	| "ELECTRONICS_AND_COMMUNICATION_ENGINEERING_ECAM"
+	| "GEOINFORMATICS_GI"
+	| "INFORMATION_TECHNOLOGY"
+	| "INFORMATION_TECHNOLOGY_NETWORK_SECUIRTY"
+	| "INSTRUMENTATION_AND_CONTROL_ENGINEERING"
+	| "MPAE_MANUFACTURING_PROCESSES_AND_AUTOMATION_ENGINEERING"
+	| "MATHEMATICS_AND_COMPUTING_MAC"
+	| "MECHANICAL_ENGINEERING"
+	| "MECHANICAL_ENGINEERING_MEEV";
+export const branchLabel: Record<Branch, string> = {
+	BIOTECHNOLOGY: "Biotechnology",
+	COE_COMPUTER_ENGINEERING: "COE (Computer Engineering)",
+	CIVIL_ENGINEERING: "Civil Engineering",
+	COMPUTER_SCIENCE_ENGINEERING: "Computer Science Engineering",
+	COMPUTER_SCIENCE_ENGINEERING_ARTIFICIAL_INTELLIGENCE:
+		"Computer Science Engineering (Artificial Intelligence)",
+	COMPUTER_SCIENCE_ENGINEERING_BIG_DATA_ANALYTICS:
+		"Computer Science Engineering (Big Data Analytics)",
+	COMPUTER_SCIENCE_ENGINEERING_DATA_SCIENCE:
+		"Computer Science Engineering (Data Science)",
+	COMPUTER_SCIENCE_ENGINEERING_IOT: "Computer Science Engineering (IoT)",
+	ELECTRICAL_ENGINEERING: "Electrical Engineering",
+	ELECTRONICS_ENGINEERING_VLSI_DESGIN: "Electronics Engineering (VLSI Desgin)",
+	ELECTRONICS_AND_COMMUNICATION_ENGINEERING:
+		"Electronics and Communication Engineering",
+	ELECTRONICS_AND_COMMUNICATION_ENGINEERING_ECAM:
+		"Electronics and Communication Engineering (ECAM)",
+	GEOINFORMATICS_GI: "Geoinformatics (GI)",
+	INFORMATION_TECHNOLOGY: "Information Technology",
+	INFORMATION_TECHNOLOGY_NETWORK_SECUIRTY:
+		"Information Technology (Network Secuirty)",
+	INSTRUMENTATION_AND_CONTROL_ENGINEERING:
+		"Instrumentation and Control Engineering",
+	MPAE_MANUFACTURING_PROCESSES_AND_AUTOMATION_ENGINEERING:
+		"MPAE (Manufacturing Processes and Automation Engineering)",
+	MATHEMATICS_AND_COMPUTING_MAC: "Mathematics and Computing (MAC)",
+	MECHANICAL_ENGINEERING: "Mechanical Engineering",
+	MECHANICAL_ENGINEERING_MEEV: "Mechanical Engineering (MEEV)",
+};
 export type Campus = "MAIN" | "EAST" | "WEST";
 export type AlumniVerificationStatus = "PENDING" | "VERIFIED" | "REJECTED";
 export type Profile = {
@@ -33,7 +71,11 @@ export type Profile = {
 export type EventStatus = "PENDING" | "PUBLISHED" | "REJECTED" | "CANCELLED";
 export type PostStatus = "PENDING" | "PUBLISHED" | "REJECTED" | "REMOVED";
 export type VoteDirection = "UP" | "DOWN";
-export type PostAuthor = { id: string; firstName: string; lastName: string };
+export type PostAuthor = {
+	id: string;
+	firstName: string;
+	lastName: string | null;
+};
 export type Post = {
 	id: string;
 	title: string;
@@ -123,8 +165,8 @@ export type Event = {
 	rejectionReason: string | null;
 	createdAt: string;
 	updatedAt: string;
-	author: { id: string; firstName: string; lastName: string };
-	reviewer: { id: string; firstName: string; lastName: string } | null;
+	author: PostAuthor;
+	reviewer: PostAuthor | null;
 	attendeeCount: number;
 	isJoined: boolean;
 };
@@ -168,7 +210,7 @@ export type OpportunityPage = {
 export type EventAttendee = {
 	id: string;
 	firstName: string;
-	lastName: string;
+	lastName: string | null;
 	email: string;
 	joinedAt: string;
 	profile: Pick<Profile, "batch" | "branch" | "campus"> | null;
@@ -184,7 +226,7 @@ export type Experience = {
 export type User = {
 	id: string;
 	firstName: string;
-	lastName: string;
+	lastName: string | null;
 	email: string;
 	role: Role;
 	emailVerified: boolean;
@@ -349,7 +391,11 @@ async function chatRequest<T>(
 	return payload as T;
 }
 
-export type ChatPerson = { id: string; firstName: string; lastName: string };
+export type ChatPerson = {
+	id: string;
+	firstName: string;
+	lastName: string | null;
+};
 export type ChatAttachment = {
 	id: string;
 	key: string;
@@ -538,7 +584,7 @@ export const authApi = {
 		}),
 	register: (input: {
 		firstName: string;
-		lastName: string;
+		lastName?: string;
 		email: string;
 		password: string;
 		role: Role;
@@ -610,7 +656,7 @@ export type AdminUser = User & {
 		createdAt: string;
 		actor?: {
 			firstName: string;
-			lastName: string;
+			lastName: string | null;
 			email: string;
 		} | null;
 	}>;

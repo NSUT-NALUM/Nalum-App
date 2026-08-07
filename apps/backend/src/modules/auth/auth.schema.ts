@@ -16,7 +16,7 @@ const registerSchemaRequest = z
 			.string()
 			.min(1, "First name is required")
 			.describe("First name."),
-		lastName: z.string().min(1, "Last name is required").describe("Last name."),
+		lastName: z.string().trim().min(1).optional().describe("Last name."),
 		email: z.email().describe("Email address used for the account."),
 		password: z
 			.string()
@@ -58,7 +58,7 @@ const userResponseSchema = z
 	.object({
 		id: z.string().describe("Unique user id."),
 		firstName: z.string().describe("First name."),
-		lastName: z.string().describe("Last name."),
+		lastName: z.string().nullable().describe("Last name."),
 		email: z.email().describe("Email address."),
 		role: z
 			.enum(["STUDENT", "ALUMNI", "ADMIN", "PROFESSOR", "VISITOR"])

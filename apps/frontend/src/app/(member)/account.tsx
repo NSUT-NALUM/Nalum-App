@@ -5,7 +5,7 @@ import { useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 import { Button, Card, Screen } from "@/components/ui/nalum";
 import { useTheme } from "@/hooks/use-theme";
-import { apiImageSource, authApi } from "@/lib/api";
+import { apiImageSource, authApi, branchLabel } from "@/lib/api";
 import { useAuthStore } from "@/stores/auth-store";
 
 export default function Account() {
@@ -15,7 +15,7 @@ export default function Account() {
 	if (!user) return null;
 	const profile = user.profile;
 	const initials =
-		`${user.firstName[0] ?? ""}${user.lastName[0] ?? ""}`.toUpperCase();
+		`${user.firstName[0] ?? ""}${user.lastName?.[0] ?? ""}`.toUpperCase();
 
 	const logout = async () => {
 		setLoggingOut(true);
@@ -78,7 +78,7 @@ export default function Account() {
 						</Text>
 						<Text className="mt-2 text-muted">
 							{profile
-								? `${profile.branch} · Class of ${profile.batch} · ${profile.campus} Campus`
+								? `${branchLabel[profile.branch]} · Class of ${profile.batch} · ${profile.campus} Campus`
 								: "Academic details not added"}
 						</Text>
 						<Text className="mt-5 text-lg font-semibold text-foreground">

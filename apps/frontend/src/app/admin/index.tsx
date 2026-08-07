@@ -16,6 +16,7 @@ import {
 	type AdminUser,
 	type AlumniVerificationStatus,
 	adminApi,
+	branchLabel,
 	type Event,
 	type EventPage,
 	type EventStatus,
@@ -322,7 +323,9 @@ function AdminRow({ tab, row }: { tab: Tab; row: Row }) {
 				<View className="flex-row flex-wrap items-center justify-between gap-3">
 					<View>
 						<Text className="text-lg font-semibold text-foreground">
-							{event ? event.title : `${user!.firstName} ${user!.lastName}`}
+							{event
+								? event.title
+								: [user!.firstName, user!.lastName].filter(Boolean).join(" ")}
 						</Text>
 						<Text className="text-muted">
 							{event
@@ -332,7 +335,8 @@ function AdminRow({ tab, row }: { tab: Tab; row: Row }) {
 						{tab === "reviews" ? (
 							<Text className="mt-1 text-muted">
 								{user!.profile?.rollNumber ?? "No roll number"} ·{" "}
-								{user!.profile?.branch ?? "—"} {user!.profile?.batch ?? "—"}
+								{user!.profile ? branchLabel[user!.profile.branch] : "—"}{" "}
+								{user!.profile?.batch ?? "—"}
 							</Text>
 						) : null}
 					</View>

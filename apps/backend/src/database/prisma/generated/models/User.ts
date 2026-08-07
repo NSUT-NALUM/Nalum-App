@@ -210,7 +210,7 @@ export type UserGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
 export type UserGroupByOutputType = {
   id: string
   firstName: string
-  lastName: string
+  lastName: string | null
   email: string
   passwordHash: string | null
   googleId: string | null
@@ -249,7 +249,7 @@ export type UserWhereInput = {
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   id?: Prisma.UuidFilter<"User"> | string
   firstName?: Prisma.StringFilter<"User"> | string
-  lastName?: Prisma.StringFilter<"User"> | string
+  lastName?: Prisma.StringNullableFilter<"User"> | string | null
   email?: Prisma.StringFilter<"User"> | string
   passwordHash?: Prisma.StringNullableFilter<"User"> | string | null
   googleId?: Prisma.StringNullableFilter<"User"> | string | null
@@ -299,7 +299,7 @@ export type UserWhereInput = {
 export type UserOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   firstName?: Prisma.SortOrder
-  lastName?: Prisma.SortOrder
+  lastName?: Prisma.SortOrderInput | Prisma.SortOrder
   email?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrderInput | Prisma.SortOrder
   googleId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -354,7 +354,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   firstName?: Prisma.StringFilter<"User"> | string
-  lastName?: Prisma.StringFilter<"User"> | string
+  lastName?: Prisma.StringNullableFilter<"User"> | string | null
   passwordHash?: Prisma.StringNullableFilter<"User"> | string | null
   role?: Prisma.EnumUserRoleFilter<"User"> | $Enums.UserRole
   emailVerified?: Prisma.BoolFilter<"User"> | boolean
@@ -402,7 +402,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
 export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   firstName?: Prisma.SortOrder
-  lastName?: Prisma.SortOrder
+  lastName?: Prisma.SortOrderInput | Prisma.SortOrder
   email?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrderInput | Prisma.SortOrder
   googleId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -426,7 +426,7 @@ export type UserScalarWhereWithAggregatesInput = {
   NOT?: Prisma.UserScalarWhereWithAggregatesInput | Prisma.UserScalarWhereWithAggregatesInput[]
   id?: Prisma.UuidWithAggregatesFilter<"User"> | string
   firstName?: Prisma.StringWithAggregatesFilter<"User"> | string
-  lastName?: Prisma.StringWithAggregatesFilter<"User"> | string
+  lastName?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   email?: Prisma.StringWithAggregatesFilter<"User"> | string
   passwordHash?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   googleId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
@@ -444,7 +444,7 @@ export type UserScalarWhereWithAggregatesInput = {
 export type UserCreateInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -494,7 +494,7 @@ export type UserCreateInput = {
 export type UserUncheckedCreateInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -544,7 +544,7 @@ export type UserUncheckedCreateInput = {
 export type UserUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -594,7 +594,7 @@ export type UserUpdateInput = {
 export type UserUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -644,7 +644,7 @@ export type UserUncheckedUpdateInput = {
 export type UserCreateManyInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -662,7 +662,7 @@ export type UserCreateManyInput = {
 export type UserUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -680,7 +680,7 @@ export type UserUpdateManyMutationInput = {
 export type UserUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1254,7 +1254,7 @@ export type UserUpdateOneWithoutReviewedContentReportsNestedInput = {
 export type UserCreateWithoutSentConnectionRequestsInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -1303,7 +1303,7 @@ export type UserCreateWithoutSentConnectionRequestsInput = {
 export type UserUncheckedCreateWithoutSentConnectionRequestsInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -1357,7 +1357,7 @@ export type UserCreateOrConnectWithoutSentConnectionRequestsInput = {
 export type UserCreateWithoutReceivedConnectionRequestsInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -1406,7 +1406,7 @@ export type UserCreateWithoutReceivedConnectionRequestsInput = {
 export type UserUncheckedCreateWithoutReceivedConnectionRequestsInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -1471,7 +1471,7 @@ export type UserUpdateToOneWithWhereWithoutSentConnectionRequestsInput = {
 export type UserUpdateWithoutSentConnectionRequestsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1520,7 +1520,7 @@ export type UserUpdateWithoutSentConnectionRequestsInput = {
 export type UserUncheckedUpdateWithoutSentConnectionRequestsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1580,7 +1580,7 @@ export type UserUpdateToOneWithWhereWithoutReceivedConnectionRequestsInput = {
 export type UserUpdateWithoutReceivedConnectionRequestsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1629,7 +1629,7 @@ export type UserUpdateWithoutReceivedConnectionRequestsInput = {
 export type UserUncheckedUpdateWithoutReceivedConnectionRequestsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1678,7 +1678,7 @@ export type UserUncheckedUpdateWithoutReceivedConnectionRequestsInput = {
 export type UserCreateWithoutConversationParticipantsInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -1727,7 +1727,7 @@ export type UserCreateWithoutConversationParticipantsInput = {
 export type UserUncheckedCreateWithoutConversationParticipantsInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -1792,7 +1792,7 @@ export type UserUpdateToOneWithWhereWithoutConversationParticipantsInput = {
 export type UserUpdateWithoutConversationParticipantsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1841,7 +1841,7 @@ export type UserUpdateWithoutConversationParticipantsInput = {
 export type UserUncheckedUpdateWithoutConversationParticipantsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1890,7 +1890,7 @@ export type UserUncheckedUpdateWithoutConversationParticipantsInput = {
 export type UserCreateWithoutGroupInvitationsSentInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -1939,7 +1939,7 @@ export type UserCreateWithoutGroupInvitationsSentInput = {
 export type UserUncheckedCreateWithoutGroupInvitationsSentInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -1993,7 +1993,7 @@ export type UserCreateOrConnectWithoutGroupInvitationsSentInput = {
 export type UserCreateWithoutGroupInvitationsReceivedInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -2042,7 +2042,7 @@ export type UserCreateWithoutGroupInvitationsReceivedInput = {
 export type UserUncheckedCreateWithoutGroupInvitationsReceivedInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -2107,7 +2107,7 @@ export type UserUpdateToOneWithWhereWithoutGroupInvitationsSentInput = {
 export type UserUpdateWithoutGroupInvitationsSentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2156,7 +2156,7 @@ export type UserUpdateWithoutGroupInvitationsSentInput = {
 export type UserUncheckedUpdateWithoutGroupInvitationsSentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2216,7 +2216,7 @@ export type UserUpdateToOneWithWhereWithoutGroupInvitationsReceivedInput = {
 export type UserUpdateWithoutGroupInvitationsReceivedInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2265,7 +2265,7 @@ export type UserUpdateWithoutGroupInvitationsReceivedInput = {
 export type UserUncheckedUpdateWithoutGroupInvitationsReceivedInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2314,7 +2314,7 @@ export type UserUncheckedUpdateWithoutGroupInvitationsReceivedInput = {
 export type UserCreateWithoutSentMessagesInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -2363,7 +2363,7 @@ export type UserCreateWithoutSentMessagesInput = {
 export type UserUncheckedCreateWithoutSentMessagesInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -2428,7 +2428,7 @@ export type UserUpdateToOneWithWhereWithoutSentMessagesInput = {
 export type UserUpdateWithoutSentMessagesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2477,7 +2477,7 @@ export type UserUpdateWithoutSentMessagesInput = {
 export type UserUncheckedUpdateWithoutSentMessagesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2526,7 +2526,7 @@ export type UserUncheckedUpdateWithoutSentMessagesInput = {
 export type UserCreateWithoutUploadedMessageAttachmentsInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -2575,7 +2575,7 @@ export type UserCreateWithoutUploadedMessageAttachmentsInput = {
 export type UserUncheckedCreateWithoutUploadedMessageAttachmentsInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -2640,7 +2640,7 @@ export type UserUpdateToOneWithWhereWithoutUploadedMessageAttachmentsInput = {
 export type UserUpdateWithoutUploadedMessageAttachmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2689,7 +2689,7 @@ export type UserUpdateWithoutUploadedMessageAttachmentsInput = {
 export type UserUncheckedUpdateWithoutUploadedMessageAttachmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2738,7 +2738,7 @@ export type UserUncheckedUpdateWithoutUploadedMessageAttachmentsInput = {
 export type UserCreateWithoutMessageReactionsInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -2787,7 +2787,7 @@ export type UserCreateWithoutMessageReactionsInput = {
 export type UserUncheckedCreateWithoutMessageReactionsInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -2852,7 +2852,7 @@ export type UserUpdateToOneWithWhereWithoutMessageReactionsInput = {
 export type UserUpdateWithoutMessageReactionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2901,7 +2901,7 @@ export type UserUpdateWithoutMessageReactionsInput = {
 export type UserUncheckedUpdateWithoutMessageReactionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2950,7 +2950,7 @@ export type UserUncheckedUpdateWithoutMessageReactionsInput = {
 export type UserCreateWithoutMessageMentionsInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -2999,7 +2999,7 @@ export type UserCreateWithoutMessageMentionsInput = {
 export type UserUncheckedCreateWithoutMessageMentionsInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -3064,7 +3064,7 @@ export type UserUpdateToOneWithWhereWithoutMessageMentionsInput = {
 export type UserUpdateWithoutMessageMentionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3113,7 +3113,7 @@ export type UserUpdateWithoutMessageMentionsInput = {
 export type UserUncheckedUpdateWithoutMessageMentionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3162,7 +3162,7 @@ export type UserUncheckedUpdateWithoutMessageMentionsInput = {
 export type UserCreateWithoutRefreshTokensInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -3211,7 +3211,7 @@ export type UserCreateWithoutRefreshTokensInput = {
 export type UserUncheckedCreateWithoutRefreshTokensInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -3276,7 +3276,7 @@ export type UserUpdateToOneWithWhereWithoutRefreshTokensInput = {
 export type UserUpdateWithoutRefreshTokensInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3325,7 +3325,7 @@ export type UserUpdateWithoutRefreshTokensInput = {
 export type UserUncheckedUpdateWithoutRefreshTokensInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3374,7 +3374,7 @@ export type UserUncheckedUpdateWithoutRefreshTokensInput = {
 export type UserCreateWithoutEmailOtpsInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -3423,7 +3423,7 @@ export type UserCreateWithoutEmailOtpsInput = {
 export type UserUncheckedCreateWithoutEmailOtpsInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -3488,7 +3488,7 @@ export type UserUpdateToOneWithWhereWithoutEmailOtpsInput = {
 export type UserUpdateWithoutEmailOtpsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3537,7 +3537,7 @@ export type UserUpdateWithoutEmailOtpsInput = {
 export type UserUncheckedUpdateWithoutEmailOtpsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3586,7 +3586,7 @@ export type UserUncheckedUpdateWithoutEmailOtpsInput = {
 export type UserCreateWithoutProfileInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -3635,7 +3635,7 @@ export type UserCreateWithoutProfileInput = {
 export type UserUncheckedCreateWithoutProfileInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -3700,7 +3700,7 @@ export type UserUpdateToOneWithWhereWithoutProfileInput = {
 export type UserUpdateWithoutProfileInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3749,7 +3749,7 @@ export type UserUpdateWithoutProfileInput = {
 export type UserUncheckedUpdateWithoutProfileInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3798,7 +3798,7 @@ export type UserUncheckedUpdateWithoutProfileInput = {
 export type UserCreateWithoutVerificationEventsInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -3847,7 +3847,7 @@ export type UserCreateWithoutVerificationEventsInput = {
 export type UserUncheckedCreateWithoutVerificationEventsInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -3901,7 +3901,7 @@ export type UserCreateOrConnectWithoutVerificationEventsInput = {
 export type UserCreateWithoutVerificationActionsInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -3950,7 +3950,7 @@ export type UserCreateWithoutVerificationActionsInput = {
 export type UserUncheckedCreateWithoutVerificationActionsInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -4015,7 +4015,7 @@ export type UserUpdateToOneWithWhereWithoutVerificationEventsInput = {
 export type UserUpdateWithoutVerificationEventsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4064,7 +4064,7 @@ export type UserUpdateWithoutVerificationEventsInput = {
 export type UserUncheckedUpdateWithoutVerificationEventsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4124,7 +4124,7 @@ export type UserUpdateToOneWithWhereWithoutVerificationActionsInput = {
 export type UserUpdateWithoutVerificationActionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4173,7 +4173,7 @@ export type UserUpdateWithoutVerificationActionsInput = {
 export type UserUncheckedUpdateWithoutVerificationActionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4222,7 +4222,7 @@ export type UserUncheckedUpdateWithoutVerificationActionsInput = {
 export type UserCreateWithoutSocialMediaInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -4271,7 +4271,7 @@ export type UserCreateWithoutSocialMediaInput = {
 export type UserUncheckedCreateWithoutSocialMediaInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -4336,7 +4336,7 @@ export type UserUpdateToOneWithWhereWithoutSocialMediaInput = {
 export type UserUpdateWithoutSocialMediaInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4385,7 +4385,7 @@ export type UserUpdateWithoutSocialMediaInput = {
 export type UserUncheckedUpdateWithoutSocialMediaInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4434,7 +4434,7 @@ export type UserUncheckedUpdateWithoutSocialMediaInput = {
 export type UserCreateWithoutExperiencesInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -4483,7 +4483,7 @@ export type UserCreateWithoutExperiencesInput = {
 export type UserUncheckedCreateWithoutExperiencesInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -4548,7 +4548,7 @@ export type UserUpdateToOneWithWhereWithoutExperiencesInput = {
 export type UserUpdateWithoutExperiencesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4597,7 +4597,7 @@ export type UserUpdateWithoutExperiencesInput = {
 export type UserUncheckedUpdateWithoutExperiencesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4646,7 +4646,7 @@ export type UserUncheckedUpdateWithoutExperiencesInput = {
 export type UserCreateWithoutBansInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -4695,7 +4695,7 @@ export type UserCreateWithoutBansInput = {
 export type UserUncheckedCreateWithoutBansInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -4749,7 +4749,7 @@ export type UserCreateOrConnectWithoutBansInput = {
 export type UserCreateWithoutBansIssuedInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -4798,7 +4798,7 @@ export type UserCreateWithoutBansIssuedInput = {
 export type UserUncheckedCreateWithoutBansIssuedInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -4852,7 +4852,7 @@ export type UserCreateOrConnectWithoutBansIssuedInput = {
 export type UserCreateWithoutBansRevokedInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -4901,7 +4901,7 @@ export type UserCreateWithoutBansRevokedInput = {
 export type UserUncheckedCreateWithoutBansRevokedInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -4966,7 +4966,7 @@ export type UserUpdateToOneWithWhereWithoutBansInput = {
 export type UserUpdateWithoutBansInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5015,7 +5015,7 @@ export type UserUpdateWithoutBansInput = {
 export type UserUncheckedUpdateWithoutBansInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5075,7 +5075,7 @@ export type UserUpdateToOneWithWhereWithoutBansIssuedInput = {
 export type UserUpdateWithoutBansIssuedInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5124,7 +5124,7 @@ export type UserUpdateWithoutBansIssuedInput = {
 export type UserUncheckedUpdateWithoutBansIssuedInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5184,7 +5184,7 @@ export type UserUpdateToOneWithWhereWithoutBansRevokedInput = {
 export type UserUpdateWithoutBansRevokedInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5233,7 +5233,7 @@ export type UserUpdateWithoutBansRevokedInput = {
 export type UserUncheckedUpdateWithoutBansRevokedInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5282,7 +5282,7 @@ export type UserUncheckedUpdateWithoutBansRevokedInput = {
 export type UserCreateWithoutAuthoredEventsInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -5331,7 +5331,7 @@ export type UserCreateWithoutAuthoredEventsInput = {
 export type UserUncheckedCreateWithoutAuthoredEventsInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -5385,7 +5385,7 @@ export type UserCreateOrConnectWithoutAuthoredEventsInput = {
 export type UserCreateWithoutReviewedEventsInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -5434,7 +5434,7 @@ export type UserCreateWithoutReviewedEventsInput = {
 export type UserUncheckedCreateWithoutReviewedEventsInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -5499,7 +5499,7 @@ export type UserUpdateToOneWithWhereWithoutAuthoredEventsInput = {
 export type UserUpdateWithoutAuthoredEventsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5548,7 +5548,7 @@ export type UserUpdateWithoutAuthoredEventsInput = {
 export type UserUncheckedUpdateWithoutAuthoredEventsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5608,7 +5608,7 @@ export type UserUpdateToOneWithWhereWithoutReviewedEventsInput = {
 export type UserUpdateWithoutReviewedEventsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5657,7 +5657,7 @@ export type UserUpdateWithoutReviewedEventsInput = {
 export type UserUncheckedUpdateWithoutReviewedEventsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5706,7 +5706,7 @@ export type UserUncheckedUpdateWithoutReviewedEventsInput = {
 export type UserCreateWithoutEventRegistrationsInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -5755,7 +5755,7 @@ export type UserCreateWithoutEventRegistrationsInput = {
 export type UserUncheckedCreateWithoutEventRegistrationsInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -5820,7 +5820,7 @@ export type UserUpdateToOneWithWhereWithoutEventRegistrationsInput = {
 export type UserUpdateWithoutEventRegistrationsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5869,7 +5869,7 @@ export type UserUpdateWithoutEventRegistrationsInput = {
 export type UserUncheckedUpdateWithoutEventRegistrationsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5918,7 +5918,7 @@ export type UserUncheckedUpdateWithoutEventRegistrationsInput = {
 export type UserCreateWithoutAuthoredPostsInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -5967,7 +5967,7 @@ export type UserCreateWithoutAuthoredPostsInput = {
 export type UserUncheckedCreateWithoutAuthoredPostsInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -6021,7 +6021,7 @@ export type UserCreateOrConnectWithoutAuthoredPostsInput = {
 export type UserCreateWithoutReviewedPostsInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -6070,7 +6070,7 @@ export type UserCreateWithoutReviewedPostsInput = {
 export type UserUncheckedCreateWithoutReviewedPostsInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -6135,7 +6135,7 @@ export type UserUpdateToOneWithWhereWithoutAuthoredPostsInput = {
 export type UserUpdateWithoutAuthoredPostsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -6184,7 +6184,7 @@ export type UserUpdateWithoutAuthoredPostsInput = {
 export type UserUncheckedUpdateWithoutAuthoredPostsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -6244,7 +6244,7 @@ export type UserUpdateToOneWithWhereWithoutReviewedPostsInput = {
 export type UserUpdateWithoutReviewedPostsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -6293,7 +6293,7 @@ export type UserUpdateWithoutReviewedPostsInput = {
 export type UserUncheckedUpdateWithoutReviewedPostsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -6342,7 +6342,7 @@ export type UserUncheckedUpdateWithoutReviewedPostsInput = {
 export type UserCreateWithoutAuthoredOpportunitiesInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -6391,7 +6391,7 @@ export type UserCreateWithoutAuthoredOpportunitiesInput = {
 export type UserUncheckedCreateWithoutAuthoredOpportunitiesInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -6445,7 +6445,7 @@ export type UserCreateOrConnectWithoutAuthoredOpportunitiesInput = {
 export type UserCreateWithoutReviewedOpportunitiesInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -6494,7 +6494,7 @@ export type UserCreateWithoutReviewedOpportunitiesInput = {
 export type UserUncheckedCreateWithoutReviewedOpportunitiesInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -6559,7 +6559,7 @@ export type UserUpdateToOneWithWhereWithoutAuthoredOpportunitiesInput = {
 export type UserUpdateWithoutAuthoredOpportunitiesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -6608,7 +6608,7 @@ export type UserUpdateWithoutAuthoredOpportunitiesInput = {
 export type UserUncheckedUpdateWithoutAuthoredOpportunitiesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -6668,7 +6668,7 @@ export type UserUpdateToOneWithWhereWithoutReviewedOpportunitiesInput = {
 export type UserUpdateWithoutReviewedOpportunitiesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -6717,7 +6717,7 @@ export type UserUpdateWithoutReviewedOpportunitiesInput = {
 export type UserUncheckedUpdateWithoutReviewedOpportunitiesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -6766,7 +6766,7 @@ export type UserUncheckedUpdateWithoutReviewedOpportunitiesInput = {
 export type UserCreateWithoutAuthoredCommentsInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -6815,7 +6815,7 @@ export type UserCreateWithoutAuthoredCommentsInput = {
 export type UserUncheckedCreateWithoutAuthoredCommentsInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -6869,7 +6869,7 @@ export type UserCreateOrConnectWithoutAuthoredCommentsInput = {
 export type UserCreateWithoutRemovedCommentsInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -6918,7 +6918,7 @@ export type UserCreateWithoutRemovedCommentsInput = {
 export type UserUncheckedCreateWithoutRemovedCommentsInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -6983,7 +6983,7 @@ export type UserUpdateToOneWithWhereWithoutAuthoredCommentsInput = {
 export type UserUpdateWithoutAuthoredCommentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -7032,7 +7032,7 @@ export type UserUpdateWithoutAuthoredCommentsInput = {
 export type UserUncheckedUpdateWithoutAuthoredCommentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -7092,7 +7092,7 @@ export type UserUpdateToOneWithWhereWithoutRemovedCommentsInput = {
 export type UserUpdateWithoutRemovedCommentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -7141,7 +7141,7 @@ export type UserUpdateWithoutRemovedCommentsInput = {
 export type UserUncheckedUpdateWithoutRemovedCommentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -7190,7 +7190,7 @@ export type UserUncheckedUpdateWithoutRemovedCommentsInput = {
 export type UserCreateWithoutPostVotesInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -7239,7 +7239,7 @@ export type UserCreateWithoutPostVotesInput = {
 export type UserUncheckedCreateWithoutPostVotesInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -7304,7 +7304,7 @@ export type UserUpdateToOneWithWhereWithoutPostVotesInput = {
 export type UserUpdateWithoutPostVotesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -7353,7 +7353,7 @@ export type UserUpdateWithoutPostVotesInput = {
 export type UserUncheckedUpdateWithoutPostVotesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -7402,7 +7402,7 @@ export type UserUncheckedUpdateWithoutPostVotesInput = {
 export type UserCreateWithoutCommentVotesInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -7451,7 +7451,7 @@ export type UserCreateWithoutCommentVotesInput = {
 export type UserUncheckedCreateWithoutCommentVotesInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -7516,7 +7516,7 @@ export type UserUpdateToOneWithWhereWithoutCommentVotesInput = {
 export type UserUpdateWithoutCommentVotesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -7565,7 +7565,7 @@ export type UserUpdateWithoutCommentVotesInput = {
 export type UserUncheckedUpdateWithoutCommentVotesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -7614,7 +7614,7 @@ export type UserUncheckedUpdateWithoutCommentVotesInput = {
 export type UserCreateWithoutContentReportsInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -7663,7 +7663,7 @@ export type UserCreateWithoutContentReportsInput = {
 export type UserUncheckedCreateWithoutContentReportsInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -7717,7 +7717,7 @@ export type UserCreateOrConnectWithoutContentReportsInput = {
 export type UserCreateWithoutReviewedContentReportsInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -7766,7 +7766,7 @@ export type UserCreateWithoutReviewedContentReportsInput = {
 export type UserUncheckedCreateWithoutReviewedContentReportsInput = {
   id?: string
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   passwordHash?: string | null
   googleId?: string | null
@@ -7831,7 +7831,7 @@ export type UserUpdateToOneWithWhereWithoutContentReportsInput = {
 export type UserUpdateWithoutContentReportsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -7880,7 +7880,7 @@ export type UserUpdateWithoutContentReportsInput = {
 export type UserUncheckedUpdateWithoutContentReportsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -7940,7 +7940,7 @@ export type UserUpdateToOneWithWhereWithoutReviewedContentReportsInput = {
 export type UserUpdateWithoutReviewedContentReportsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -7989,7 +7989,7 @@ export type UserUpdateWithoutReviewedContentReportsInput = {
 export type UserUncheckedUpdateWithoutReviewedContentReportsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -8510,7 +8510,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     firstName: string
-    lastName: string
+    lastName: string | null
     email: string
     passwordHash: string | null
     googleId: string | null

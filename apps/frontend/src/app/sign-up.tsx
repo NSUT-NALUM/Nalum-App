@@ -28,8 +28,8 @@ export default function SignUp() {
 		password && password.length < 6 ? "Use at least 6 characters." : "";
 
 	const submit = async () => {
-		if (!firstName.trim() || !lastName.trim() || !email.trim() || !password) {
-			setError("Complete all fields to create your account.");
+		if (!firstName.trim() || !email.trim() || !password) {
+			setError("Complete the required fields to create your account.");
 			return;
 		}
 		if (emailError || passwordError) return;
@@ -38,7 +38,7 @@ export default function SignUp() {
 		try {
 			const user = await authApi.register({
 				firstName: firstName.trim(),
-				lastName: lastName.trim(),
+				...(lastName.trim() ? { lastName: lastName.trim() } : {}),
 				email: email.trim(),
 				password,
 				role,
@@ -82,10 +82,10 @@ export default function SignUp() {
 								textContentType="givenName"
 							/>
 							<Field
-								label="Last name"
+								label="Last name (optional)"
 								value={lastName}
 								onChangeText={setLast}
-								placeholder="Last name"
+								placeholder="Last name (optional)"
 								autoComplete="family-name"
 								textContentType="familyName"
 							/>

@@ -13,6 +13,7 @@
  */
 import { createHash, randomBytes, randomInt } from "node:crypto";
 import argon2 from "argon2";
+import bcrypt from "bcrypt";
 import type { IEmailService } from "../email";
 import { REFRESH_TOKEN_TTL_DAYS } from "./auth.constants";
 import {
@@ -61,7 +62,7 @@ export class AuthService {
 		const passwordHash = await this.hashPassword(input.password);
 		const user = await this.repository.createUser({
 			firstName: input.firstName,
-			lastName: input.lastName,
+			lastName: input.lastName ?? null,
 			email: input.email,
 			passwordHash,
 			role: input.role,
@@ -315,14 +316,14 @@ export class AuthService {
 	}
 
 	private async verifyPassword(password: string, passwordHash: string) {
-		if (
-			!this.isArgon2idHash(passwordHash) &&
-			!this.isLegacyBcryptHash(passwordHash)
-		) {
-			return false;
-		}
 		try {
-			return await argon2.verify(passwordHash, password);
+			if (this.isArgon2idHash(passwordHash)) {
+				return await argon2.verify(passwordHash, password);
+			}
+			if (this.isLegacyBcryptHash(passwordHash)) {
+				return await bcrypt.compare(password, passwordHash);
+			}
+			return false;
 		} catch {
 			return false;
 		}
@@ -381,12 +382,11 @@ export class AuthService {
 		return profile.given_name ?? profile.name?.split(" ")[0] ?? emailPrefix;
 	}
 
-	private getGoogleLastName(profile: GoogleUserInfo) {
-		return (
-			profile.family_name ??
-			profile.name?.split(" ").slice(1).join(" ") ??
-			"User"
-		);
+	private getGoogleLastName(profile: GoogleUserInfo): string | null {
+		const familyName = profile.family_name?.trim();
+		if (familyName) return familyName;
+		const remainingName = profile.name?.trim().split(/\s+/).slice(1).join(" ");
+		return remainingName || null;
 	}
 }
 
@@ -398,7 +398,7 @@ export interface AuthRepositoryContract {
 	): Promise<{ reason: string; expiresAt: Date | null } | null>;
 	createUser(input: {
 		firstName: string;
-		lastName: string;
+		lastName: string | null;
 		email: string;
 		passwordHash: string | null;
 		googleId?: string | null;

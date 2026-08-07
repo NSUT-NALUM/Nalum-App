@@ -31,7 +31,9 @@ export class EventsService {
 				{
 					eventId: event.id,
 					to: notificationEmail,
-					authorName: `${event.author.firstName} ${event.author.lastName}`,
+					authorName: [event.author.firstName, event.author.lastName]
+						.filter(Boolean)
+						.join(" "),
 					authorEmail: event.author.email,
 					title: event.title,
 					startsAt: event.startsAt.toISOString(),

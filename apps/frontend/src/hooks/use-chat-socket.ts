@@ -299,7 +299,7 @@ export function ChatEventBridge() {
 					role: "OWNER" | "ADMIN" | "MEMBER";
 					joinedAt: string;
 					leftAt: string | null;
-					user: { firstName: string; lastName: string };
+					user: { firstName: string; lastName: string | null };
 				};
 			};
 			if (update.member.userId === user?.id && update.member.leftAt) {

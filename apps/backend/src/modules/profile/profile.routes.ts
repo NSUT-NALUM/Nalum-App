@@ -1,7 +1,7 @@
 import type { FastifyPluginAsync } from "fastify";
 import type { ZodTypeProvider } from "fastify-type-provider-zod";
 import { env } from "../../config/env.config";
-import { requirePlatformAccess } from "../../middlewares/auth.middleware";
+import { requireProfileAccess } from "../../middlewares/auth.middleware";
 import { RedisAccessRevocationPublisher } from "../access/access-revocation.service";
 import { ProfileController } from "./profile.controller";
 import { ProfileRepository } from "./profile.repository";
@@ -18,7 +18,7 @@ const profileRoutes: FastifyPluginAsync = async (fastify) => {
 	app.post(
 		"/",
 		{
-			preHandler: requirePlatformAccess,
+			preHandler: requireProfileAccess,
 			schema: {
 				summary: "Create user profile",
 				description:
@@ -37,7 +37,7 @@ const profileRoutes: FastifyPluginAsync = async (fastify) => {
 	app.put(
 		"/",
 		{
-			preHandler: requirePlatformAccess,
+			preHandler: requireProfileAccess,
 			validatorCompiler: () => () => true, // Bypass json body validator to handle multipart manually
 			schema: {
 				summary: "Edit user profile",
@@ -58,7 +58,7 @@ const profileRoutes: FastifyPluginAsync = async (fastify) => {
 	app.get(
 		"/me",
 		{
-			preHandler: requirePlatformAccess,
+			preHandler: requireProfileAccess,
 			schema: {
 				summary: "Get current user profile",
 				description: "Retrieves the profile of the currently logged-in user.",

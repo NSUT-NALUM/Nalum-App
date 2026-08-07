@@ -102,7 +102,7 @@ export default function AdminPosts() {
 													Reported by {report.reporter.firstName}{" "}
 													{report.reporter.lastName}
 													{author
-														? ` · Created by ${author.firstName} ${author.lastName}`
+														? ` · Created by ${[author.firstName, author.lastName].filter(Boolean).join(" ")}`
 														: ""}
 												</Text>
 												<Text className="mt-2 text-foreground">

@@ -2,7 +2,7 @@ import { router, useFocusEffect } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
 import { AppState, ScrollView, Text, View } from "react-native";
 import { Button, Card, Screen } from "@/components/ui/nalum";
-import { authApi } from "@/lib/api";
+import { authApi, branchLabel } from "@/lib/api";
 import { getAuthRoute } from "@/lib/auth-navigation";
 import { useAuthStore } from "@/stores/auth-store";
 
@@ -112,8 +112,8 @@ export function VerificationStatus({ rejected }: { rejected: boolean }) {
 							Roll number: {profile?.rollNumber ?? "—"}
 						</Text>
 						<Text className="mb-1 text-muted">
-							Academic: {profile?.branch ?? "—"} · {profile?.batch ?? "—"} ·{" "}
-							{profile?.campus ?? "—"}
+							Academic: {profile ? branchLabel[profile.branch] : "—"} ·{" "}
+							{profile?.batch ?? "—"} · {profile?.campus ?? "—"}
 						</Text>
 						<Text className="text-muted">
 							Submitted:{" "}

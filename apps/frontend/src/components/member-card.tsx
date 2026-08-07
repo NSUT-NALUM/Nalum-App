@@ -4,7 +4,7 @@ import { Text, View } from "react-native";
 import { Button, Card } from "@/components/ui/nalum";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTheme } from "@/hooks/use-theme";
-import { apiImageSource, type User } from "@/lib/api";
+import { apiImageSource, branchLabel, type User } from "@/lib/api";
 
 export function MemberCard({
 	user,
@@ -16,7 +16,7 @@ export function MemberCard({
 	const theme = useTheme();
 	const profile = user.profile;
 	const initials =
-		`${user.firstName[0] ?? ""}${user.lastName[0] ?? ""}`.toUpperCase();
+		`${user.firstName[0] ?? ""}${user.lastName?.[0] ?? ""}`.toUpperCase();
 
 	return (
 		<Card>
@@ -24,7 +24,7 @@ export function MemberCard({
 				<View className="size-14 items-center justify-center overflow-hidden rounded-full bg-border">
 					{profile?.profilePicture ? (
 						<Image
-							accessibilityLabel={`${user.firstName} ${user.lastName}'s profile photo`}
+							accessibilityLabel={`${[user.firstName, user.lastName].filter(Boolean).join(" ")}'s profile photo`}
 							source={apiImageSource(profile.profilePicture)}
 							style={{ height: 56, width: 56 }}
 						/>
@@ -52,7 +52,7 @@ export function MemberCard({
 					</Text>
 					<Text className="mt-2 text-sm font-medium text-maroon">
 						{profile
-							? `${profile.batch} · ${profile.branch} · ${profile.campus}`
+							? `${profile.batch} · ${branchLabel[profile.branch]} · ${profile.campus}`
 							: user.role}
 					</Text>
 					{profile?.city || profile?.country ? (

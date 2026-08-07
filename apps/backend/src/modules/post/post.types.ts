@@ -9,7 +9,7 @@ export type PostActor = {
 	id: string;
 	role: UserRole;
 	firstName?: string;
-	lastName?: string;
+	lastName?: string | null;
 	email?: string;
 };
 

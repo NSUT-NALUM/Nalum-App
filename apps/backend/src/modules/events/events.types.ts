@@ -18,6 +18,6 @@ export type EventActor = {
 	role: UserRole;
 	verificationStatus: "PENDING" | "VERIFIED" | "REJECTED" | null;
 	firstName?: string;
-	lastName?: string;
+	lastName?: string | null;
 	email?: string;
 };

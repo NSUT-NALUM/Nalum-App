@@ -28,18 +28,26 @@ enum Campus {
 }
 
 enum Branch {
-  CSE
-  ECE
-  MECH
-  CIVIL
-  CHEMICAL
-  BIOTECH
-  ELECTRICAL
-  INSTRUMENTATION
-  AEROSPACE
-  MATERIALS
-  INDUSTRIAL
-  PRODUCTION
+  BIOTECHNOLOGY @map("Biotechnology")
+  COE_COMPUTER_ENGINEERING @map("COE (Computer Engineering)")
+  CIVIL_ENGINEERING @map("Civil Engineering")
+  COMPUTER_SCIENCE_ENGINEERING @map("Computer Science Engineering")
+  COMPUTER_SCIENCE_ENGINEERING_ARTIFICIAL_INTELLIGENCE @map("Computer Science Engineering (Artificial Intelligence)")
+  COMPUTER_SCIENCE_ENGINEERING_BIG_DATA_ANALYTICS @map("Computer Science Engineering (Big Data Analytics)")
+  COMPUTER_SCIENCE_ENGINEERING_DATA_SCIENCE @map("Computer Science Engineering (Data Science)")
+  COMPUTER_SCIENCE_ENGINEERING_IOT @map("Computer Science Engineering (IoT)")
+  ELECTRICAL_ENGINEERING @map("Electrical Engineering")
+  ELECTRONICS_ENGINEERING_VLSI_DESGIN @map("Electronics Engineering (VLSI Desgin)")
+  ELECTRONICS_AND_COMMUNICATION_ENGINEERING @map("Electronics and Communication Engineering")
+  ELECTRONICS_AND_COMMUNICATION_ENGINEERING_ECAM @map("Electronics and Communication Engineering (ECAM)")
+  GEOINFORMATICS_GI @map("Geoinformatics (GI)")
+  INFORMATION_TECHNOLOGY @map("Information Technology")
+  INFORMATION_TECHNOLOGY_NETWORK_SECUIRTY @map("Information Technology (Network Secuirty)")
+  INSTRUMENTATION_AND_CONTROL_ENGINEERING @map("Instrumentation and Control Engineering")
+  MPAE_MANUFACTURING_PROCESSES_AND_AUTOMATION_ENGINEERING @map("MPAE (Manufacturing Processes and Automation Engineering)")
+  MATHEMATICS_AND_COMPUTING_MAC @map("Mathematics and Computing (MAC)")
+  MECHANICAL_ENGINEERING @map("Mechanical Engineering")
+  MECHANICAL_ENGINEERING_MEEV @map("Mechanical Engineering (MEEV)")
 }
 
 enum AlumniVerificationStatus {
@@ -138,7 +146,7 @@ enum GroupInvitationStatus {
 model User {
   id                       String                    @id @default(uuid(7)) @db.Uuid
   firstName                String
-  lastName                 String
+  lastName                 String?
   email                    String                    @unique @db.Citext
   passwordHash             String?
   googleId                 String?                   @unique

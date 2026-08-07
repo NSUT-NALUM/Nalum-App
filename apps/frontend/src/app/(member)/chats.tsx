@@ -28,7 +28,7 @@ const requestName = (request: ConnectionRequest, currentUserId: string) => {
 		request.requesterId === currentUserId
 			? request.recipient
 			: request.requester;
-	return `${person.firstName} ${person.lastName}`;
+	return [person.firstName, person.lastName].filter(Boolean).join(" ");
 };
 
 export default function Chats() {
@@ -312,7 +312,9 @@ function ConversationCard({
 	);
 	const title =
 		conversation.name ??
-		(other ? `${other.user.firstName} ${other.user.lastName}` : "Conversation");
+		(other
+			? [other.user.firstName, other.user.lastName].filter(Boolean).join(" ")
+			: "Conversation");
 	return (
 		<Pressable onPress={onPress}>
 			<Card>

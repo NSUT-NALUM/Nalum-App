@@ -31,7 +31,7 @@ describe("member search", () => {
 
 		await usersApi({
 			role: "ALUMNI",
-			branch: "CSE",
+			branch: "COMPUTER_SCIENCE_ENGINEERING",
 			campus: "MAIN",
 			batch: 2018,
 			company: "Acme",
@@ -45,7 +45,7 @@ describe("member search", () => {
 		expect(url.pathname).toBe("/api/users/search");
 		expect(Object.fromEntries(url.searchParams)).toEqual({
 			role: "ALUMNI",
-			branch: "CSE",
+			branch: "COMPUTER_SCIENCE_ENGINEERING",
 			campus: "MAIN",
 			batch: "2018",
 			company: "Acme",

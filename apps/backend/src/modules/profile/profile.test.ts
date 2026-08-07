@@ -18,7 +18,7 @@ const sampleProfile: Profile = {
 	userId: "018f6b4f-4580-7000-8000-000000000001",
 	rollNumber: null,
 	batch: 2026,
-	branch: "CSE" as Branch,
+	branch: "COMPUTER_SCIENCE_ENGINEERING" as Branch,
 	campus: "MAIN" as Campus,
 	phoneNumber: null,
 	alternateEmail: null,
@@ -81,7 +81,7 @@ describe("ProfileService", () => {
 
 			const createData = {
 				batch: 2026,
-				branch: "CSE" as Branch,
+				branch: "COMPUTER_SCIENCE_ENGINEERING" as Branch,
 				campus: "MAIN" as Campus,
 			};
 
@@ -106,7 +106,7 @@ describe("ProfileService", () => {
 
 			const createData = {
 				batch: 2026,
-				branch: "CSE" as Branch,
+				branch: "COMPUTER_SCIENCE_ENGINEERING" as Branch,
 				campus: "MAIN" as Campus,
 			};
 
@@ -120,7 +120,11 @@ describe("ProfileService", () => {
 			await expect(
 				service.createProfile(
 					sampleProfile.userId,
-					{ batch: 2026, branch: "CSE", campus: "MAIN" },
+					{
+						batch: 2026,
+						branch: "COMPUTER_SCIENCE_ENGINEERING",
+						campus: "MAIN",
+					},
 					"ALUMNI",
 				),
 			).rejects.toBeInstanceOf(ProfileRollNumberRequiredError);
@@ -133,7 +137,7 @@ describe("ProfileService", () => {
 				sampleProfile.userId,
 				{
 					batch: 2026,
-					branch: "CSE",
+					branch: "COMPUTER_SCIENCE_ENGINEERING",
 					campus: "MAIN",
 					rollNumber: " 2022 ucs 001 ",
 				},

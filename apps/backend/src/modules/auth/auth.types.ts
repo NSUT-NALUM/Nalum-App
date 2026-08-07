@@ -75,7 +75,7 @@ export type AuthSession = {
 
 export type CreateUserInput = {
 	firstName: string;
-	lastName: string;
+	lastName: string | null;
 	email: string;
 	passwordHash: string | null;
 	googleId?: string | null;

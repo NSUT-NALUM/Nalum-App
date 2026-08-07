@@ -1,4 +1,5 @@
 import argon2 from "argon2";
+import bcrypt from "bcrypt";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { IEmailService } from "../email";
 import {
@@ -94,6 +95,25 @@ describe("AuthService", () => {
 				password: "wrong-password",
 			}),
 		).rejects.toBeInstanceOf(InvalidCredentialsError);
+	});
+
+	it("verifies a legacy bcrypt password and upgrades it after login", async () => {
+		repository.findUserByEmail.mockResolvedValue({
+			...user,
+			passwordHash: await bcrypt.hash("legacy-password", 4),
+		});
+		repository.findActiveBan.mockResolvedValue(null);
+
+		await service.login({ email: user.email, password: "legacy-password" });
+
+		expect(repository.updatePasswordHash).toHaveBeenCalledWith(
+			user.id,
+			expect.stringMatching(/^\$argon2id\$/),
+		);
+		const upgradedHash = repository.updatePasswordHash.mock.calls[0]?.[1];
+		expect(await argon2.verify(upgradedHash as string, "legacy-password")).toBe(
+			true,
+		);
 	});
 
 	it("does not issue a new session to an actively banned user", async () => {
@@ -235,7 +255,6 @@ describe("AuthService", () => {
 		expect(
 			registerSchemaRequest.safeParse({
 				firstName: "Alumni",
-				lastName: "User",
 				email: "alumni@example.com",
 				password: "password123",
 				role: "ALUMNI",

@@ -121,6 +121,19 @@ export const requirePlatformAccess = async (
 	);
 };
 
+export const requireProfileAccess = async (
+	request: FastifyRequest,
+	reply: FastifyReply,
+) => {
+	await requireApplicationAccess(request, reply);
+	if (getCurrentUser(request).role === "VISITOR") {
+		throw new ForbiddenError(
+			"Visitor accounts do not have member profiles",
+			"MEMBER_ACCESS_REQUIRED",
+		);
+	}
+};
+
 export const requirePublisherAccess = async (
 	request: FastifyRequest,
 	reply: FastifyReply,

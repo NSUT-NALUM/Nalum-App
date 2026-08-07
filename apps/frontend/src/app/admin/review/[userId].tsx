@@ -11,7 +11,7 @@ import {
 import { AdminShell } from "@/components/admin-shell";
 import { Button, Card, Field } from "@/components/ui/nalum";
 import { useTheme } from "@/hooks/use-theme";
-import { type AdminUser, adminApi } from "@/lib/api";
+import { type AdminUser, adminApi, branchLabel } from "@/lib/api";
 
 type Action = "approve" | "reject" | "reopen" | null;
 
@@ -103,7 +103,7 @@ export default function ReviewDetail() {
 								label="Academic record"
 								value={
 									application.profile
-										? `${application.profile.branch} · ${application.profile.batch} · ${application.profile.campus}`
+										? `${branchLabel[application.profile.branch]} · ${application.profile.batch} · ${application.profile.campus}`
 										: null
 								}
 							/>
@@ -166,7 +166,7 @@ export default function ReviewDetail() {
 										<Text className="text-sm text-muted">
 											{new Date(event.createdAt).toLocaleString()}
 											{event.actor
-												? ` · ${event.actor.firstName} ${event.actor.lastName}`
+												? ` · ${[event.actor.firstName, event.actor.lastName].filter(Boolean).join(" ")}`
 												: " · Applicant/system"}
 										</Text>
 										{event.reason ? (

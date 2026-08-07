@@ -59,12 +59,12 @@ const prisma = createPrismaClient(databaseUrl);
 try {
 	const email = (await question("Admin email: ")).trim().toLowerCase();
 	const firstName = (await question("First name: ")).trim();
-	const lastName = (await question("Last name: ")).trim();
+	const lastName = (await question("Last name (optional): ")).trim() || null;
 	const password = await readPassword("Password (12+ characters): ");
 	const confirmation = await readPassword("Confirm password: ");
 
-	if (!email.includes("@") || !firstName || !lastName) {
-		throw new Error("A valid email and name are required");
+	if (!email.includes("@") || !firstName) {
+		throw new Error("A valid email and first name are required");
 	}
 	if (password.length < 12)
 		throw new Error("Password must be at least 12 characters");

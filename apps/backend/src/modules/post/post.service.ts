@@ -21,7 +21,7 @@ import type {
 } from "./post.schema";
 import type { PostActor, PostCreateInput, PostVoteSummary } from "./post.types";
 
-type Person = { id: string; firstName: string; lastName: string };
+type Person = { id: string; firstName: string; lastName: string | null };
 type PostView = {
 	id: string;
 	title: string;

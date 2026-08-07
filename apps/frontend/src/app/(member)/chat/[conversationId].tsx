@@ -31,7 +31,7 @@ import { useAuthStore } from "@/stores/auth-store";
 const maxImageBytes = 5 * 1024 * 1024;
 
 const memberName = (member: Conversation["participants"][number]) =>
-	`${member.user.firstName} ${member.user.lastName}`;
+	[member.user.firstName, member.user.lastName].filter(Boolean).join(" ");
 
 export default function ChatThread() {
 	const { conversationId } = useLocalSearchParams<{ conversationId: string }>();
